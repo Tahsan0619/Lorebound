@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorebound - AI Curriculum-to-Game Compiler</title>
+    
+    <!-- Google Fonts: Outfit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="glow-bg-elements">
+        <div class="glow-circle cyan"></div>
+        <div class="glow-circle purple"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <!-- Top Navigation -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-compass-drafting"></i>
+                    <div class="logo-glow"></div>
+                </div>
+                <div class="brand-text">
+                    <h1>Lorebound</h1>
+                    <span class="tagline">Curriculum to Playable Worlds</span>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge track-badge"><i class="fa-solid fa-graduation-cap"></i> Track C: EdTech</span>
+                <span class="badge compiler-status" id="header-status"><i class="fa-solid fa-circle-nodes"></i> Compiler Idle</span>
+            </div>
+        </header>
+
+        <!-- Main Screen Wrapper -->
+        <main class="app-main">
+            
+            <!-- 1. UPLOAD & INPUT SCREEN -->
+            <section id="screen-input" class="app-screen active">
+                <div class="hero-section">
+                    <h2>Compile Curriculum into Gameplay</h2>
+                    <p>Lorebound analyzes textbooks, syllabus outlines, and study guides, automatically extracts their logical structures, and compiles them into customized interactive learning games.</p>
+                </div>
+
+                <div class="input-grid">
+                    <!-- Text / PDF Input Panel -->
+                    <div class="glass-panel input-card">
+                        <div class="card-header">
+                            <span class="panel-icon"><i class="fa-solid fa-file-arrow-up"></i></span>
+                            <h3>Source Material Ingestion</h3>
+                        </div>
+                        
+                        <!-- Input Mode Toggle -->
+                        <div class="toggle-tabs">
+                            <button class="tab-btn active" data-tab="pdf"><i class="fa-solid fa-file-pdf"></i> Upload PDF</button>
+                            <button class="tab-btn" data-tab="text"><i class="fa-solid fa-align-left"></i> Paste Text</button>
+                        </div>
+
+                        <!-- Tab: PDF Upload -->
+                        <div class="tab-content active" id="tab-pdf">
+                            <div class="file-dropzone" id="pdf-dropzone">
+                                <input type="file" id="pdf-file-input" accept="application/pdf" style="display: none;">
+                                <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
+                                <p class="primary-text">Drag & drop your textbook chapter PDF</p>
+                                <p class="secondary-text">or <span class="browse-link">browse files</span></p>
+                                <p class="file-limit">Standard PDF texts up to 10MB</p>
+                            </div>
+                            <div class="file-selected-status hidden" id="file-info-container">
+                                <div class="file-details">
+                                    <i class="fa-solid fa-file-pdf pdf-selected-icon"></i>
+                                    <div class="file-metadata">
+                                        <span id="file-name-text">chapter_3.pdf</span>
+                                        <span id="file-size-text">2.4 MB</span>
+                                    </div>
+                                </div>
+                                <button class="btn-icon-danger" id="btn-remove-file"><i class="fa-solid fa-xmark"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Tab: Paste Text -->
+                        <div class="tab-content" id="tab-text">
+                            <div class="textarea-wrapper">
+                                <textarea id="text-paste-input" placeholder="Paste your textbook passage, notes, or list of facts here (minimum 100 characters)..."></textarea>
+                                <div class="word-counter"><span id="input-word-count">0</span> words</div>
+                            </div>
+                        </div>
+
+                        <!-- Compilation Settings -->
+                        <div class="compiler-settings-panel">
+                            <h4><i class="fa-solid fa-sliders"></i> Compiler Directives</h4>
+                            <div class="settings-grid">
+                                <div class="setting-item">
+                                    <label for="setting-model">Foundation Model</label>
+                                    <select id="setting-model">
+                                        <option value="llama3-70b" selected>Llama 3.1 70B (Groq Cloud)</option>
+                                        <option value="llama3-8b">Llama 3.1 8B (Low Latency)</option>
+                                        <option value="gemma2-9b">Gemma 2 9B (Google Open Weights)</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="setting-difficulty">Difficulty Layer</label>
+                                    <select id="setting-difficulty">
+                                        <option value="adaptive" selected>Adaptive Learning</option>
+                                        <option value="secondary">Class 9-10 (SSC)</option>
+                                        <option value="higher-secondary">Class 11-12 (HSC)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-full-width" id="btn-compile" disabled>
+                            <span>Compile to Playable Game</span>
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </button>
+                    </div>
+
+                    <!-- Preloaded Samples Panel -->
+                    <div class="glass-panel samples-card">
+                        <div class="card-header">
+                            <span class="panel-icon"><i class="fa-solid fa-cube"></i></span>
+                            <h3>Pre-loaded Curricular Demos</h3>
+                        </div>
+                        <p class="samples-desc">Select a vetted sample containing diverse structural patterns to see the compiler select and generate the correct game mechanics instantly.</p>
+                        
+                        <div class="samples-list">
+                            <!-- Sample 1: Sequential -->
+                            <div class="sample-item-card" data-sample="1">
+                                <div class="sample-info">
+                                    <span class="sample-badge timeline-badge"><i class="fa-solid fa-clock-rotate-left"></i> Timeline Builder</span>
+                                    <h4>Bangladesh Liberation War 1971</h4>
+                                    <p class="sample-topic">History & Civil Studies • Grade 9-10</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right sample-arrow"></i>
+                            </div>
+
+                            <!-- Sample 2: Cyclical -->
+                            <div class="sample-item-card" data-sample="2">
+                                <div class="sample-info">
+                                    <span class="sample-badge cycle-badge"><i class="fa-solid fa-rotate"></i> Process Loop</span>
+                                    <h4>The Water (Hydrological) Cycle</h4>
+                                    <p class="sample-topic">Earth Science & Biology • Grade 8</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right sample-arrow"></i>
+                            </div>
+
+                            <!-- Sample 3: Cause-and-Effect -->
+                            <div class="sample-item-card" data-sample="3">
+                                <div class="sample-info">
+                                    <span class="sample-badge cause-badge"><i class="fa-solid fa-diagram-next"></i> Cause-Effect Chain</span>
+                                    <h4>The Green Revolution & Ecology</h4>
+                                    <p class="sample-topic">Environmental Science • Grade 11-12</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right sample-arrow"></i>
+                            </div>
+
+                            <!-- Sample 4: Comparative -->
+                            <div class="sample-item-card" data-sample="4">
+                                <div class="sample-info">
+                                    <span class="sample-badge sorting-badge"><i class="fa-solid fa-arrow-right-arrow-left"></i> Comparison Sorter</span>
+                                    <h4>Photosynthesis vs. Respiration</h4>
+                                    <p class="sample-topic">Cellular Bio-Chemistry • Grade 10</p>
+                                </div>
+                                <i class="fa-solid fa-chevron-right sample-arrow"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. COMPILING / PROCESSING SCREEN -->
+            <section id="screen-compile" class="app-screen">
+                <div class="glass-panel compile-panel">
+                    <div class="compile-header">
+                        <div class="spinner-container">
+                            <div class="spinner"></div>
+                            <div class="spinner-pulse"></div>
+                        </div>
+                        <div class="compile-title">
+                            <h2>Lorebound Compiler In Action</h2>
+                            <p id="compile-subtitle">Deconstructing curriculum text blocks into structural components...</p>
+                        </div>
+                    </div>
+
+                    <!-- Pipeline Steps Progress Vis -->
+                    <div class="pipeline-progress-bar">
+                        <div class="pipeline-step active" id="pstep-extract">
+                            <span class="step-num"><i class="fa-solid fa-file-import"></i></span>
+                            <span class="step-label">Text Ingestion</span>
+                        </div>
+                        <div class="pipeline-line" id="pline-1"></div>
+                        <div class="pipeline-step" id="pstep-classify">
+                            <span class="step-num"><i class="fa-solid fa-brain"></i></span>
+                            <span class="step-label">Classification</span>
+                        </div>
+                        <div class="pipeline-line" id="pline-2"></div>
+                        <div class="pipeline-step" id="pstep-generate">
+                            <span class="step-num"><i class="fa-solid fa-gears"></i></span>
+                            <span class="step-label">Game Assembly</span>
+                        </div>
+                        <div class="pipeline-line" id="pline-3"></div>
+                        <div class="pipeline-step" id="pstep-render">
+                            <span class="step-num"><i class="fa-solid fa-circle-check"></i></span>
+                            <span class="step-label">Ready</span>
+                        </div>
+                    </div>
+
+                    <!-- Compiler Log Terminal -->
+                    <div class="terminal-container">
+                        <div class="terminal-bar">
+                            <div class="terminal-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span class="terminal-title">LORE_COMPILER_LOG.sh</span>
+                        </div>
+                        <div class="terminal-body" id="compiler-terminal-logs">
+                            <div class="log-line system">[SYSTEM] Initializing Lorebound Compiler pipeline v1.0.0...</div>
+                            <div class="log-line system">[SYSTEM] Awaiting input source content. Ready.</div>
+                        </div>
+                    </div>
+
+                    <!-- Live Classification Insight Card (appears mid-compilation) -->
+                    <div class="glass-panel mini-insight-card hidden" id="compilation-insight-card">
+                        <div class="insight-header">
+                            <span class="insight-badge" id="insight-category-badge"><i class="fa-solid fa-tag"></i> Timeline</span>
+                            <h3>Classifier Output Discovered</h3>
+                        </div>
+                        <div class="insight-details">
+                            <div class="insight-row">
+                                <span class="label">Dominant Structure:</span>
+                                <span class="val highlight" id="insight-struct-name">Sequential / Timeline</span>
+                            </div>
+                            <div class="insight-row">
+                                <span class="label">Selected Template:</span>
+                                <span class="val highlight" id="insight-template-name">Timeline Builder v1.2</span>
+                            </div>
+                            <div class="insight-row">
+                                <span class="label">Confidence Score:</span>
+                                <span class="val" id="insight-confidence">97.8%</span>
+                            </div>
+                            <div class="insight-description">
+                                <span class="label">Logical Rationale:</span>
+                                <p id="insight-rationale">Text consists of multiple chronological markers and ordered dates relating to the 1971 Bangladesh Liberation War. The Timeline Builder mechanic aligns with practicing chronological sequence recall.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. GAME RUNTIME PLAYER SCREEN -->
+            <section id="screen-game" class="app-screen">
+                <div class="game-layout">
+                    <!-- Game Sidebar (HUD & Transparency Access) -->
+                    <div class="game-sidebar">
+                        <!-- Game Meta Info -->
+                        <div class="glass-panel game-meta-panel">
+                            <div class="meta-row-header">
+                                <h3 id="game-active-title">Liberation War Timeline</h3>
+                                <span class="active-mechanic-tag" id="game-mechanic-tag"><i class="fa-solid fa-timeline"></i> Timeline</span>
+                            </div>
+                            <p class="game-meta-desc" id="game-active-desc">Sort the core events of 1971 in chronological order to learn the sequence of history.</p>
+                        </div>
+
+                        <!-- Score & Stats HUD -->
+                        <div class="glass-panel game-hud-panel">
+                            <div class="hud-stats-grid">
+                                <div class="hud-stat">
+                                    <span class="stat-lbl">SCORE</span>
+                                    <span class="stat-val" id="game-score">0000</span>
+                                </div>
+                                <div class="hud-stat">
+                                    <span class="stat-lbl">TIMER</span>
+                                    <span class="stat-val" id="game-timer">02:00</span>
+                                </div>
+                                <div class="hud-stat">
+                                    <span class="stat-lbl">ACCURACY</span>
+                                    <span class="stat-val" id="game-accuracy">100%</span>
+                                </div>
+                            </div>
+                            <div class="progressbar-hud">
+                                <div class="hud-progress-fill" id="game-progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="hud-step-counter" id="game-step-counter">Step 1 of 5</div>
+                        </div>
+
+                        <!-- Control Actions -->
+                        <div class="game-action-controls">
+                            <button class="btn btn-secondary btn-full-width" id="btn-toggle-transparency">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <span>Compiler Insights</span>
+                            </button>
+                            <button class="btn btn-danger btn-full-width" id="btn-abort-game">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <span>Abort Session</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Gameplay Zone -->
+                    <div class="game-main-area">
+                        <!-- Theme/Narrative Intro Card (Overlay inside gameplay area) -->
+                        <div class="narrative-overlay" id="narrative-intro-overlay">
+                            <div class="glass-panel narrative-content">
+                                <div class="narrative-glow"></div>
+                                <span class="narrative-badge"><i class="fa-solid fa-book-open"></i> Historical Context</span>
+                                <h2 id="narrative-title">The Path to Freedom</h2>
+                                <p id="narrative-text">In 1971, East Pakistan embarked on a heroic journey to establish the independent nation of Bangladesh. Put the critical milestones in order to map out the events that led to independence.</p>
+                                <button class="btn btn-primary" id="btn-start-gameplay">
+                                    <span>Begin Interactive Mission</span>
+                                    <i class="fa-solid fa-gamepad"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Feedback Overlay (Shows on correct/incorrect actions) -->
+                        <div class="feedback-overlay hidden" id="game-feedback-overlay">
+                            <div class="feedback-content glass-panel">
+                                <div class="feedback-icon" id="feedback-icon-container">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <h3 id="feedback-title">Correct!</h3>
+                                <p id="feedback-message">The March 7 speech was delivered by Bangabandhu Sheikh Mujibur Rahman, directing the Bengali people toward independence.</p>
+                                
+                                <!-- Source grounding trigger -->
+                                <div class="feedback-source-box">
+                                    <span class="source-lbl"><i class="fa-solid fa-quote-left"></i> Source Chapter Extract:</span>
+                                    <p class="source-passage" id="feedback-source-text">"On March 7, 1971, Bangabandhu Sheikh Mujibur Rahman delivered a historic speech at the Ramna Race Course..."</p>
+                                </div>
+
+                                <button class="btn btn-primary" id="btn-next-step">
+                                    <span>Continue Gameplay</span>
+                                    <i class="fa-solid fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Game Render Containment -->
+                        <div class="game-renderer-canvas" id="game-canvas">
+                            <!-- Game Renders Mount Dynamically Here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SESSION COMPLETION SUMMARY SCREEN -->
+            <section id="screen-summary" class="app-screen">
+                <div class="glass-panel summary-panel">
+                    <div class="summary-header">
+                        <div class="success-crown">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h2>Interactive Mission Accomplished!</h2>
+                        <p id="summary-subtitle">You have successfully mastered the curriculum module.</p>
+                    </div>
+
+                    <div class="summary-stats-grid">
+                        <div class="summary-stat-box">
+                            <span class="lbl">Learning Grade</span>
+                            <span class="val highlight" id="summary-grade">A+</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="lbl">Final Score</span>
+                            <span class="val" id="summary-score">4,850</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="lbl">Accuracy Rate</span>
+                            <span class="val" id="summary-accuracy">90%</span>
+                        </div>
+                        <div class="summary-stat-box">
+                            <span class="lbl">Time Completed</span>
+                            <span class="val" id="summary-time">01:34</span>
+                        </div>
+                    </div>
+
+                    <!-- Performance Analysis -->
+                    <div class="performance-report">
+                        <h3><i class="fa-solid fa-chart-line"></i> Learning Performance Breakdown</h3>
+                        <div class="performance-list" id="summary-details-list">
+                            <!-- Populated in JS: lists question checkpoints and whether player got it right first try -->
+                        </div>
+                    </div>
+
+                    <div class="summary-actions">
+                        <button class="btn btn-primary" id="btn-summary-replay">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Replay Module</span>
+                        </button>
+                        <button class="btn btn-secondary" id="btn-summary-back">
+                            <i class="fa-solid fa-home"></i>
+                            <span>Compile New Material</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- TRANSPARENCY DRAWER / METADATA PANEL (Overlay toggleable on the side) -->
+        <aside id="transparency-drawer" class="transparency-drawer">
+            <div class="drawer-header">
+                <h3><i class="fa-solid fa-magnifying-glass-chart"></i> Compiler Metadata & Logic</h3>
+                <button class="btn-icon" id="btn-close-transparency"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="drawer-body">
+                <section class="drawer-section">
+                    <h4><i class="fa-solid fa-microchip"></i> Generation Context</h4>
+                    <table class="metadata-table">
+                        <tr>
+                            <td>Primary LLM</td>
+                            <td id="meta-model-name">Llama 3.1 70B (via Groq API)</td>
+                        </tr>
+                        <tr>
+                            <td>Prompt Version</td>
+                            <td>v2.4-structure-grounded</td>
+                        </tr>
+                        <tr>
+                            <td>Tokens Processed</td>
+                            <td id="meta-token-count">1,824 tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Compilation Time</td>
+                            <td id="meta-compilation-time">3.4 seconds</td>
+                        </tr>
+                        <tr>
+                            <td>Self-Consistency Pass</td>
+                            <td><span class="status-indicator success"><i class="fa-solid fa-circle-check"></i> Passed (100% ground check)</span></td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section class="drawer-section">
+                    <h4><i class="fa-solid fa-tag"></i> Structural Analysis Results</h4>
+                    <div class="struct-matrix-box">
+                        <div class="struct-matrix-row">
+                            <span>Sequential / Chronological</span>
+                            <div class="confidence-bar"><div class="fill" id="conf-bar-seq" style="width: 95%;"></div></div>
+                            <span class="percentage" id="conf-pct-seq">95%</span>
+                        </div>
+                        <div class="struct-matrix-row">
+                            <span>Cyclical / State Machine</span>
+                            <div class="confidence-bar"><div class="fill" id="conf-bar-cyc" style="style: 2%;"></div></div>
+                            <span class="percentage" id="conf-pct-cyc">2%</span>
+                        </div>
+                        <div class="struct-matrix-row">
+                            <span>Causal / Chain Reaction</span>
+                            <div class="confidence-bar"><div class="fill" id="conf-bar-cau" style="style: 15%;"></div></div>
+                            <span class="percentage" id="conf-pct-cau">15%</span>
+                        </div>
+                        <div class="struct-matrix-row">
+                            <span>Comparative / Sorting</span>
+                            <div class="confidence-bar"><div class="fill" id="conf-bar-comp" style="style: 5%;"></div></div>
+                            <span class="percentage" id="conf-pct-comp">5%</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="drawer-section">
+                    <h4><i class="fa-solid fa-terminal"></i> Classification Rationale</h4>
+                    <blockquote id="meta-rationale-quote">
+                        "The input text outlines events between March and December of 1971, linked by specific calendar timestamps. Chronology is the primary semantic binding agent of the passage, matching the Timeline template."
+                    </blockquote>
+                </section>
+
+                <section class="drawer-section">
+                    <h4><i class="fa-solid fa-shield-halved"></i> Hallucination Guardrails</h4>
+                    <p class="guard-p">Lorebound enforces strict grounding by comparing generated game objects directly against original sentences. If a generated fact doesn't align with the source embeddings/text matching, the node is pruned.</p>
+                    <div class="guard-metric">
+                        <span class="lbl">Grounding Overlap Metric:</span>
+                        <span class="val">98.2% overlap</span>
+                    </div>
+                </section>
+            </div>
+        </aside>
+
+        <!-- View Source Highlight Overlay (Global modal for showing original PDF passages) -->
+        <div class="modal-overlay hidden" id="source-modal">
+            <div class="glass-panel modal-content">
+                <div class="modal-header">
+                    <h3><i class="fa-solid fa-book-open-reader"></i> Grounding Verification - Source Passage</h3>
+                    <button class="btn-icon" id="btn-close-source"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-instruction">This game element was synthesized directly from the highlighted text below extracted from the curriculum PDF:</p>
+                    <div class="source-document-excerpt">
+                        <div class="document-scroller" id="source-text-scroller">
+                            <!-- Original text populated here, with <mark> tags on matching passages -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-links">
+                <span>SciBlitz AI Challenge 2026 Submission</span>
+                <span class="sep">•</span>
+                <span>Team BabunToo Academy</span>
+                <span class="sep">•</span>
+                <span>University of Frontier Technology Bangladesh</span>
+            </div>
+            <div class="rulebook-conformity">
+                <i class="fa-solid fa-circle-check text-success"></i> Rulebook Sec 5.4 & 7.1 Compliant
+            </div>
+        </footer>
+    </div>
+
+    <!-- PDFJS CDN to read text from PDFs locally -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+    <script>
+        // Initialize PDFJS global worker
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+    </script>
+    
+    <!-- JavaScript Application Modules -->
+    <script src="games.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
