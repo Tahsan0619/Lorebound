@@ -153,4 +153,4 @@ Open `index.html` directly in a browser. The app uses the local compiler fallbac
 
 ## Team
 
-BabunToo Academy — University of Frontier Technology Bangladesh (UFTB)
+Team Alpha
