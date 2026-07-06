@@ -1,0 +1,627 @@
+[
+  {
+    "slug": "liberation-war-1971",
+    "title": "Bangladesh Liberation War 1971",
+    "topic": "History & Civil Studies • Grade 9-10",
+    "category": "Timeline",
+    "structure_type": "Sequential / Timeline",
+    "original_text": "The birth of Bangladesh in 1971 was the culmination of decades of struggle against economic, political, and cultural suppression. The language movement of 1952 sowed the seeds of nationalism when on February 21, students protested in Dhaka, cementing the Bengali identity. Later, the United Front electoral victory on March 11, 1954, proved the demographic power of East Bengal. Seeking ultimate regional autonomy, Bangabandhu Sheikh Mujibur Rahman proposed the historic Six-Point Programme on February 5, 1966. In retaliation, the Pakistani regime staged the Agartala Conspiracy Case trial on June 19, 1968, trying Bangabandhu for treason, which backfired and triggered mass uprisings. This popular pressure culminated in the 1970 General Election victory on December 7, where the Awami League won an absolute majority.\n\n        As negotiations stalled, Bangabandhu delivered his historic March 7 Address in 1971, directing the people to prepare for independence. The response from the Pakistani state was brutal. On March 25, 1971, the military launched Operation Searchlight, a genocidal crackdown in Dhaka. Immediately, the Declaration of Independence was proclaimed on March 26. To lead the war, the Mujibnagar Government took shape on April 10, and the provisional cabinet formally took oath on April 17, 1971, in Meherpur.\n\n        A protracted guerrilla war followed as the Muktibahini harassed the occupation forces. In August, naval commandos launched Operation Jackpot, sinking occupation ships. As conflict intensified, the Indo-Bangla Joint Command was formed on November 21, 1971. In a final act of desperation, local collaborators executed systematic intellectual massacres on December 14. Finally, on December 16, 1971, the Pakistani command signed the unconditional instrument of surrender, establishing a free Bangladesh.",
+    "payload": {
+      "levels": [
+        {
+          "name": "Level 1: The Seeds of National Identity (1952 - 1970)",
+          "events": [
+            {
+              "id": "l1-evt-1",
+              "title": "February 21 Language Protest",
+              "date": "Feb 21, 1952",
+              "desc": "Students clash with police in Dhaka while defending Bengali as a state language, cementing the cultural national identity.",
+              "order": 0,
+              "sourcePassage": "The language movement of 1952 sowed the seeds of nationalism when on February 21, students protested in Dhaka, cementing the Bengali identity."
+            },
+            {
+              "id": "l1-evt-2",
+              "title": "United Front Electoral Victory",
+              "date": "March 11, 1954",
+              "desc": "The democratic alliance defeats the ruling Muslim League in East Bengal regional polls, highlighting demographic power.",
+              "order": 1,
+              "sourcePassage": "Later, the United Front electoral victory on March 11, 1954, proved the demographic power of East Bengal."
+            },
+            {
+              "id": "l1-evt-3",
+              "title": "Six-Point Programme Announcement",
+              "date": "Feb 5, 1966",
+              "desc": "Bangabandhu Sheikh Mujibur Rahman details a Charter of Autonomy for East Pakistan in Lahore, demanding decentralized power.",
+              "order": 2,
+              "sourcePassage": "Seeking ultimate regional autonomy, Bangabandhu Sheikh Mujibur Rahman proposed the historic Six-Point Programme on February 5, 1966."
+            },
+            {
+              "id": "l1-evt-4",
+              "title": "Agartala Conspiracy Trial",
+              "date": "June 19, 1968",
+              "desc": "Pakistani administration trials Bangabandhu and 34 others for conspiracy, sparking a massive public revolt in East Pakistan.",
+              "order": 3,
+              "sourcePassage": "In retaliation, the Pakistani regime staged the Agartala Conspiracy Case trial on June 19, 1968, trying Bangabandhu for treason..."
+            },
+            {
+              "id": "l1-evt-5",
+              "title": "1970 General Elections Landslide",
+              "date": "Dec 7, 1970",
+              "desc": "The Awami League secures a landslide absolute majority, winning 160 of 162 seats allocated to East Pakistan.",
+              "order": 4,
+              "sourcePassage": "This popular pressure culminated in the 1970 General Election victory on December 7, where the Awami League won an absolute majority."
+            }
+          ]
+        },
+        {
+          "name": "Level 2: Crackdown & Resistance (March - April 1971)",
+          "events": [
+            {
+              "id": "l2-evt-1",
+              "title": "Historic March 7 Address",
+              "date": "March 7, 1971",
+              "desc": "Bangabandhu directs the nation toward civil disobedience and preparation for war at the Ramna Race Course.",
+              "order": 0,
+              "sourcePassage": "As negotiations stalled, Bangabandhu delivered his historic March 7 Address in 1971, directing the people to prepare for independence."
+            },
+            {
+              "id": "l2-evt-2",
+              "title": "Operation Searchlight Launch",
+              "date": "March 25, 1971",
+              "desc": "The Pakistani army begins a genocidal military operation in Dhaka to suppress Bengali autonomy demands.",
+              "order": 1,
+              "sourcePassage": "On March 25, 1971, the military launched Operation Searchlight, a genocidal crackdown in Dhaka."
+            },
+            {
+              "id": "l2-evt-3",
+              "title": "Declaration of Independence Proclaimed",
+              "date": "March 26, 1971",
+              "desc": "Formal declarations of independent statehood are broadcast on behalf of Bangabandhu Sheikh Mujibur Rahman.",
+              "order": 2,
+              "sourcePassage": "Immediately, the Declaration of Independence was proclaimed on March 26."
+            },
+            {
+              "id": "l2-evt-4",
+              "title": "Formation of Mujibnagar Government",
+              "date": "April 10, 1971",
+              "desc": "The provisional government of Bangladesh is officially constituted to guide the armed war and administration.",
+              "order": 3,
+              "sourcePassage": "To lead the war, the Mujibnagar Government took shape on April 10..."
+            },
+            {
+              "id": "l2-evt-5",
+              "title": "Cabinet Oath Taking",
+              "date": "April 17, 1971",
+              "desc": "The provisional cabinet formally takes oath of office at Baidyanathtala, Meherpur (renamed Mujibnagar).",
+              "order": 4,
+              "sourcePassage": "...and the provisional cabinet formally took oath on April 17, 1971, in Meherpur."
+            }
+          ]
+        },
+        {
+          "name": "Level 3: Guerrilla Campaigns to Sovereignty (May - December 1971)",
+          "events": [
+            {
+              "id": "l3-evt-1",
+              "title": "Guerrilla Warfare Inception",
+              "date": "May - July 1971",
+              "desc": "The Muktibahini establishes sectors and engages in intensive guerrilla operations against occupation positions.",
+              "order": 0,
+              "sourcePassage": "A protracted guerrilla war followed as the Muktibahini harassed the occupation forces."
+            },
+            {
+              "id": "l3-evt-2",
+              "title": "Naval Operation Jackpot",
+              "date": "August 15, 1971",
+              "desc": "Bengali naval commandos launch synchronized mining strikes, destroying occupation ships in Chittagong and Mongla ports.",
+              "order": 1,
+              "sourcePassage": "In August, naval commandos launched Operation Jackpot, sinking occupation ships."
+            },
+            {
+              "id": "l3-evt-3",
+              "title": "Indo-Bangla Joint Command",
+              "date": "Nov 21, 1971",
+              "desc": "The Muktibahini merges command structure with the Indian Armed Forces to coordinate joint ground maneuvers.",
+              "order": 2,
+              "sourcePassage": "As conflict intensified, the Indo-Bangla Joint Command was formed on November 21, 1971."
+            },
+            {
+              "id": "l3-evt-4",
+              "title": "Intellectual Executions Genocide",
+              "date": "Dec 14, 1971",
+              "desc": "Collaborators select and execute hundreds of Bengali scholars and professionals to cripple the future nation's intelligence.",
+              "order": 3,
+              "sourcePassage": "In a final act of desperation, local collaborators executed systematic intellectual massacres on December 14."
+            },
+            {
+              "id": "l3-evt-5",
+              "title": "Unconditional Military Surrender",
+              "date": "Dec 16, 1971",
+              "desc": "Pakistani General Niazi signs the Instrument of Surrender in Dhaka, marking the sovereign birth of Bangladesh.",
+              "order": 4,
+              "sourcePassage": "Finally, on December 16, 1971, the Pakistani command signed the unconditional instrument of surrender, establishing a free Bangladesh."
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "tokens": 2840,
+      "compTime": 4.8,
+      "rationale": "Text details a large chronology of historical milestones from 1952 to December 1971. Compiled into a 3-Era (3 Level) Timeline Builder game representing the seeds of conflict, military crackdown, and final guerrilla campaign.",
+      "confMatrix": {
+        "seq": 99,
+        "cyc": 1,
+        "cau": 15,
+        "comp": 5
+      }
+    }
+  },
+  {
+    "slug": "water-cycle",
+    "title": "The Water (Hydrological) Cycle",
+    "topic": "Earth Science & Biology • Grade 8",
+    "category": "Process",
+    "structure_type": "Cyclical / Process",
+    "original_text": "The hydrological cycle represents the circulation of water through the biosphere. The movement of water begins with solar heating, causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas. Additionally, Sublimation occurs on cold peaks where ice transforms directly into vapor.\n\n        Next, in the atmospheric condensation phase, winds distribute this gas via Advection. When cooling occurs, the vapor undergoes Condensation, attaching to tiny particles via Cloud Nucleation to build dense clouds. As cloud density builds, the droplets combine through Coalescence, becoming heavy enough to fall.\n\n        In the deposition phase, gravity delivers this moisture via Precipitation. Upon reaching land, water is caught via Canopy Interception or flows via Surface Runoff. Eventually, the water filters down through Infiltration and Percolation, recharging deep underground aquifers before resuming the cycle.",
+    "payload": {
+      "phases": [
+        {
+          "name": "Phase 1: Atmospheric Vapor Ingestion",
+          "stages": [
+            {
+              "id": "p-stg-1",
+              "title": "Solar Radiation & Heating",
+              "desc": "Thermal energy from the sun heats surface water bodies and land surfaces to drive phase changes.",
+              "question": "What primary energy input acts as the thermodynamic engine driving phase transformations in the water cycle?",
+              "options": [
+                "Geothermal heat vents",
+                "Solar radiation & heating",
+                "Wind friction coefficients",
+                "Atmospheric gravity pressure"
+              ],
+              "correctIndex": 1,
+              "rationale": "Solar radiation is the primary thermal driver of global water movement.",
+              "sourcePassage": "The movement of water begins with solar heating..."
+            },
+            {
+              "id": "p-stg-2",
+              "title": "Evaporation",
+              "desc": "Liquid water in oceans and lakes absorbs heat energy, transitioning into gaseous water vapor.",
+              "question": "Which process describes liquid water on the surface absorbing heat to become rising gas?",
+              "options": [
+                "Condensation",
+                "Sublimation",
+                "Evaporation",
+                "Percolation"
+              ],
+              "correctIndex": 2,
+              "rationale": "Evaporation changes liquid surface water to gas.",
+              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas."
+            },
+            {
+              "id": "p-stg-3",
+              "title": "Transpiration",
+              "desc": "Living plants release gaseous water vapor through specialized micro-pores in their leaves called stomata.",
+              "question": "Name the biotic process where plants release water vapor into the atmosphere.",
+              "options": [
+                "Transpiration",
+                "Respiration",
+                "Photosynthetic drift",
+                "Infiltration"
+              ],
+              "correctIndex": 0,
+              "rationale": "Transpiration is the release of plant water into the atmosphere.",
+              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas."
+            },
+            {
+              "id": "p-stg-4",
+              "title": "Sublimation",
+              "desc": "Ice and snow on high mountain peaks convert directly into water vapor, bypassing the liquid state.",
+              "question": "What is the term for solid glacial ice changing directly into water vapor without melting first?",
+              "options": [
+                "Advection",
+                "Sublimation",
+                "Photolysis",
+                "Coalescence"
+              ],
+              "correctIndex": 1,
+              "rationale": "Sublimation is the direct solid-to-gas transition.",
+              "sourcePassage": "Additionally, Sublimation occurs on cold peaks where ice transforms directly into vapor."
+            }
+          ]
+        },
+        {
+          "name": "Phase 2: Atmospheric Condensation & Transport",
+          "stages": [
+            {
+              "id": "p-stg-5",
+              "title": "Atmospheric Advection",
+              "desc": "Winds transport moisture laterally through the atmosphere, redistributing water vapor across regions.",
+              "question": "How is evaporated water vapor transported horizontally across different geographic regions?",
+              "options": [
+                "Surface runoff",
+                "Capillary rise",
+                "Atmospheric Advection",
+                "Deep percolation"
+              ],
+              "correctIndex": 2,
+              "rationale": "Advection is the horizontal transport of atmospheric properties (like moisture) by wind.",
+              "sourcePassage": "Next, in the atmospheric condensation phase, winds distribute this gas via Advection."
+            },
+            {
+              "id": "p-stg-6",
+              "title": "Cloud Nucleation & Condensation",
+              "desc": "Water vapor cools and condenses around tiny suspended particles, forming clouds of liquid droplets.",
+              "question": "When warm water vapor ascends and cools, transitioning to liquid around aerosol particles, this is:",
+              "options": [
+                "Cloud Nucleation & Condensation",
+                "Evaporative cooling",
+                "Transpiration",
+                "Surface infiltration"
+              ],
+              "correctIndex": 0,
+              "rationale": "Nucleation provides the seeds for vapor to condense into droplets.",
+              "sourcePassage": "When cooling occurs, the vapor undergoes Condensation, attaching to tiny particles via Cloud Nucleation to build dense clouds."
+            },
+            {
+              "id": "p-stg-7",
+              "title": "Coalescence",
+              "desc": "Tiny water droplets collide and fuse together within clouds, growing large and heavy enough to fall.",
+              "question": "What term describes cloud water droplets colliding and combining to grow heavy enough for gravity to pull down?",
+              "options": [
+                "Sublimation",
+                "Advection",
+                "Infiltration",
+                "Coalescence"
+              ],
+              "correctIndex": 3,
+              "rationale": "Coalescence is the physical merging of cloud droplets.",
+              "sourcePassage": "As cloud density builds, the droplets combine through Coalescence, becoming heavy enough to fall."
+            }
+          ]
+        },
+        {
+          "name": "Phase 3: Deposition & Subterranean Storage",
+          "stages": [
+            {
+              "id": "p-stg-8",
+              "title": "Precipitation",
+              "desc": "Gravity pulls atmospheric water droplets down to the Earth's surface as rain, snow, sleet, or hail.",
+              "question": "Which term represents condensed atmospheric moisture falling under gravity to land or oceans?",
+              "options": [
+                "Advection",
+                "Precipitation",
+                "Transpiration",
+                "Runoff"
+              ],
+              "correctIndex": 1,
+              "rationale": "Precipitation delivers water from clouds back to earth.",
+              "sourcePassage": "In the deposition phase, gravity delivers this moisture via Precipitation."
+            },
+            {
+              "id": "p-stg-9",
+              "title": "Canopy Interception & Runoff",
+              "desc": "Fallen water is either caught by vegetation foliage or flows across the land surface into streams and rivers.",
+              "question": "What happens to precipitation that does not immediately soak into the soil?",
+              "options": [
+                "Deep percolation",
+                "Canopy Interception & Runoff",
+                "Sublimation",
+                "Transpiration leakage"
+              ],
+              "correctIndex": 1,
+              "rationale": "Runoff flows over land; interception is caught by plants.",
+              "sourcePassage": "Upon reaching land, water is caught via Canopy Interception or flows via Surface Runoff."
+            },
+            {
+              "id": "p-stg-10",
+              "title": "Infiltration & Percolation",
+              "desc": "Water sinks into the topsoil and trickles down through soil layers, recharging deep groundwater aquifers.",
+              "question": "How does surface water reach and recharge deep underground aquifers?",
+              "options": [
+                "Advection",
+                "Evaporation",
+                "Infiltration & Percolation",
+                "Stomatal Transpiration"
+              ],
+              "correctIndex": 2,
+              "rationale": "Infiltration is soaking into topsoil; percolation is the deep downward trickle through rock.",
+              "sourcePassage": "Eventually, the water filters down through Infiltration and Percolation, recharging deep underground aquifers before resuming the cycle."
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "tokens": 2420,
+      "compTime": 4.1,
+      "rationale": "Text depicts a highly detailed 10-stage physical process divided into 3 environmental phases (Atmospheric Ingestion, Condensation/Transport, Deposition/Subterranean Storage). Built as a 10-node Process Loop game.",
+      "confMatrix": {
+        "seq": 10,
+        "cyc": 98,
+        "cau": 20,
+        "comp": 5
+      }
+    }
+  },
+  {
+    "slug": "green-revolution",
+    "title": "The Green Revolution & Ecology",
+    "topic": "Environmental Science • Grade 11-12",
+    "category": "CauseEffect",
+    "structure_type": "Cause-and-Effect",
+    "original_text": "The Green Revolution of the mid-20th century transformed agriculture worldwide but generated deep ecological consequences. To boost crop yields, scientists introduced high-yielding crop varieties (HYVs). However, these HYV crops demanded massive chemical inputs, causing widespread chemical fertilizer runoff into local water bodies, triggering eutrophication and devastating aquatic ecosystems. Furthermore, these crops required intensive irrigation, leading to massive groundwater depletion and dropping water tables across farming regions. Over time, the intensive farming practices and heavy tractor machinery compacted the soil structure. Consequently, this compaction triggered severe soil degradation, rendering the land vulnerable to wind erosion and stripping away key organic topsoil nutrients.",
+    "payload": {
+      "levels": [
+        {
+          "name": "Level 1: Chemical Runoffs & Eutrophication",
+          "chains": [
+            {
+              "id": "l1-ce-1",
+              "cause": "Introduction of high-yielding crop varieties (HYVs)",
+              "effect": "Crops demand massive applications of chemical nitrogen/phosphorus fertilizers.",
+              "rationale": "HYV crops are selectively bred to respond to concentrated chemical fertilizers to produce maximum grain.",
+              "sourcePassage": "To boost crop yields, scientists introduced high-yielding crop varieties (HYVs). However, these HYV crops demanded massive chemical inputs..."
+            },
+            {
+              "id": "l1-ce-2",
+              "cause": "Excessive application of chemical fertilizers on fields",
+              "effect": "Rain wash-off causes widespread chemical runoff into local rivers and lakes.",
+              "rationale": "Soil cannot absorb all synthetic nutrients, and rain carries the excess chemicals into regional water streams.",
+              "sourcePassage": "...causing widespread chemical fertilizer runoff into local water bodies..."
+            },
+            {
+              "id": "l1-ce-3",
+              "cause": "Nutrient accumulation in water bodies",
+              "effect": "Rapid proliferation of toxic algae blooms (Eutrophication).",
+              "rationale": "Excess phosphorus and nitrogen act as fuel for rapid, uncontrolled algae growth.",
+              "sourcePassage": "...causing widespread chemical fertilizer runoff into local water bodies, triggering eutrophication..."
+            },
+            {
+              "id": "l1-ce-4",
+              "cause": "Decomposition of dead algae by aerobic bacteria",
+              "effect": "Severe dissolved oxygen depletion, leading to massive fish kills.",
+              "rationale": "Bacteria consume oxygen to decompose algae, suffocating fish and aquatic life.",
+              "sourcePassage": "...triggering eutrophication and devastating aquatic ecosystems."
+            }
+          ]
+        },
+        {
+          "name": "Level 2: Hydrological Modifications",
+          "chains": [
+            {
+              "id": "l2-ce-1",
+              "cause": "High water demands of new crops",
+              "effect": "Intensive pumping of underground water reserves.",
+              "rationale": "Modern crops require precise watering, forcing farmers to pump groundwater.",
+              "sourcePassage": "Furthermore, these crops required intensive irrigation, leading to massive groundwater depletion..."
+            },
+            {
+              "id": "l2-ce-2",
+              "cause": "Over-extraction of groundwater aquifers",
+              "effect": "Rapid drop in local water tables across agricultural basins.",
+              "rationale": "Pumping water faster than rain refills the aquifer depletes regional reserves.",
+              "sourcePassage": "...leading to massive groundwater depletion and dropping water tables across farming regions."
+            },
+            {
+              "id": "l2-ce-3",
+              "cause": "Declining water tables & surface evaporation",
+              "effect": "Increased soil salinization, leaving toxic mineral crusts.",
+              "rationale": "As groundwater drops, water rises via capillary action and evaporates, leaving salts behind.",
+              "sourcePassage": "...leading to massive groundwater depletion and dropping water tables across farming regions."
+            }
+          ]
+        },
+        {
+          "name": "Level 3: Mechanical Compaction & Land Degradation",
+          "chains": [
+            {
+              "id": "l3-ce-1",
+              "cause": "Repetitive use of heavy tractor machinery",
+              "effect": "Severe compaction of topsoil clay particles.",
+              "rationale": "Heavy treads squash air pockets in soil, making it dense and hard.",
+              "sourcePassage": "Over time, the intensive farming practices and heavy tractor machinery compacted the soil structure."
+            },
+            {
+              "id": "l3-ce-2",
+              "cause": "Severely compacted, dense clay soil",
+              "effect": "Degradation of organic soil structure, blocking water infiltration.",
+              "rationale": "Compacted soil cannot absorb water or house organic worms and root systems.",
+              "sourcePassage": "Consequently, this compaction triggered severe soil degradation..."
+            },
+            {
+              "id": "l3-ce-3",
+              "cause": "Loss of organic topsoil structure and vegetation cover",
+              "effect": "Extreme vulnerability to severe wind erosion and desertification.",
+              "rationale": "Without organic matter and roots, wind blows away dry topsoil, leaving infertile dust.",
+              "sourcePassage": "...rendering the land vulnerable to wind erosion and stripping away key organic topsoil nutrients."
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "tokens": 2150,
+      "compTime": 3.8,
+      "rationale": "Text links modern farming adjustments to environmental breakdowns. Compiled into a 3-level Cause-Effect Chain game mapping chemical runoffs, hydrology shifts, and mechanical soil failures.",
+      "confMatrix": {
+        "seq": 5,
+        "cyc": 8,
+        "cau": 98,
+        "comp": 10
+      }
+    }
+  },
+  {
+    "slug": "photosynthesis-respiration",
+    "title": "Photosynthesis vs. Respiration",
+    "topic": "Cellular Bio-Chemistry • Grade 10",
+    "category": "Comparison",
+    "structure_type": "Comparative / Classification",
+    "original_text": "Photosynthesis and cellular respiration are complementary biochemical processes crucial for life on Earth. Photosynthesis takes place inside plant chloroplasts, utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct. In contrast, cellular respiration occurs primarily in the mitochondria of both plants and animals. This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP), producing carbon dioxide and water as waste products. While photosynthesis is an anabolic reaction that stores energy in chemical bonds, cellular respiration is a catabolic reaction that releases chemical energy.",
+    "payload": {
+      "categories": [
+        "Photosynthesis",
+        "Cellular Respiration"
+      ],
+      "cards": [
+        {
+          "id": "c-1",
+          "text": "Occurs inside chloroplasts in plant cells",
+          "category": "Photosynthesis",
+          "rationale": "Chloroplasts contain chlorophyll, which absorbs light energy to synthesize glucose.",
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+        },
+        {
+          "id": "c-2",
+          "text": "Occurs in the mitochondria of plants and animals",
+          "category": "Cellular Respiration",
+          "rationale": "Mitochondria act as the powerhouse to generate ATP from food.",
+          "sourcePassage": "In contrast, cellular respiration occurs primarily in the mitochondria of both plants and animals."
+        },
+        {
+          "id": "c-3",
+          "text": "Synthesizes glucose and releases oxygen as a byproduct",
+          "category": "Photosynthesis",
+          "rationale": "It builds sugar using carbon dioxide and water, releasing oxygen.",
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+        },
+        {
+          "id": "c-4",
+          "text": "Breaks down glucose to release carbon dioxide and water",
+          "category": "Cellular Respiration",
+          "rationale": "It catabolizes sugar to release chemical energy, returning CO2 and water to nature.",
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP), producing carbon dioxide and water as waste products."
+        },
+        {
+          "id": "c-5",
+          "text": "An anabolic metabolic reaction that stores energy in bonds",
+          "category": "Photosynthesis",
+          "rationale": "Anabolism is synthesis; storing energy in glucose chemical bonds.",
+          "sourcePassage": "While photosynthesis is an anabolic reaction that stores energy in chemical bonds..."
+        },
+        {
+          "id": "c-6",
+          "text": "A catabolic reaction that harvests chemical energy (ATP)",
+          "category": "Cellular Respiration",
+          "rationale": "Catabolism is breakdown; extracting ATP from glucose bonds.",
+          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy."
+        },
+        {
+          "id": "c-7",
+          "text": "Uses solar radiation to excite chlorophyll molecules",
+          "category": "Photosynthesis",
+          "rationale": "Light energy triggers chlorophyll to launch electron transport.",
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts, utilizing sunlight..."
+        },
+        {
+          "id": "c-8",
+          "text": "Involves the Glycolysis pathway in the cytoplasm",
+          "category": "Cellular Respiration",
+          "rationale": "Glycolysis splits glucose into pyruvate in the cytoplasm prior to mitochondrial steps.",
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+        },
+        {
+          "id": "c-9",
+          "text": "Employs the Calvin Cycle (Light-independent reactions)",
+          "category": "Photosynthesis",
+          "rationale": "The Calvin cycle fixes carbon dioxide into glucose in the stroma.",
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose..."
+        },
+        {
+          "id": "c-10",
+          "text": "Employs the Krebs (Citric Acid) Cycle in the matrix",
+          "category": "Cellular Respiration",
+          "rationale": "The Krebs cycle oxidizes acetyl-CoA, producing carbon dioxide, NADH, and FADH2.",
+          "sourcePassage": "This process breaks down glucose... to release usable chemical energy (ATP)..."
+        },
+        {
+          "id": "c-11",
+          "text": "Oxygen is the final electron acceptor in the transport chain",
+          "category": "Cellular Respiration",
+          "rationale": "Oxygen binds protons to form water at the end of oxidative phosphorylation.",
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+        },
+        {
+          "id": "c-12",
+          "text": "Water is split during photolysis to release protons and oxygen",
+          "category": "Photosynthesis",
+          "rationale": "Photolysis splits water to replenish electrons lost by photosystem II.",
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+        },
+        {
+          "id": "c-13",
+          "text": "Stomatal intake of carbon dioxide is a primary substrate",
+          "category": "Photosynthesis",
+          "rationale": "CO2 enters leaves via stomata to act as the carbon source for glucose.",
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose..."
+        },
+        {
+          "id": "c-14",
+          "text": "Carbon dioxide is a gaseous metabolic byproduct",
+          "category": "Cellular Respiration",
+          "rationale": "Decarboxylation reactions in cellular respiration release CO2 as waste.",
+          "sourcePassage": "...producing carbon dioxide and water as waste products."
+        },
+        {
+          "id": "c-15",
+          "text": "Produces a net yield of up to 36-38 ATP per glucose",
+          "category": "Cellular Respiration",
+          "rationale": "Mitochondrial electron transport produces substantial ATP from coenzymes.",
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP)..."
+        },
+        {
+          "id": "c-16",
+          "text": "Requires NADP+ as an electron carrier to form NADPH",
+          "category": "Photosynthesis",
+          "rationale": "NADP+ is reduced in light reactions for use in the Calvin cycle.",
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+        },
+        {
+          "id": "c-17",
+          "text": "Uses NAD+ and FAD as coenzymes for electron transport",
+          "category": "Cellular Respiration",
+          "rationale": "NAD+ and FAD capture high-energy electrons during glucose oxidation.",
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+        },
+        {
+          "id": "c-18",
+          "text": "Occurs only in green tissue containing pigment molecules",
+          "category": "Photosynthesis",
+          "rationale": "Chlorophyll pigments are required to capture the light energy.",
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+        },
+        {
+          "id": "c-19",
+          "text": "Operates continuously day and night in all living cells",
+          "category": "Cellular Respiration",
+          "rationale": "All living cells require continuous ATP generation to maintain cellular processes.",
+          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy."
+        },
+        {
+          "id": "c-20",
+          "text": "General equation: 6CO2 + 6H2O + Light -> C6H12O6 + 6O2",
+          "category": "Photosynthesis",
+          "rationale": "The chemical summary of storing light energy as glucose bonds.",
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+        }
+      ]
+    },
+    "metadata": {
+      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "tokens": 2650,
+      "compTime": 4.3,
+      "rationale": "Text compares anabolic photosynthesis with catabolic respiration. Compiled into an intensive 20-card Comparison Sorter deck reviewing organelles, pathways, coenzymes, equations, and outputs.",
+      "confMatrix": {
+        "seq": 2,
+        "cyc": 8,
+        "cau": 15,
+        "comp": 99
+      }
+    }
+  }
+]
