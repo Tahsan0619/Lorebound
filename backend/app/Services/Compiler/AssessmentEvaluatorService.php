@@ -2,8 +2,7 @@
 
 namespace App\Services\Compiler;
 
-use App\Services\Compiler\TextSanitizer;
-use App\Services\Groq\GroqAssessmentPrompt;
+use App\Services\Groq\GroqClientService;
 
 class AssessmentEvaluatorService
 {
@@ -20,7 +19,7 @@ class AssessmentEvaluatorService
         ?string $model = null
     ): ?array {
         if (! $this->groq->isConfigured()) {
-            return $this->heuristicEvaluate($assessment, $userAnswer);
+            return $this->heuristicEvaluate($assessment, $userAnswer, $sourceText);
         }
 
         $system = <<<'PROMPT'
@@ -34,17 +33,19 @@ Return:
   "truthLevel": "fully_true|partially_true|fully_false",
   "partialPercent": 0-100,
   "whatIsTrue": "what parts align with the source (empty if none)",
-  "whatIsFalse": "what parts contradict or miss the source",
-  "fullExplanation": "clear teaching explanation grounded in the source",
+  "whatIsFalse": "what parts contradict or miss the source (empty if none)",
+  "fullExplanation": "clear teaching explanation grounded in the source (teach the correct concept)",
   "sourceGrounding": "short quote or paraphrase from source"
 }
 
 RULES:
+- Treat gibberish, keyboard smash, or empty reasoning as fully_false.
 - If even 5-10% is correct, use partially_true and explain BOTH the small truth AND why the rest fails.
-- If fully false, say clearly the idea is fully false, then teach the correct concept.
-- If fully true, affirm specifically what they got right, then deepen with one extra insight.
+- If fully false, say clearly the idea is fully false, then teach the correct concept in fullExplanation.
+- If fully true, affirm specifically what they got right, then deepen with one extra insight in fullExplanation.
+- fullExplanation must ALWAYS teach the correct idea from the source. Never paste evaluation labels like "Answer references the source...".
 - No shaming. No "wrong!" or percentages shown as grades.
-- NEVER use em-dashes (—) or en-dashes (–). Use commas, periods, or colons instead.
+- NEVER use em-dashes or en-dashes. Use commas, periods, or colons instead.
 PROMPT;
 
         $guide = $assessment['evaluationGuide'] ?? [];
@@ -67,20 +68,29 @@ PROMPT;
         ]);
 
         if ($response === null || empty($response['data'])) {
-            return $this->heuristicEvaluate($assessment, $userAnswer);
+            return $this->heuristicEvaluate($assessment, $userAnswer, $sourceText);
         }
 
         $data = $response['data'];
         $level = (string) ($data['truthLevel'] ?? 'partially_true');
+        if (! in_array($level, ['fully_true', 'partially_true', 'fully_false'], true)) {
+            $level = 'partially_true';
+        }
+
+        $fullExplanation = trim((string) ($data['fullExplanation'] ?? ''));
+        if ($fullExplanation === '' || $this->looksLikeTemplateLabel($fullExplanation)) {
+            $fullExplanation = $this->teachingExplanation($assessment, $sourceText);
+        }
 
         return TextSanitizer::deep([
             'interpretation' => trim((string) ($data['interpretation'] ?? 'Let us review your reasoning.')),
-            'truthLevel' => in_array($level, ['fully_true', 'partially_true', 'fully_false'], true) ? $level : 'partially_true',
+            'truthLevel' => $level,
             'partialPercent' => max(0, min(100, (int) ($data['partialPercent'] ?? 0))),
             'whatIsTrue' => trim((string) ($data['whatIsTrue'] ?? '')),
             'whatIsFalse' => trim((string) ($data['whatIsFalse'] ?? '')),
-            'fullExplanation' => trim((string) ($data['fullExplanation'] ?? '')),
-            'sourceGrounding' => trim((string) ($data['sourceGrounding'] ?? '')),
+            'fullExplanation' => $fullExplanation,
+            'sourceGrounding' => trim((string) ($data['sourceGrounding'] ?? ($assessment['sourcePassage'] ?? ''))),
+            'engine' => 'groq',
         ]);
     }
 
@@ -88,30 +98,150 @@ PROMPT;
      * @param  array<string, mixed>  $assessment
      * @return array<string, mixed>
      */
-    private function heuristicEvaluate(array $assessment, string $userAnswer): array
+    private function heuristicEvaluate(array $assessment, string $userAnswer, string $sourceText = ''): array
     {
         $answer = strtolower(trim($userAnswer));
-        $keyIdeas = array_map('strtolower', (array) ($assessment['evaluationGuide']['keyIdeas'] ?? []));
-        $hits = 0;
+        $guide = $assessment['evaluationGuide'] ?? [];
+        $keyIdeas = array_values(array_filter(array_map(
+            static fn ($idea) => strtolower(trim((string) $idea)),
+            (array) ($guide['keyIdeas'] ?? [])
+        )));
+
+        $passage = strtolower(trim((string) ($assessment['sourcePassage'] ?? '')));
+        $tokens = $this->meaningfulTokens($answer);
+        $passageTokens = $this->meaningfulTokens($passage.' '.implode(' ', $keyIdeas).' '.mb_substr(strtolower($sourceText), 0, 800));
+
+        $overlap = 0;
+        foreach ($tokens as $token) {
+            if (in_array($token, $passageTokens, true)) {
+                $overlap++;
+            }
+        }
+
+        $ideaHits = 0;
         foreach ($keyIdeas as $idea) {
-            if ($idea !== '' && str_contains($answer, strtolower($idea))) {
+            if ($idea !== '' && (str_contains($answer, $idea) || $this->softContains($answer, $idea))) {
+                $ideaHits++;
+            }
+        }
+
+        $isGibberish = $this->looksLikeGibberish($userAnswer);
+        $tokenRatio = count($tokens) > 0 ? $overlap / count($tokens) : 0.0;
+        $ideaRatio = $keyIdeas === [] ? $tokenRatio : ($ideaHits / count($keyIdeas));
+        $score = max($tokenRatio, $ideaRatio);
+
+        if ($isGibberish || mb_strlen(trim($userAnswer)) < 20) {
+            $level = 'fully_false';
+            $pct = 0;
+        } elseif ($score >= 0.45 || ($ideaHits >= 2 && mb_strlen($userAnswer) >= 60)) {
+            $level = 'fully_true';
+            $pct = (int) round(min(100, max(70, $score * 100)));
+        } elseif ($score >= 0.12 || $ideaHits >= 1) {
+            $level = 'partially_true';
+            $pct = (int) round(max(10, min(65, $score * 100)));
+        } else {
+            $level = 'fully_false';
+            $pct = (int) round($score * 100);
+        }
+
+        $teaching = $this->teachingExplanation($assessment, $sourceText);
+
+        return TextSanitizer::deep([
+            'interpretation' => 'You approached this as: "'.mb_substr(trim($userAnswer), 0, 220).(mb_strlen($userAnswer) > 220 ? '...' : '').'"',
+            'truthLevel' => $level,
+            'partialPercent' => $pct,
+            'whatIsTrue' => $level === 'fully_false'
+                ? ''
+                : ($level === 'fully_true'
+                    ? 'Your answer connects to the key ideas from the source and shows coherent reasoning.'
+                    : 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.'),
+            'whatIsFalse' => $level === 'fully_true'
+                ? ''
+                : ($isGibberish
+                    ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
+                    : 'Important source ideas are missing or the reasoning does not fully match the material.'),
+            'fullExplanation' => $teaching,
+            'sourceGrounding' => (string) ($assessment['sourcePassage'] ?? mb_substr($sourceText, 0, 160)),
+            'engine' => 'heuristic',
+        ]);
+    }
+
+    /** @param  array<string, mixed>  $assessment */
+    private function teachingExplanation(array $assessment, string $sourceText): string
+    {
+        $guide = $assessment['evaluationGuide'] ?? [];
+        $candidates = [
+            (string) ($guide['fullyCorrect'] ?? ''),
+            (string) ($assessment['sourcePassage'] ?? ''),
+            mb_substr(trim($sourceText), 0, 280),
+        ];
+
+        foreach ($candidates as $candidate) {
+            $candidate = trim($candidate);
+            if ($candidate !== '' && ! $this->looksLikeTemplateLabel($candidate)) {
+                return $candidate;
+            }
+        }
+
+        $title = trim((string) ($assessment['title'] ?? 'this idea'));
+
+        return "According to the source, {$title} should be explained using the mechanism and evidence in the study notes, not generic or unrelated statements.";
+    }
+
+    private function looksLikeTemplateLabel(string $text): bool
+    {
+        $lower = strtolower($text);
+
+        return str_contains($lower, 'answer references the source')
+            || str_contains($lower, 'answer contradicts the source')
+            || str_contains($lower, 'answer mentions the topic but misses')
+            || str_contains($lower, 'answer uses source concepts accurately');
+    }
+
+    private function looksLikeGibberish(string $text): bool
+    {
+        $clean = preg_replace('/\s+/', '', strtolower(trim($text))) ?? '';
+        if ($clean === '') {
+            return true;
+        }
+
+        $vowels = preg_match_all('/[aeiou]/', $clean) ?: 0;
+        $letters = preg_match_all('/[a-z]/', $clean) ?: 0;
+        if ($letters < 12) {
+            return true;
+        }
+
+        $vowelRatio = $letters > 0 ? ($vowels / $letters) : 0;
+
+        return $vowelRatio < 0.18 && ! preg_match('/\b(the|and|because|when|which|from|with|battery|power|source)\b/i', $text);
+    }
+
+    /** @return array<int, string> */
+    private function meaningfulTokens(string $text): array
+    {
+        $parts = preg_split('/[^a-z0-9]+/', strtolower($text)) ?: [];
+        $stop = ['the', 'and', 'or', 'a', 'an', 'to', 'of', 'in', 'on', 'for', 'is', 'are', 'was', 'were', 'this', 'that', 'with', 'as', 'it', 'be', 'by', 'from', 'at'];
+
+        return array_values(array_unique(array_filter(
+            $parts,
+            static fn ($p) => strlen($p) >= 4 && ! in_array($p, $stop, true)
+        )));
+    }
+
+    private function softContains(string $haystack, string $needle): bool
+    {
+        $needleTokens = $this->meaningfulTokens($needle);
+        if ($needleTokens === []) {
+            return false;
+        }
+
+        $hits = 0;
+        foreach ($needleTokens as $token) {
+            if (str_contains($haystack, $token)) {
                 $hits++;
             }
         }
-        $ratio = $keyIdeas === [] ? 0 : $hits / count($keyIdeas);
-        $level = $ratio >= 0.7 ? 'fully_true' : ($ratio >= 0.15 ? 'partially_true' : 'fully_false');
-        $pct = (int) round($ratio * 100);
 
-        $guide = $assessment['evaluationGuide'] ?? [];
-
-        return TextSanitizer::deep([
-            'interpretation' => 'You approached this as: '.$userAnswer,
-            'truthLevel' => $level,
-            'partialPercent' => $pct,
-            'whatIsTrue' => $level !== 'fully_false' ? ($guide['partiallyCorrect'] ?? 'Some alignment with key ideas.') : '',
-            'whatIsFalse' => $level !== 'fully_true' ? ($guide['incorrect'] ?? 'Parts of the answer miss the source material.') : '',
-            'fullExplanation' => $guide['fullyCorrect'] ?? (string) ($assessment['sourcePassage'] ?? ''),
-            'sourceGrounding' => (string) ($assessment['sourcePassage'] ?? ''),
-        ]);
+        return $hits >= max(1, (int) ceil(count($needleTokens) * 0.5));
     }
 }

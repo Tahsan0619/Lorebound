@@ -35,9 +35,15 @@ class GroqClientService
             $start = microtime(true);
 
             try {
-                $response = Http::withToken(config('services.groq.api_key'))
-                    ->timeout(90)
-                    ->post('https://api.groq.com/openai/v1/chat/completions', [
+                $http = Http::withToken(config('services.groq.api_key'))
+                    ->timeout(90);
+
+                // Local Windows PHP often lacks a CA bundle (cURL error 60).
+                if (! config('services.groq.verify_ssl', true)) {
+                    $http = $http->withOptions(['verify' => false]);
+                }
+
+                $response = $http->post('https://api.groq.com/openai/v1/chat/completions', [
                         'model' => $resolvedModel,
                         'messages' => [
                             ['role' => 'system', 'content' => $systemPrompt],
@@ -155,9 +161,14 @@ class GroqClientService
         }
 
         try {
-            $response = Http::withToken(config('services.groq.api_key'))
-                ->timeout(20)
-                ->get('https://api.groq.com/openai/v1/models');
+            $http = Http::withToken(config('services.groq.api_key'))
+                ->timeout(20);
+
+            if (! config('services.groq.verify_ssl', true)) {
+                $http = $http->withOptions(['verify' => false]);
+            }
+
+            $response = $http->get('https://api.groq.com/openai/v1/models');
 
             if (! $response->successful()) {
                 return $this->cachedActiveTextModels = [];

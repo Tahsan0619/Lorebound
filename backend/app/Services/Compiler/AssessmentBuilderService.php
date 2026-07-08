@@ -30,13 +30,15 @@ class AssessmentBuilderService
                 'relatedSubtopics' => [(string) ($sub['id'] ?? 'st-1')],
                 'sourcePassage' => (string) ($sub['sourcePassage'] ?? mb_substr($sourceText, 0, 100)),
                 'evaluationGuide' => [
-                    'keyIdeas' => array_filter([
+                    'keyIdeas' => array_values(array_filter([
                         (string) ($sub['title'] ?? ''),
-                        (string) ($sub['explanation'] ?? ''),
-                    ]),
-                    'fullyCorrect' => 'Answer references the source concept accurately with cause/effect or definition.',
-                    'partiallyCorrect' => 'Answer mentions the topic but misses mechanism, order, or nuance.',
-                    'incorrect' => 'Answer contradicts the source or confuses unrelated ideas.',
+                        ...array_slice(preg_split('/[.?!]/', (string) ($sub['explanation'] ?? '')) ?: [], 0, 3),
+                    ])),
+                    'fullyCorrect' => trim((string) ($sub['explanation'] ?? '')) !== ''
+                        ? (string) $sub['explanation']
+                        : ((string) ($sub['sourcePassage'] ?? '') ?: 'Explain the source mechanism clearly with evidence.'),
+                    'partiallyCorrect' => 'Touches the topic but misses mechanism, causal link, or source evidence.',
+                    'incorrect' => 'Contradicts the source, confuses unrelated ideas, or lacks usable reasoning.',
                 ],
             ];
         }

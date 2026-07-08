@@ -42,6 +42,8 @@ return [
             static fn (string $item) => trim($item),
             explode(',', env('GROQ_MODEL_FALLBACKS', 'openai/gpt-oss-120b,openai/gpt-oss-20b,llama-3.1-8b-instant'))
         ))),
+        // Windows local PHP often lacks CA certs; set GROQ_VERIFY_SSL=true once php.ini openssl.cafile is set.
+        'verify_ssl' => filter_var(env('GROQ_VERIFY_SSL', env('APP_ENV') === 'production' ? 'true' : 'false'), FILTER_VALIDATE_BOOLEAN),
     ],
 
 ];

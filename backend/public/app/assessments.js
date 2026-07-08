@@ -33,9 +33,9 @@ window.LoreboundAssessments = {
                 sourcePassage: a.sourcePassage || '',
                 evaluationGuide: {
                     keyIdeas: [a.title, a.explanation].filter(Boolean),
-                    fullyCorrect: 'Answer uses source concepts accurately with reasoning.',
-                    partiallyCorrect: 'Answer mentions the topic but misses key mechanism or evidence.',
-                    incorrect: 'Answer contradicts the source or confuses unrelated ideas.',
+                    fullyCorrect: a.explanation || a.sourcePassage || 'Explain the source mechanism clearly with evidence.',
+                    partiallyCorrect: 'Touches the topic but misses mechanism or source evidence.',
+                    incorrect: 'Contradicts the source, confuses unrelated ideas, or lacks usable reasoning.',
                 },
             };
         });
@@ -161,19 +161,59 @@ window.LoreboundAssessments = {
     },
 
     _heuristicFeedback(assessment, userAnswer) {
-        const answer = userAnswer.toLowerCase();
-        const keys = (assessment.evaluationGuide?.keyIdeas || []).map(k => k.toLowerCase());
-        let hits = 0;
-        keys.forEach(k => { if (k && answer.includes(k)) hits++; });
-        const ratio = keys.length ? hits / keys.length : 0;
-        const level = ratio >= 0.65 ? 'fully_true' : (ratio >= 0.12 ? 'partially_true' : 'fully_false');
+        const answer = String(userAnswer || '').trim();
+        const lower = answer.toLowerCase();
         const g = assessment.evaluationGuide || {};
+        const keys = (g.keyIdeas || []).map(k => String(k || '').toLowerCase().trim()).filter(Boolean);
+        const stop = new Set(['the','and','or','a','an','to','of','in','on','for','is','are','was','were','this','that','with','as','it','be','by','from','at']);
+        const tokens = (text) => String(text || '').toLowerCase().split(/[^a-z0-9]+/).filter(t => t.length >= 4 && !stop.has(t));
+        const answerTokens = tokens(lower);
+        const pool = tokens([assessment.sourcePassage, ...keys].filter(Boolean).join(' '));
+        let overlap = 0;
+        answerTokens.forEach(t => { if (pool.includes(t)) overlap++; });
+        let ideaHits = 0;
+        keys.forEach(k => {
+            if (!k) return;
+            if (lower.includes(k)) { ideaHits++; return; }
+            const kt = tokens(k);
+            const hitHalf = kt.filter(t => lower.includes(t)).length >= Math.max(1, Math.ceil(kt.length * 0.5));
+            if (hitHalf) ideaHits++;
+        });
+        const vowelRatio = (() => {
+            const letters = (lower.match(/[a-z]/g) || []).length;
+            const vowels = (lower.match(/[aeiou]/g) || []).length;
+            return letters ? vowels / letters : 0;
+        })();
+        const gibberish = answer.length < 20 || (vowelRatio < 0.18 && !/\b(the|and|because|when|which|from|with|battery|power|source)\b/i.test(answer));
+        const tokenRatio = answerTokens.length ? overlap / answerTokens.length : 0;
+        const ideaRatio = keys.length ? ideaHits / keys.length : tokenRatio;
+        const score = Math.max(tokenRatio, ideaRatio);
+        let level = 'fully_false';
+        if (gibberish) level = 'fully_false';
+        else if (score >= 0.45 || (ideaHits >= 2 && answer.length >= 60)) level = 'fully_true';
+        else if (score >= 0.12 || ideaHits >= 1) level = 'partially_true';
+
+        const looksLikeLabel = (s) => /answer (references|contradicts|mentions|uses source)/i.test(String(s || ''));
+        let explanation = String(g.fullyCorrect || '').trim();
+        if (!explanation || looksLikeLabel(explanation)) {
+            explanation = String(assessment.sourcePassage || '').trim()
+                || 'Re-read the source idea and explain the mechanism in your own words with one concrete example.';
+        }
+
         return {
-            interpretation: `You approached this as: "${userAnswer.slice(0, 200)}${userAnswer.length > 200 ? '…' : ''}"`,
+            interpretation: `You approached this as: "${answer.slice(0, 200)}${answer.length > 200 ? '...' : ''}"`,
             truthLevel: level,
-            whatIsTrue: level !== 'fully_false' ? (g.partiallyCorrect || 'Some concepts from your answer connect to the material.') : '',
-            whatIsFalse: level !== 'fully_true' ? (g.incorrect || 'Parts of the answer do not match the source.') : '',
-            fullExplanation: g.fullyCorrect || assessment.sourcePassage || '',
+            whatIsTrue: level === 'fully_false'
+                ? ''
+                : (level === 'fully_true'
+                    ? 'Your answer connects to the key ideas from the source and shows coherent reasoning.'
+                    : 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.'),
+            whatIsFalse: level === 'fully_true'
+                ? ''
+                : (gibberish
+                    ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
+                    : 'Important source ideas are missing or the reasoning does not fully match the material.'),
+            fullExplanation: explanation,
             sourceGrounding: assessment.sourcePassage || '',
         };
     },

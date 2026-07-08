@@ -1253,10 +1253,9 @@ class ComparisonGame {
           <div class="sort-round-badge">Round ${this.sortRound + 1}/${this.maxSortRounds} • Card ${localIdx + 1}/${roundDeck.length}</div>
           <div class="sorter-deck-area">
             <div class="sorter-card active" id="active-sorter-card">
-              ${pdfThumbForIndex(this.currentCardIndex)}
               <div class="sorter-card-content"><h4>Attribute</h4><p>${current.text}</p></div>
             </div>
-            ${next ? `<div class="sorter-card back"><div class="sorter-card-content"><h4>Attribute</h4><p>${next.text}</p></div></div>` : ''}
+            ${next ? `<div class="sorter-card back" aria-hidden="true"></div>` : ''}
           </div>
           <div class="sorter-buckets-row">
             <button class="sorter-bucket-btn" id="btn-sort-left" data-category="${this.categories[0]}">

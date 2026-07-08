@@ -11,8 +11,17 @@ lorebound-structure-classifier/
 # Local archives
 Lorebound-007.zip
 
+# Node (PDF generation tooling)
+node_modules/
+package-lock.json
+
 # Generated image binaries (rebuild with tools/image_library/)
 assets/universal_library/**/*.jpg
 assets/universal_library/**/*.jpeg
 assets/universal_library/**/*.png
 assets/universal_library/**/*.webp
+
+# Local tooling / generated deploy bundle (README + build script stay in git)
+node_modules/
+deploy/backend/
+deploy/composer.phar
