@@ -89,9 +89,14 @@ Point the **document root** to `backend/public`.
 |-----|-------------|
 | `/app/` | Main frontend |
 | `/admin` | Admin panel |
+| `/admin` (Dashboard) | Metrics + recent compilations table |
+| `/admin/samples` | Built-in sample chapter management |
+| `/admin/sessions` | Recorded game session results |
 | `/api/v1/health` | API health check |
 
 **Admin login (seeded):** `admin@lorebound.test` / `password` — change immediately in production.
+
+Admin pages use `/app/admin.css` for table layout, metric cards, and compact action buttons on Dashboard, Sample Chapters, and Game Sessions.
 
 ### 5. Rebuild this bundle locally
 

@@ -113,10 +113,12 @@ php artisan serve
 | URL | Description |
 |-----|-------------|
 | http://127.0.0.1:8000/app/ | Main frontend (compiler + games) |
-| http://127.0.0.1:8000/admin | Admin panel |
+| http://127.0.0.1:8000/admin | Admin panel (dashboard, samples, compilations, sessions) |
 | http://127.0.0.1:8000/api/v1/health | API health check |
 
 **Admin login:** `admin@lorebound.test` / `password`
+
+The admin panel (`/admin`) includes Dashboard metrics, Sample Chapters, Compilations, and Game Sessions. Tables use `admin.css` for aligned columns, compact action buttons, and truncated long titles.
 
 ## Compiler Pipeline
 
