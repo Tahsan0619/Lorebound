@@ -347,6 +347,59 @@
 .rapidfire-btn.correct { border-color: var(--color-success); background: rgba(0,230,118,0.1); }
 .rapidfire-btn.wrong { border-color: var(--color-danger); }
 
+.fillblank-panel {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+.fillblank-prompt {
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.fillblank-input {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(14, 116, 144, 0.25);
+  background: rgba(255,255,255,0.85);
+  font-size: 1rem;
+  margin-bottom: 0.85rem;
+}
+.comparison-drag-board { padding: 1rem; }
+.comparison-card-deck {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.comparison-drag-card {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(14, 116, 144, 0.2);
+  background: rgba(255,255,255,0.9);
+  cursor: grab;
+  max-width: 320px;
+}
+.comparison-drop-zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.comparison-drop-zone {
+  min-height: 120px;
+  border: 2px dashed rgba(14, 116, 144, 0.35);
+  border-radius: 14px;
+  padding: 1rem;
+  background: rgba(220, 252, 249, 0.35);
+}
+.comparison-drop-zone.drag-hover {
+  border-color: var(--game-accent, #00f2fe);
+  background: rgba(0, 242, 254, 0.08);
+}
+
 .spectrum-bar {
     height: 8px;
     border-radius: 99px;

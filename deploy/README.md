@@ -32,29 +32,34 @@ Upload your zip, then:
 
 ```bash
 cd /path/to/deploy/backend
-cp .env.example .env
 ```
 
-Edit `.env`:
+The build script includes `deploy/backend/.env` with your production settings. If it is missing, run `cp .env.example .env` and edit the values below.
 
 ```env
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://your-domain.com
+APP_URL=https://lorebound.babuntooacademy.com
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=lorebound
-DB_USERNAME=your_user
-DB_PASSWORD=your_password
+DB_DATABASE=babuntoo_lorebound
+DB_USERNAME=babuntoo_lorebound
+DB_PASSWORD=babuntoo_lorebound
 
 GROQ_API_KEY=your_groq_key
 GROQ_MODEL=llama-3.3-70b-versatile
 GROQ_VERIFY_SSL=true
 ```
 
-Set `GROQ_VERIFY_SSL=false` only if your host has missing CA certificates (common on some Windows dev boxes).
+If `.env` is missing after upload, copy from the template:
+
+```bash
+cp .env.example .env
+```
+
+Then edit the values above and run `php artisan key:generate`.
 
 ### 2. Install dependencies
 
@@ -101,5 +106,5 @@ Then zip the `deploy` folder.
 ## Notes
 
 - `vendor/` is **not** included — run `composer install` on the server.
-- `.env` is **not** included — create it from `.env.example`.
+- `.env` is copied from `backend/.env.deploy` when you run the build script locally (not committed to git).
 - The four built-in curriculum games are seeded via `php artisan migrate --seed`.

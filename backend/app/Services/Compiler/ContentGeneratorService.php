@@ -28,7 +28,7 @@ class ContentGeneratorService
             if (preg_match('/\b(19\d{2}|20\d{2}|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i', $sentence, $m)) {
                 $events[] = [
                     'id' => 'evt-'.$order,
-                    'title' => mb_substr(trim($sentence), 0, 55),
+                    'title' => $this->truncateAtWord(trim($sentence), 72),
                     'date' => $m[0],
                     'desc' => trim($sentence),
                     'order' => $order,
@@ -43,7 +43,7 @@ class ContentGeneratorService
             $s = $sentences[$idx] ?? 'Additional curriculum event.';
             $events[] = [
                 'id' => 'evt-'.count($events),
-                'title' => mb_substr(trim($s), 0, 55),
+                'title' => $this->truncateAtWord(trim($s), 72),
                 'date' => 'Stage '.(count($events) + 1),
                 'desc' => trim($s),
                 'order' => count($events),
@@ -78,7 +78,7 @@ class ContentGeneratorService
                 'desc' => $s,
                 'question' => 'What occurs during Stage '.($i + 1).' of this process?',
                 'options' => [
-                    mb_substr($s, 0, 55),
+                    $this->truncateAtWord($s, 80),
                     'Alternative systemic pathway with reversed flow',
                     'Incorrect loop transition at prior stage',
                     'Non-cyclic distractor unrelated to source',
@@ -101,7 +101,7 @@ class ContentGeneratorService
                 'title' => 'Stage '.(count($stages) + 1),
                 'desc' => $s,
                 'question' => 'What defines Stage '.(count($stages) + 1).'?',
-                'options' => [mb_substr($s, 0, 55), 'Distractor A', 'Distractor B', 'Distractor C'],
+                'options' => [$this->truncateAtWord($s, 80), 'Distractor A', 'Distractor B', 'Distractor C'],
                 'correctIndex' => 0,
                 'rationale' => 'Synthesized from source text.',
                 'sourcePassage' => $s,
@@ -130,8 +130,8 @@ class ContentGeneratorService
                 $parts = preg_split('/'.$m[0].'/i', $sentence, 2);
                 $chains[] = [
                     'id' => 'ce-'.count($chains),
-                    'cause' => mb_substr(trim($parts[0] ?? ''), 0, 80),
-                    'effect' => mb_substr(trim($parts[1] ?? 'Downstream effect.'), 0, 100),
+                    'cause' => $this->truncateAtWord(trim($parts[0] ?? ''), 90),
+                    'effect' => $this->truncateAtWord(trim($parts[1] ?? 'Downstream effect.'), 100),
                     'rationale' => 'Causal semantic extraction from source.',
                     'sourcePassage' => trim($sentence),
                 ];
@@ -143,7 +143,7 @@ class ContentGeneratorService
             $chains[] = [
                 'id' => 'ce-'.count($chains),
                 'cause' => 'Trigger factor '.(count($chains) + 1),
-                'effect' => mb_substr($s, 0, 100),
+                'effect' => $this->truncateAtWord($s, 100),
                 'rationale' => 'Derived from curriculum passage.',
                 'sourcePassage' => $s,
             ];
@@ -189,6 +189,22 @@ class ContentGeneratorService
         return ['categories' => $categories, 'cards' => $cards];
     }
 
+    private function truncateAtWord(string $text, int $maxLen): string
+    {
+        $t = trim($text);
+        if (mb_strlen($t) <= $maxLen) {
+            return $t;
+        }
+
+        $slice = mb_substr($t, 0, $maxLen);
+        $lastSpace = mb_strrpos($slice, ' ');
+        if ($lastSpace !== false && $lastSpace > (int) floor($maxLen * 0.55)) {
+            return trim(mb_substr($slice, 0, $lastSpace));
+        }
+
+        return trim($slice);
+    }
+
     /** @param  array<int, string>  $sentences */
     private function inferComparisonCategories(string $title, array $sentences): array
     {
@@ -208,8 +224,8 @@ class ContentGeneratorService
             $parts = preg_split('/\bvs\.?\b|\bversus\b/i', $sentence) ?: [];
             if (count($parts) >= 2) {
                 return [
-                    mb_substr(trim($parts[0]), 0, 36) ?: 'Group A',
-                    mb_substr(trim($parts[1]), 0, 36) ?: 'Group B',
+                    $this->truncateAtWord(trim($parts[0]), 40) ?: 'Group A',
+                    $this->truncateAtWord(trim($parts[1]), 40) ?: 'Group B',
                 ];
             }
         }

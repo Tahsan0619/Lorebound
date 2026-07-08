@@ -23,10 +23,26 @@ window.LoreboundLimits = {
             truncated = true;
         }
         if (t.length > this.SOURCE_MAX_CHARS) {
-            t = t.slice(0, this.SOURCE_MAX_CHARS);
+            t = this.truncateAtWord(t, this.SOURCE_MAX_CHARS);
             truncated = true;
         }
         return { text: t, truncated, words: this.countWords(t), chars: t.length };
+    },
+
+    /** Cut at last full word before maxLen; never mid-word. */
+    truncateAtWord(text, maxLen) {
+        const t = String(text || '').trim();
+        if (t.length <= maxLen) return t;
+        const slice = t.slice(0, maxLen);
+        const lastSpace = slice.lastIndexOf(' ');
+        if (lastSpace > Math.floor(maxLen * 0.55)) {
+            return slice.slice(0, lastSpace).trim();
+        }
+        return slice.trim();
+    },
+
+    shortLabel(text, maxLen = 72) {
+        return this.truncateAtWord(String(text || '').trim(), maxLen);
     },
 
     validate(text) {

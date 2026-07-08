@@ -37,6 +37,10 @@ return [
 
     'groq' => [
         'api_key' => env('GROQ_API_KEY'),
+        'api_keys' => array_values(array_filter(array_map(
+            static fn (string $item) => trim($item),
+            explode(',', (string) env('GROQ_API_KEYS', env('GROQ_API_KEY', '')))
+        ))),
         'model' => env('GROQ_MODEL', 'llama-3.3-70b-versatile'),
         'model_fallbacks' => array_values(array_filter(array_map(
             static fn (string $item) => trim($item),

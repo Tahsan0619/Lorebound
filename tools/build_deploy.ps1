@@ -44,6 +44,12 @@ if ($LASTEXITCODE -gt 7) { throw "robocopy failed with exit code $LASTEXITCODE" 
 
 Copy-Item -Force (Join-Path $root 'composer.phar') (Join-Path $deploy 'composer.phar')
 
+$envDeploy = Join-Path $backendSrc '.env.deploy'
+if (Test-Path $envDeploy) {
+    Copy-Item -Force $envDeploy (Join-Path $backendDst '.env')
+    Write-Host 'Copied production .env.deploy to deploy/backend/.env'
+}
+
 Write-Host ''
 Write-Host 'Deploy bundle ready at:' $deploy
 Write-Host 'Zip this folder and upload to your server.'

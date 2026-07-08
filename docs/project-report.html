@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lorebound Project Report</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", Inter, Arial, sans-serif;
+      font-size: 10pt;
+      line-height: 1.45;
+      color: #1a1a2e;
+      background: #fff;
+    }
+    .page {
+      page-break-after: always;
+      min-height: 255mm;
+      position: relative;
+    }
+    .page:last-child { page-break-after: auto; }
+    .cover {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 255mm;
+      background: linear-gradient(160deg, #dcfcf9 0%, #dcf5fc 55%, #fff 100%);
+      border: 1px solid #a5f3fc;
+      border-radius: 6px;
+      padding: 24mm 18mm;
+    }
+    .cover .badge {
+      font-size: 9pt;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #0e7490;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .cover h1 {
+      font-size: 32pt;
+      font-weight: 800;
+      color: #0e7490;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .cover .tagline {
+      font-size: 13pt;
+      color: #334155;
+      max-width: 130mm;
+      margin-bottom: 28px;
+    }
+    .cover .team {
+      font-size: 14pt;
+      font-weight: 700;
+      color: #0f766e;
+      margin-bottom: 6px;
+    }
+    .cover .event {
+      font-size: 10.5pt;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+    .cover .date { font-size: 10pt; color: #64748b; margin-top: 18px; }
+    header.page-header {
+      border-bottom: 2px solid #0e7490;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    header.page-header h2 {
+      font-size: 13pt;
+      color: #0e7490;
+      font-weight: 800;
+    }
+    header.page-header .meta {
+      font-size: 8.5pt;
+      color: #64748b;
+      text-align: right;
+    }
+    h3 {
+      font-size: 10.5pt;
+      color: #0f766e;
+      margin: 12px 0 5px;
+      font-weight: 700;
+    }
+    h3:first-of-type { margin-top: 0; }
+    p { margin-bottom: 8px; text-align: justify; }
+    ul, ol { margin: 4px 0 10px 18px; }
+    li { margin-bottom: 4px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+      margin: 8px 0 12px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 7px;
+      vertical-align: top;
+    }
+    th {
+      background: #f0fdfa;
+      color: #0f766e;
+      font-weight: 600;
+      text-align: left;
+    }
+    .highlight-box {
+      background: #f0fdfa;
+      border-left: 4px solid #0e7490;
+      padding: 10px 12px;
+      margin: 10px 0;
+      font-size: 9.5pt;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 10px 0;
+    }
+    .stat {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat .num { font-size: 18pt; font-weight: 800; color: #0e7490; line-height: 1; }
+    .stat .lbl { font-size: 7.5pt; color: #64748b; text-transform: uppercase; margin-top: 4px; }
+    .flow {
+      font-family: Consolas, monospace;
+      font-size: 8.5pt;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 10px;
+      line-height: 1.55;
+      margin: 8px 0;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 5px;
+      font-size: 8pt;
+      color: #94a3b8;
+      display: flex;
+      justify-content: space-between;
+    }
+    .pill-row { display: flex; flex-wrap: wrap; gap: 5px; margin: 6px 0; }
+    .pill {
+      background: #ecfeff;
+      border: 1px solid #a5f3fc;
+      color: #0e7490;
+      font-size: 8pt;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: COVER -->
+  <section class="page">
+    <div class="cover">
+      <div class="badge">Project Report</div>
+      <h1>Lorebound</h1>
+      <p class="tagline">Turning Curriculum into Playable Worlds</p>
+      <p class="team">Team Alpha</p>
+      <p class="event">SciBlitz AI Challenge 2026</p>
+      <p class="event">Track C: Education and Accessibility</p>
+      <p class="date">July 2026</p>
+    </div>
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 2: EXECUTIVE SUMMARY + INTRODUCTION -->
+  <section class="page">
+    <header class="page-header">
+      <h2>Executive Summary</h2>
+      <div class="meta">Team Alpha | Page 2</div>
+    </header>
+      <p>
+        Lorebound is an AI-powered curriculum-to-game compiler designed for secondary and higher-secondary education.
+        Instead of building a single static game, the team engineered a compiler that ingests textbook chapters, syllabus PDFs,
+        or pasted study text and produces grounded, multi-phase interactive learning experiences. The system detects the
+        dominant knowledge structure in the source material (timeline, process, cause-effect, or comparison) and automatically
+        selects the matching game mechanic.
+      </p>
+      <div class="grid-2">
+        <div class="stat"><div class="num">4</div><div class="lbl">Game mechanics</div></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">Phases per level</div></div>
+        <div class="stat"><div class="num">5</div><div class="lbl">Written assessment types</div></div>
+        <div class="stat"><div class="num">30+</div><div class="lbl">Minutes per session</div></div>
+      </div>
+      <p>
+        The platform follows a study-first pedagogy: learners read source-grounded study guides in a 3D book reader,
+        complete depth-based written assessments with narrative feedback (no numeric grades), review reflections,
+        and then enter challenge games. Production AI runs on Groq Cloud with multi-model orchestration, RAG grounding,
+        and schema validation. A Laravel backend provides APIs, session analytics, and an admin panel. The frontend also
+        works offline with a heuristic compiler fallback.
+      </p>
+      <div class="highlight-box">
+        <strong>Core insight:</strong> The compiler is the product. Curriculum structure drives mechanic selection,
+        and every challenge item links back to a source passage for transparency and teacher trust.
+      </div>
+
+    <h3>1. Introduction</h3>
+    <p>
+      Students often study from dense textbook chapters and syllabus PDFs. Reading alone is passive: retention drops
+      when learners cannot connect facts to structure, sequence, or causal relationships. Lorebound treats curriculum
+      compilation as an engineering problem: given chapter-length input, it classifies knowledge structure, generates
+      guides and assessments, and compiles playable games with View Source transparency on every item.
+    </p>
+    <p>
+      Traditional EdTech falls into static fixed quizzes or ungrounded AI chatbots. Lorebound compiles varied subjects
+      from real curriculum text while sustaining engagement through multi-phase gameplay, not one-shot multiple choice drills.
+    </p>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 3: OBJECTIVES -->
+  <section class="page">
+    <header class="page-header">
+      <h2>2. Objectives and Scope</h2>
+      <div class="meta">Team Alpha | Page 3</div>
+    </header>
+
+    <h3>2.1 Primary Objectives</h3>
+    <ol>
+      <li>Build an end-to-end compiler from curriculum text to validated game JSON.</li>
+      <li>Map four knowledge structures to four distinct multi-phase game engines.</li>
+      <li>Deliver source-grounded study guides with adjustable study depth.</li>
+      <li>Implement five written assessment types with AI evaluation and offline heuristic fallback.</li>
+      <li>Provide teacher/admin tooling for samples, compilations, and session analytics.</li>
+      <li>Ship four fully playable built-in curriculum games as reference implementations.</li>
+    </ol>
+
+    <h3>2.2 Functional Requirements</h3>
+    <table>
+      <tr><th>Area</th><th>Requirement</th><th>Status</th></tr>
+      <tr><td>Input</td><td>Paste text, PDF upload (client-side extraction), sample chapters</td><td>Complete</td></tr>
+      <tr><td>Classification</td><td>Detect timeline, process, cause-effect, or comparison dominance</td><td>Complete</td></tr>
+      <tr><td>Learning guide</td><td>Subtopics, passages, topic naming, deep/broad depth modes</td><td>Complete</td></tr>
+      <tr><td>Assessments</td><td>Scenario, output prediction, compare, fact checker, predict next</td><td>Complete</td></tr>
+      <tr><td>Games</td><td>Four mechanics, four phases each, streaks, HUD, level-up FX</td><td>Complete</td></tr>
+      <tr><td>Transparency</td><td>View Source on challenges; RAG chunks from source text</td><td>Complete</td></tr>
+      <tr><td>Deployment</td><td>Production bundle, env template, server documentation</td><td>Complete</td></tr>
+    </table>
+
+    <h3>2.3 Success Metrics</h3>
+    <ul>
+      <li>Successful compile from all four built-in sample chapters</li>
+      <li>Schema-valid Groq payloads with fallback on API failure</li>
+      <li>Assessment evaluation returns teaching feedback, not template labels</li>
+      <li>Full session playable without backend; admin panel and production deployment live</li>
+    </ul>
+
+    <table>
+      <tr><th>Stakeholder</th><th>Need addressed</th></tr>
+      <tr><td>Students</td><td>Active practice tied to their chapter, narrative feedback instead of harsh grading</td></tr>
+      <tr><td>Teachers</td><td>Fast PDF/paste compile, compilations library, session visibility</td></tr>
+      <tr><td>Institutions</td><td>Deployable Laravel + MySQL web app on shared hosting</td></tr>
+    </table>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 4: ARCHITECTURE -->
+  <section class="page">
+    <header class="page-header">
+      <h2>3. System Architecture</h2>
+      <div class="meta">Team Alpha | Page 4</div>
+    </header>
+
+    <p>
+      Lorebound uses a three-tier architecture: a vanilla JavaScript frontend (served at <code>/app/</code>),
+      a Laravel 13 REST API and admin panel, and Groq Cloud LLMs for compilation, guide generation, and assessment evaluation.
+      MySQL stores samples, compilations, sessions, and admin data.
+    </p>
+
+    <div class="flow">
+Input (PDF / pasted text / sample slug)
+  -&gt; Text extraction (PDF.js, client-side)
+  -&gt; Structural classification (Groq LLM or heuristic)
+  -&gt; Mechanic selection (Timeline / Process / Cause-Effect / Comparison)
+  -&gt; Source chunk RAG indexing
+  -&gt; Learning guide generation (study depth: deep or broad)
+  -&gt; Written assessment generation (5 types)
+  -&gt; Game payload generation (multi-model Groq + validation)
+  -&gt; Frontend renderer (book reader, assessments, multi-phase games)
+  -&gt; Session summary + analytics API
+    </div>
+
+    <h3>3.1 Backend Services (Laravel)</h3>
+    <table>
+      <tr><th>Service</th><th>Responsibility</th></tr>
+      <tr><td>CompilerPipelineService</td><td>Orchestrates full compile flow</td></tr>
+      <tr><td>StructuralClassifierService</td><td>Structure detection and confidence</td></tr>
+      <tr><td>SourceChunkRagService</td><td>Chunks source text for grounded generation</td></tr>
+      <tr><td>LearningGuideBuilderService</td><td>Subtopics, passages, depth budgeting</td></tr>
+      <tr><td>AssessmentBuilderService</td><td>Five assessment types per subtopic</td></tr>
+      <tr><td>AssessmentEvaluatorService</td><td>Groq evaluation + heuristic fallback</td></tr>
+      <tr><td>GroqCompilerService</td><td>Multi-model game payload generation</td></tr>
+      <tr><td>TextSanitizer</td><td>Normalizes AI output for UI consistency</td></tr>
+    </table>
+
+    <h3>3.2 Frontend and Data</h3>
+    <p>
+      Key frontend modules: <code>understand.js</code> (learning guide and 3D book reader), <code>assessments.js</code>
+      (written flow), <code>games.js</code> (four multi-phase engines), and <code>api.js</code> (REST client with offline
+      detection). Sample chapters ship as seeded JSON; user compilations store UUID, structure, model metadata, and full payload.
+    </p>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 5: AI & LEARNING -->
+  <section class="page">
+    <header class="page-header">
+      <h2>4. AI Compiler and Learning Pipeline</h2>
+      <div class="meta">Team Alpha | Page 5</div>
+    </header>
+
+    <h3>4.1 Groq Multi-Model Orchestration</h3>
+    <p>
+      Production compilation uses Groq Cloud. The primary model is <strong>llama-3.3-70b-versatile</strong>, with fallbacks
+      including openai/gpt-oss-120b, openai/gpt-oss-20b, and llama-3.1-8b-instant. Auto mode runs candidates through
+      JSON schema validation and selects the best payload by structure confidence and content quality (prompt version v5.1).
+    </p>
+    <div class="pill-row">
+      <span class="pill">Compiler v5.1</span>
+      <span class="pill">Learning Guide v7.0</span>
+      <span class="pill">Assessments v1.1</span>
+      <span class="pill">RAG grounding</span>
+    </div>
+
+    <h3>4.2 Study Depth Modes</h3>
+    <p>Learners choose how the guide is budgeted before reading:</p>
+    <table>
+      <tr><th>Mode</th><th>Behavior</th><th>Pedagogical intent</th></tr>
+      <tr><td>Broad</td><td>More subtopics, lighter detail per section</td><td>Survey a full chapter before play</td></tr>
+      <tr><td>Deep</td><td>Fewer subtopics, richer passages and examples</td><td>Master key concepts in depth</td></tr>
+    </table>
+
+    <h3>4.3 Written Assessments</h3>
+    <p>Five types replace traditional MCQs. Answers are free text. Evaluation uses Groq with a structured rubric; if the API is unavailable, a token-overlap heuristic provides narrative teaching feedback.</p>
+    <table>
+      <tr><th>Type</th><th>What the learner does</th></tr>
+      <tr><td>Scenario</td><td>Apply knowledge to a short situational prompt</td></tr>
+      <tr><td>Output prediction</td><td>Predict an outcome from a described setup</td></tr>
+      <tr><td>Compare</td><td>Contrast two concepts from the source</td></tr>
+      <tr><td>Fact checker</td><td>Identify whether a statement matches the passage</td></tr>
+      <tr><td>Predict next</td><td>Continue a sequence or process step</td></tr>
+    </table>
+    <p>Feedback is narrative only: no letter grades or percentage scores. The UI uses color and explanation text to guide remediation.</p>
+
+    <h3>4.4 Supplementary ML Research</h3>
+    <p>
+      Team Alpha trained a DistilBERT-based 4-way structure classifier on ~5,000 curriculum passages (SciQ, OpenBookQA,
+      ARC-Challenge, plus internal gold labels). Test accuracy reached 93.8% with 90.0% macro-F1. This model supports
+      research and offline experiments; production routing still relies on Groq classification with heuristic backup.
+    </p>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 6: GAMES & UX -->
+  <section class="page">
+    <header class="page-header">
+      <h2>5. Game Mechanics and User Experience</h2>
+      <div class="meta">Team Alpha | Page 6</div>
+    </header>
+
+    <h3>5.1 Structure-to-Mechanic Mapping</h3>
+    <table>
+      <tr><th>Knowledge structure</th><th>Game</th><th>Phases (per level)</th></tr>
+      <tr><td>Sequential / Timeline</td><td>Timeline Builder</td><td>Build, Date Detective, Sequence Mastery, Era Finale</td></tr>
+      <tr><td>Cyclical / Process</td><td>Process Loop</td><td>Navigate, Reorder, Parameter Sim, Chain Lock</td></tr>
+      <tr><td>Cause-and-Effect</td><td>Cause-Effect Chain</td><td>Link, Ripple Predictor, Chain Assembly, Inference Boss</td></tr>
+      <tr><td>Comparative</td><td>Comparison Sorter</td><td>Sort, Trap Hunter, Memory Match, Policy Debate</td></tr>
+    </table>
+
+    <h3>5.2 Built-in Curriculum Games</h3>
+    <p>Four reference games ship fully playable (not demo stubs):</p>
+    <table>
+      <tr><th>Topic</th><th>Mechanic</th><th>Subject area</th></tr>
+      <tr><td>Bangladesh Liberation War 1971</td><td>Timeline Builder</td><td>History and Civil Studies, Grades 9-10</td></tr>
+      <tr><td>The Water (Hydrological) Cycle</td><td>Process Loop</td><td>Earth Science, Grade 8</td></tr>
+      <tr><td>The Green Revolution and Ecology</td><td>Cause-Effect Chain</td><td>Environmental Science, Grades 11-12</td></tr>
+      <tr><td>Photosynthesis vs. Respiration</td><td>Comparison Sorter</td><td>Cellular Biochemistry, Grade 10</td></tr>
+    </table>
+
+    <h3>5.3 Engagement and Design</h3>
+    <p>
+      Session flow: 3D book reader, reflection review before challenges, streak bonuses, phase HUD, level-up FX, View Source
+      on every item, and a compilations library. UI palette uses calm teals (#dcfcf9, #dcfcf6, #dcf5fc) with a separate
+      admin layout for compilation metrics.
+    </p>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 7: IMPLEMENTATION -->
+  <section class="page">
+    <header class="page-header">
+      <h2>6. Implementation, API, and Deployment</h2>
+      <div class="meta">Team Alpha | Page 7</div>
+    </header>
+
+    <h3>6.1 Technology Stack</h3>
+    <table>
+      <tr><th>Layer</th><th>Technology</th></tr>
+      <tr><td>Frontend</td><td>HTML, CSS, JavaScript (vanilla, multi-phase engines)</td></tr>
+      <tr><td>Backend</td><td>Laravel 13, PHP 8.3+</td></tr>
+      <tr><td>Database</td><td>MySQL 8+ (SQLite for local development)</td></tr>
+      <tr><td>AI</td><td>Groq Cloud, multi-model routing</td></tr>
+      <tr><td>PDF</td><td>PDF.js (client-side text extraction)</td></tr>
+    </table>
+
+    <h3>6.2 REST API (selected endpoints)</h3>
+    <table>
+      <tr><th>Method</th><th>Endpoint</th><th>Purpose</th></tr>
+      <tr><td>POST</td><td>/api/v1/compile</td><td>Compile pasted text</td></tr>
+      <tr><td>POST</td><td>/api/v1/compile/pdf</td><td>Compile extracted PDF text</td></tr>
+      <tr><td>POST</td><td>/api/v1/evaluate</td><td>Evaluate written assessment answer</td></tr>
+      <tr><td>GET</td><td>/api/v1/compilations</td><td>List saved compilations</td></tr>
+      <tr><td>POST</td><td>/api/v1/sessions</td><td>Save game session results</td></tr>
+      <tr><td>GET</td><td>/api/v1/samples</td><td>List built-in sample chapters</td></tr>
+    </table>
+
+    <h3>6.3 Admin Panel</h3>
+    <p>
+      The admin interface at <code>/admin</code> provides compilation metrics, searchable tables, and a detail panel for
+      selected compilations. Seeded admin credentials are provided for demo; production deployments must rotate passwords immediately.
+    </p>
+
+    <h3>6.4 Deployment</h3>
+    <p>
+      A deploy bundle script syncs frontend assets, copies Laravel (excluding vendor/caches), and injects production env settings.
+      Hosted at <strong>lorebound.babuntooacademy.com</strong> with document root at <code>backend/public</code>.
+      Setup: <code>composer install --no-dev</code>, <code>php artisan migrate --seed --force</code>, <code>config:cache</code>.
+    </p>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+  <!-- PAGE 8: CHALLENGES & CONCLUSION -->
+  <section class="page">
+    <header class="page-header">
+      <h2>7. Challenges, Ethics, and Conclusion</h2>
+      <div class="meta">Team Alpha | Page 8</div>
+    </header>
+
+    <h3>7.1 Technical Challenges</h3>
+    <ul>
+      <li><strong>Grounding vs. creativity:</strong> Balancing engaging game copy with strict source fidelity required RAG chunks, validators, and sanitizer passes.</li>
+      <li><strong>Multi-model variance:</strong> Different Groq models returned uneven JSON; auto-selection and schema validation were essential.</li>
+      <li><strong>Assessment evaluation:</strong> Early builds showed false negatives; fixes included correct service wiring, SSL configuration on Windows dev hosts, and improved heuristic fallback.</li>
+      <li><strong>Offline parity:</strong> Standalone mode needed a credible heuristic compiler when no API key is present.</li>
+      <li><strong>Deploy packaging:</strong> Excluding vendor, caches, and secrets while keeping a reproducible server bundle.</li>
+    </ul>
+
+    <h3>7.2 Ethical Considerations</h3>
+    <ul>
+      <li>Source text may be sent to Groq when an API key is configured; institutions should disclose this in privacy policies.</li>
+      <li>AI output can drift on sparse or ambiguous text; teachers should review compilations before classroom use.</li>
+      <li>Training data skews toward English science exams; Process and Comparison classes are underrepresented in the ML dataset.</li>
+      <li>The system is not intended for high-stakes grading or unsupervised use without educator oversight.</li>
+    </ul>
+
+    <h3>7.3 Future Work</h3>
+    <ul>
+      <li>Bengali UI and bilingual curriculum support</li>
+      <li>Teacher editing of compiled guides and game items before publish</li>
+      <li>Classroom dashboards and LMS integration (Moodle, Google Classroom)</li>
+      <li>On-device structure classifier for faster offline classification</li>
+      <li>Expanded gold-label dataset for Bangladesh NCTB chapters</li>
+    </ul>
+
+    <h3>7.4 Conclusion</h3>
+    <p>
+      Lorebound demonstrates that curriculum compilation can be automated without sacrificing grounding. By linking
+      structure detection to purpose-built game mechanics, study guides to written assessments, and every challenge to a
+      source passage, Team Alpha delivered a platform that turns static chapters into 30+ minute learning sessions.
+      The compiler-first architecture means new subjects are inputs, not new engineering sprints. With production
+      deployment, admin analytics, and four fully playable reference games, Lorebound is positioned as a practical
+      contribution to Track C: Education and Accessibility at SciBlitz AI Challenge 2026.
+    </p>
+
+    <div class="highlight-box" style="text-align: center; margin-top: 14px;">
+      <strong>Team Alpha</strong><br>
+      Lorebound | SciBlitz AI Challenge 2026 | July 2026
+    </div>
+
+    <div class="footer"><span>Lorebound Project Report</span><span>Team Alpha</span></div>
+  </section>
+
+</body>
+</html>

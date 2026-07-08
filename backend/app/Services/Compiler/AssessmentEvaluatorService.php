@@ -40,6 +40,8 @@ Return:
 
 RULES:
 - Treat gibberish, keyboard smash, or empty reasoning as fully_false.
+- If the student only copies or lightly edits phrases from the question prompt (quoted fragments, question wording) without explaining in their own words, mark fully_false.
+- Repeating source vocabulary from the prompt is NOT the same as understanding. Look for causal reasoning, predictions, comparisons, or evidence use.
 - If even 5-10% is correct, use partially_true and explain BOTH the small truth AND why the rest fails.
 - If fully false, say clearly the idea is fully false, then teach the correct concept in fullExplanation.
 - If fully true, affirm specifically what they got right, then deepen with one extra insight in fullExplanation.
@@ -62,9 +64,9 @@ PROMPT;
         ], JSON_UNESCAPED_UNICODE);
 
         $response = $this->groq->chatJson($system, $user, $model, [
-            'models' => $this->groq->modelsForRole('decompose'),
+            'models' => $this->groq->modelsForRole('evaluate'),
             'max_tokens' => 900,
-            'temperature' => 0.25,
+            'temperature' => 0.15,
         ]);
 
         if ($response === null || empty($response['data'])) {
@@ -82,12 +84,21 @@ PROMPT;
             $fullExplanation = $this->teachingExplanation($assessment, $sourceText);
         }
 
+        [$level, $whatIsTrue, $whatIsFalse, $partialPercent] = $this->applyAnswerQualityGates(
+            $assessment,
+            $userAnswer,
+            $level,
+            trim((string) ($data['whatIsTrue'] ?? '')),
+            trim((string) ($data['whatIsFalse'] ?? '')),
+            max(0, min(100, (int) ($data['partialPercent'] ?? 0))),
+        );
+
         return TextSanitizer::deep([
             'interpretation' => trim((string) ($data['interpretation'] ?? 'Let us review your reasoning.')),
             'truthLevel' => $level,
-            'partialPercent' => max(0, min(100, (int) ($data['partialPercent'] ?? 0))),
-            'whatIsTrue' => trim((string) ($data['whatIsTrue'] ?? '')),
-            'whatIsFalse' => trim((string) ($data['whatIsFalse'] ?? '')),
+            'partialPercent' => $partialPercent,
+            'whatIsTrue' => $whatIsTrue,
+            'whatIsFalse' => $whatIsFalse,
             'fullExplanation' => $fullExplanation,
             'sourceGrounding' => trim((string) ($data['sourceGrounding'] ?? ($assessment['sourcePassage'] ?? ''))),
             'engine' => 'groq',
@@ -126,40 +137,52 @@ PROMPT;
         }
 
         $isGibberish = $this->looksLikeGibberish($userAnswer);
+        $promptEcho = $this->promptEchoRatio($assessment, $userAnswer);
         $tokenRatio = count($tokens) > 0 ? $overlap / count($tokens) : 0.0;
         $ideaRatio = $keyIdeas === [] ? $tokenRatio : ($ideaHits / count($keyIdeas));
         $score = max($tokenRatio, $ideaRatio);
+        $hasReasoning = $this->showsReasoning($userAnswer);
 
         if ($isGibberish || mb_strlen(trim($userAnswer)) < 20) {
             $level = 'fully_false';
             $pct = 0;
-        } elseif ($score >= 0.45 || ($ideaHits >= 2 && mb_strlen($userAnswer) >= 60)) {
+        } elseif ($this->isPromptEchoAnswer($assessment, $userAnswer)) {
+            $level = 'fully_false';
+            $pct = max(0, min(15, (int) round($score * 20)));
+        } elseif ($score >= 0.45 && $promptEcho < 0.5 && $hasReasoning && mb_strlen($userAnswer) >= 45) {
             $level = 'fully_true';
             $pct = (int) round(min(100, max(70, $score * 100)));
-        } elseif ($score >= 0.12 || $ideaHits >= 1) {
+        } elseif ($score >= 0.18 || ($ideaHits >= 1 && $hasReasoning && $promptEcho < 0.65)) {
             $level = 'partially_true';
             $pct = (int) round(max(10, min(65, $score * 100)));
         } else {
             $level = 'fully_false';
-            $pct = (int) round($score * 100);
+            $pct = (int) round(max(0, min(25, $score * 100)));
         }
 
         $teaching = $this->teachingExplanation($assessment, $sourceText);
+
+        $whatIsTrue = '';
+        $whatIsFalse = '';
+        if ($level === 'fully_false') {
+            $whatIsFalse = $isGibberish
+                ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
+                : ($this->isPromptEchoAnswer($assessment, $userAnswer)
+                    ? 'You repeated phrases from the question instead of explaining the idea. Restate the concept with your own reasoning and an example.'
+                    : 'Important source ideas are missing or the reasoning does not fully match the material.');
+        } elseif ($level === 'fully_true') {
+            $whatIsTrue = 'Your answer connects to the key ideas from the source and shows coherent reasoning.';
+        } else {
+            $whatIsTrue = 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.';
+            $whatIsFalse = 'Strengthen the answer with cause, effect, or evidence from the source, not just copied wording.';
+        }
 
         return TextSanitizer::deep([
             'interpretation' => 'You approached this as: "'.mb_substr(trim($userAnswer), 0, 220).(mb_strlen($userAnswer) > 220 ? '...' : '').'"',
             'truthLevel' => $level,
             'partialPercent' => $pct,
-            'whatIsTrue' => $level === 'fully_false'
-                ? ''
-                : ($level === 'fully_true'
-                    ? 'Your answer connects to the key ideas from the source and shows coherent reasoning.'
-                    : 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.'),
-            'whatIsFalse' => $level === 'fully_true'
-                ? ''
-                : ($isGibberish
-                    ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
-                    : 'Important source ideas are missing or the reasoning does not fully match the material.'),
+            'whatIsTrue' => $whatIsTrue,
+            'whatIsFalse' => $whatIsFalse,
             'fullExplanation' => $teaching,
             'sourceGrounding' => (string) ($assessment['sourcePassage'] ?? mb_substr($sourceText, 0, 160)),
             'engine' => 'heuristic',
@@ -243,5 +266,104 @@ PROMPT;
         }
 
         return $hits >= max(1, (int) ceil(count($needleTokens) * 0.5));
+    }
+
+    /** @param  array<string, mixed>  $assessment */
+    private function promptEchoRatio(array $assessment, string $userAnswer): float
+    {
+        $prompt = strtolower(trim((string) ($assessment['prompt'] ?? '')));
+        $answerTokens = $this->meaningfulTokens(strtolower($userAnswer));
+        $promptTokens = $this->meaningfulTokens($prompt);
+
+        if ($answerTokens === [] || $promptTokens === []) {
+            return 0.0;
+        }
+
+        $fromPrompt = 0;
+        foreach ($answerTokens as $token) {
+            if (in_array($token, $promptTokens, true)) {
+                $fromPrompt++;
+            }
+        }
+
+        return $fromPrompt / count($answerTokens);
+    }
+
+    /** @param  array<string, mixed>  $assessment */
+    private function isPromptEchoAnswer(array $assessment, string $userAnswer): bool
+    {
+        $answer = trim($userAnswer);
+        if ($answer === '') {
+            return true;
+        }
+
+        $prompt = trim((string) ($assessment['prompt'] ?? ''));
+        $promptEcho = $this->promptEchoRatio($assessment, $answer);
+        $hasReasoning = $this->showsReasoning($answer);
+
+        if ($promptEcho >= 0.72) {
+            return true;
+        }
+
+        if ($promptEcho >= 0.55 && ! $hasReasoning && mb_strlen($answer) < 220) {
+            return true;
+        }
+
+        $answerLower = strtolower($answer);
+        $promptLower = strtolower($prompt);
+        similar_text($answerLower, $promptLower, $percent);
+
+        return $percent >= 48.0 && ! $hasReasoning;
+    }
+
+    private function showsReasoning(string $text): bool
+    {
+        $lower = strtolower($text);
+        $signals = [
+            'because', 'therefore', 'so that', 'this means', 'would', 'will', 'leads to',
+            'results in', 'reason', 'since', 'thus', 'hence', 'as a result', 'for example',
+            'such as', 'compared to', 'differs', 'similar', 'unlike', 'predict', 'expect',
+            'true because', 'false because', 'partially', 'next step', 'consequence',
+        ];
+
+        foreach ($signals as $signal) {
+            if (str_contains($lower, $signal)) {
+                return true;
+            }
+        }
+
+        return preg_match('/\b(i think|in my view|my answer|this shows|that is why)\b/i', $text) === 1;
+    }
+
+    /**
+     * @return array{0: string, 1: string, 2: string, 3: int}
+     */
+    private function applyAnswerQualityGates(
+        array $assessment,
+        string $userAnswer,
+        string $level,
+        string $whatIsTrue,
+        string $whatIsFalse,
+        int $partialPercent
+    ): array {
+        if ($this->isPromptEchoAnswer($assessment, $userAnswer)) {
+            return [
+                'fully_false',
+                '',
+                'You repeated phrases from the question instead of explaining the idea. Restate the concept with your own reasoning and an example.',
+                max(0, min(15, $partialPercent)),
+            ];
+        }
+
+        if ($level === 'fully_true' && (! $this->showsReasoning($userAnswer) || $this->promptEchoRatio($assessment, $userAnswer) >= 0.45)) {
+            return [
+                'partially_true',
+                'You named relevant source ideas, but the answer still needs clearer reasoning in your own words.',
+                'Add cause, effect, comparison, or prediction language to show understanding, not just copied wording.',
+                max(15, min(55, $partialPercent > 0 ? $partialPercent : 35)),
+            ];
+        }
+
+        return [$level, $whatIsTrue, $whatIsFalse, $partialPercent];
     }
 }

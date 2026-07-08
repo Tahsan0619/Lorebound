@@ -25,3 +25,4 @@ assets/universal_library/**/*.webp
 node_modules/
 deploy/backend/
 deploy/composer.phar
+backend/.env.deploy

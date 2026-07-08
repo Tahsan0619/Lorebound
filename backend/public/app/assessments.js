@@ -185,13 +185,22 @@ window.LoreboundAssessments = {
             return letters ? vowels / letters : 0;
         })();
         const gibberish = answer.length < 20 || (vowelRatio < 0.18 && !/\b(the|and|because|when|which|from|with|battery|power|source)\b/i.test(answer));
+        const promptTokens = tokens(assessment.prompt || '');
+        const promptEcho = answerTokens.length
+            ? answerTokens.filter(t => promptTokens.includes(t)).length / answerTokens.length
+            : 0;
+        const hasReasoning = /\b(because|therefore|so that|this means|would|will|leads to|results in|since|thus|hence|for example|such as|compared to|predict|expect|next step|consequence)\b/i.test(answer)
+            || /\b(i think|in my view|my answer|this shows|that is why)\b/i.test(answer);
+        const isPromptEcho = promptEcho >= 0.72
+            || (promptEcho >= 0.55 && !hasReasoning && answer.length < 220);
         const tokenRatio = answerTokens.length ? overlap / answerTokens.length : 0;
         const ideaRatio = keys.length ? ideaHits / keys.length : tokenRatio;
         const score = Math.max(tokenRatio, ideaRatio);
         let level = 'fully_false';
         if (gibberish) level = 'fully_false';
-        else if (score >= 0.45 || (ideaHits >= 2 && answer.length >= 60)) level = 'fully_true';
-        else if (score >= 0.12 || ideaHits >= 1) level = 'partially_true';
+        else if (isPromptEcho) level = 'fully_false';
+        else if (score >= 0.45 && promptEcho < 0.5 && hasReasoning && answer.length >= 45) level = 'fully_true';
+        else if (score >= 0.18 || (ideaHits >= 1 && hasReasoning && promptEcho < 0.65)) level = 'partially_true';
 
         const looksLikeLabel = (s) => /answer (references|contradicts|mentions|uses source)/i.test(String(s || ''));
         let explanation = String(g.fullyCorrect || '').trim();
@@ -200,21 +209,29 @@ window.LoreboundAssessments = {
                 || 'Re-read the source idea and explain the mechanism in your own words with one concrete example.';
         }
 
+        let whatIsTrue = '';
+        let whatIsFalse = '';
+        if (level === 'fully_false') {
+            whatIsFalse = gibberish
+                ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
+                : (isPromptEcho
+                    ? 'You repeated phrases from the question instead of explaining the idea. Restate the concept with your own reasoning and an example.'
+                    : 'Important source ideas are missing or the reasoning does not fully match the material.');
+        } else if (level === 'fully_true') {
+            whatIsTrue = 'Your answer connects to the key ideas from the source and shows coherent reasoning.';
+        } else {
+            whatIsTrue = 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.';
+            whatIsFalse = 'Strengthen the answer with cause, effect, or evidence from the source, not just copied wording.';
+        }
+
         return {
             interpretation: `You approached this as: "${answer.slice(0, 200)}${answer.length > 200 ? '...' : ''}"`,
             truthLevel: level,
-            whatIsTrue: level === 'fully_false'
-                ? ''
-                : (level === 'fully_true'
-                    ? 'Your answer connects to the key ideas from the source and shows coherent reasoning.'
-                    : 'Some parts of your answer touch the topic, but important mechanism or evidence is still missing.'),
-            whatIsFalse: level === 'fully_true'
-                ? ''
-                : (gibberish
-                    ? 'The answer does not communicate a real idea from the source. Write a clear explanation in your own words.'
-                    : 'Important source ideas are missing or the reasoning does not fully match the material.'),
+            whatIsTrue,
+            whatIsFalse,
             fullExplanation: explanation,
             sourceGrounding: assessment.sourcePassage || '',
+            engine: 'heuristic',
         };
     },
 };

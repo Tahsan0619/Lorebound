@@ -1620,7 +1620,7 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
             if (dateMatch && order < 10) {
                 events.push({
                     id: `dyn-evt-${order}`,
-                    title: s.trim().substring(0, 45) + "...",
+                    title: LoreboundLimits.shortLabel(s.trim(), 72),
                     date: dateMatch[0],
                     desc: s.trim(),
                     order: order,
@@ -1634,7 +1634,7 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
             const s = sentences[Math.min(events.length, sentences.length - 1)];
             events.push({
                 id: `dyn-evt-${events.length}`,
-                title: s.trim().substring(0, 45) + "...",
+                title: LoreboundLimits.shortLabel(s.trim(), 72),
                 date: `Stage ${events.length + 1}`,
                 desc: s.trim(),
                 order: events.length,
@@ -1666,7 +1666,7 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
                 desc: s.trim(),
                 question: `What occurs during Stage ${i + 1} of this processed cycle?`,
                 options: [
-                    s.trim().substring(0, 50) + "...",
+                    LoreboundLimits.shortLabel(s.trim(), 80),
                     "Alternative systemic option B",
                     "Distractor parameter checking",
                     "Stage loops verification"
@@ -1685,7 +1685,7 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
                 desc: s.trim(),
                 question: `What defines Phase ${stages.length + 1} of the system?`,
                 options: [
-                    s.trim().substring(0, 50) + "...",
+                    LoreboundLimits.shortLabel(s.trim(), 80),
                     "General loop distractor",
                     "Synthesized stage step",
                     "State verification pass"
@@ -1715,8 +1715,8 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
                 const parts = s.split(causalWord[0]);
                 chains.push({
                     id: `dyn-ce-${count}`,
-                    cause: parts[0].trim().substring(0, 60) + "...",
-                    effect: parts[1] ? (parts[1].trim().substring(0, 80) + "...") : "Downstream consequence.",
+                    cause: LoreboundLimits.shortLabel(parts[0].trim(), 90),
+                    effect: parts[1] ? LoreboundLimits.shortLabel(parts[1].trim(), 100) : 'Downstream consequence.',
                     rationale: "Causal semantic extraction matching.",
                     sourcePassage: s.trim()
                 });
@@ -1729,7 +1729,7 @@ function generateDynamicPayload(text, category, sourceTitle = 'Topic') {
             chains.push({
                 id: `dyn-ce-${chains.length}`,
                 cause: `Event Trigger Factor ${chains.length + 1}`,
-                effect: s.trim().substring(0, 80) + "...",
+                effect: LoreboundLimits.shortLabel(s.trim(), 100),
                 rationale: "Default causal synthesis.",
                 sourcePassage: s.trim()
             });
