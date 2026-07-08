@@ -12,10 +12,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@lorebound.test'],
+            ['email' => 'admin@gmail.com'],
             [
                 'name' => 'Lorebound Admin',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('admin000'),
             ]
         );
 

@@ -1,0 +1,18 @@
+# Internal planning docs (not for public repo)
+Lorebound_PRD.docx
+Lorebound_PRD.md
+
+# ML training artifacts (local research only)
+datasets/
+colab/
+lorebound-structure-classifier(After ML Training)/
+lorebound-structure-classifier/
+
+# Local archives
+Lorebound-007.zip
+
+# Generated image binaries (rebuild with tools/image_library/)
+assets/universal_library/**/*.jpg
+assets/universal_library/**/*.jpeg
+assets/universal_library/**/*.png
+assets/universal_library/**/*.webp

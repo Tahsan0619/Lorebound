@@ -14,9 +14,12 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/compile', [CompileController::class, 'compileText']);
     Route::post('/compile/pdf', [CompileController::class, 'compilePdf']);
+    Route::get('/compilations', [CompileController::class, 'index']);
     Route::get('/compilations/{uuid}', [CompileController::class, 'show']);
+    Route::delete('/compilations/{uuid}', [CompileController::class, 'destroy']);
 
     Route::post('/sessions', [GameSessionController::class, 'store']);
+    Route::post('/evaluate', [\App\Http\Controllers\Api\EvaluateController::class, 'evaluateAnswer']);
     Route::post('/samples/{slug}/compile', function (string $slug, CompileController $controller) {
         $sample = SampleChapter::where('slug', $slug)->firstOrFail();
 

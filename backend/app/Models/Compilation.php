@@ -36,4 +36,14 @@ class Compilation extends Model
     {
         return $this->hasMany(GameSession::class);
     }
+
+    public function isUserCompiled(): bool
+    {
+        return in_array($this->input_type, ['text', 'pdf'], true);
+    }
+
+    public function scopeUserCompiled($query)
+    {
+        return $query->whereIn('input_type', ['text', 'pdf']);
+    }
 }

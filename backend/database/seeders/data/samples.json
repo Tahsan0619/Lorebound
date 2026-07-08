@@ -17,7 +17,8 @@
               "date": "Feb 21, 1952",
               "desc": "Students clash with police in Dhaka while defending Bengali as a state language, cementing the cultural national identity.",
               "order": 0,
-              "sourcePassage": "The language movement of 1952 sowed the seeds of nationalism when on February 21, students protested in Dhaka, cementing the Bengali identity."
+              "sourcePassage": "The language movement of 1952 sowed the seeds of nationalism when on February 21, students protested in Dhaka, cementing the Bengali identity.",
+              "emoji": "🗣️"
             },
             {
               "id": "l1-evt-2",
@@ -25,7 +26,8 @@
               "date": "March 11, 1954",
               "desc": "The democratic alliance defeats the ruling Muslim League in East Bengal regional polls, highlighting demographic power.",
               "order": 1,
-              "sourcePassage": "Later, the United Front electoral victory on March 11, 1954, proved the demographic power of East Bengal."
+              "sourcePassage": "Later, the United Front electoral victory on March 11, 1954, proved the demographic power of East Bengal.",
+              "emoji": "🗳️"
             },
             {
               "id": "l1-evt-3",
@@ -33,7 +35,8 @@
               "date": "Feb 5, 1966",
               "desc": "Bangabandhu Sheikh Mujibur Rahman details a Charter of Autonomy for East Pakistan in Lahore, demanding decentralized power.",
               "order": 2,
-              "sourcePassage": "Seeking ultimate regional autonomy, Bangabandhu Sheikh Mujibur Rahman proposed the historic Six-Point Programme on February 5, 1966."
+              "sourcePassage": "Seeking ultimate regional autonomy, Bangabandhu Sheikh Mujibur Rahman proposed the historic Six-Point Programme on February 5, 1966.",
+              "emoji": "📜"
             },
             {
               "id": "l1-evt-4",
@@ -41,7 +44,8 @@
               "date": "June 19, 1968",
               "desc": "Pakistani administration trials Bangabandhu and 34 others for conspiracy, sparking a massive public revolt in East Pakistan.",
               "order": 3,
-              "sourcePassage": "In retaliation, the Pakistani regime staged the Agartala Conspiracy Case trial on June 19, 1968, trying Bangabandhu for treason..."
+              "sourcePassage": "In retaliation, the Pakistani regime staged the Agartala Conspiracy Case trial on June 19, 1968, trying Bangabandhu for treason...",
+              "emoji": "⚖️"
             },
             {
               "id": "l1-evt-5",
@@ -49,7 +53,8 @@
               "date": "Dec 7, 1970",
               "desc": "The Awami League secures a landslide absolute majority, winning 160 of 162 seats allocated to East Pakistan.",
               "order": 4,
-              "sourcePassage": "This popular pressure culminated in the 1970 General Election victory on December 7, where the Awami League won an absolute majority."
+              "sourcePassage": "This popular pressure culminated in the 1970 General Election victory on December 7, where the Awami League won an absolute majority.",
+              "emoji": "🏆"
             }
           ]
         },
@@ -62,7 +67,8 @@
               "date": "March 7, 1971",
               "desc": "Bangabandhu directs the nation toward civil disobedience and preparation for war at the Ramna Race Course.",
               "order": 0,
-              "sourcePassage": "As negotiations stalled, Bangabandhu delivered his historic March 7 Address in 1971, directing the people to prepare for independence."
+              "sourcePassage": "As negotiations stalled, Bangabandhu delivered his historic March 7 Address in 1971, directing the people to prepare for independence.",
+              "emoji": "🎤"
             },
             {
               "id": "l2-evt-2",
@@ -70,7 +76,8 @@
               "date": "March 25, 1971",
               "desc": "The Pakistani army begins a genocidal military operation in Dhaka to suppress Bengali autonomy demands.",
               "order": 1,
-              "sourcePassage": "On March 25, 1971, the military launched Operation Searchlight, a genocidal crackdown in Dhaka."
+              "sourcePassage": "On March 25, 1971, the military launched Operation Searchlight, a genocidal crackdown in Dhaka.",
+              "emoji": "💥"
             },
             {
               "id": "l2-evt-3",
@@ -78,7 +85,8 @@
               "date": "March 26, 1971",
               "desc": "Formal declarations of independent statehood are broadcast on behalf of Bangabandhu Sheikh Mujibur Rahman.",
               "order": 2,
-              "sourcePassage": "Immediately, the Declaration of Independence was proclaimed on March 26."
+              "sourcePassage": "Immediately, the Declaration of Independence was proclaimed on March 26.",
+              "emoji": "📢"
             },
             {
               "id": "l2-evt-4",
@@ -86,7 +94,8 @@
               "date": "April 10, 1971",
               "desc": "The provisional government of Bangladesh is officially constituted to guide the armed war and administration.",
               "order": 3,
-              "sourcePassage": "To lead the war, the Mujibnagar Government took shape on April 10..."
+              "sourcePassage": "To lead the war, the Mujibnagar Government took shape on April 10...",
+              "emoji": "🏛️"
             },
             {
               "id": "l2-evt-5",
@@ -94,7 +103,8 @@
               "date": "April 17, 1971",
               "desc": "The provisional cabinet formally takes oath of office at Baidyanathtala, Meherpur (renamed Mujibnagar).",
               "order": 4,
-              "sourcePassage": "...and the provisional cabinet formally took oath on April 17, 1971, in Meherpur."
+              "sourcePassage": "...and the provisional cabinet formally took oath on April 17, 1971, in Meherpur.",
+              "emoji": "🤝"
             }
           ]
         },
@@ -107,7 +117,8 @@
               "date": "May - July 1971",
               "desc": "The Muktibahini establishes sectors and engages in intensive guerrilla operations against occupation positions.",
               "order": 0,
-              "sourcePassage": "A protracted guerrilla war followed as the Muktibahini harassed the occupation forces."
+              "sourcePassage": "A protracted guerrilla war followed as the Muktibahini harassed the occupation forces.",
+              "emoji": "🪖"
             },
             {
               "id": "l3-evt-2",
@@ -115,7 +126,8 @@
               "date": "August 15, 1971",
               "desc": "Bengali naval commandos launch synchronized mining strikes, destroying occupation ships in Chittagong and Mongla ports.",
               "order": 1,
-              "sourcePassage": "In August, naval commandos launched Operation Jackpot, sinking occupation ships."
+              "sourcePassage": "In August, naval commandos launched Operation Jackpot, sinking occupation ships.",
+              "emoji": "⚓"
             },
             {
               "id": "l3-evt-3",
@@ -123,7 +135,8 @@
               "date": "Nov 21, 1971",
               "desc": "The Muktibahini merges command structure with the Indian Armed Forces to coordinate joint ground maneuvers.",
               "order": 2,
-              "sourcePassage": "As conflict intensified, the Indo-Bangla Joint Command was formed on November 21, 1971."
+              "sourcePassage": "As conflict intensified, the Indo-Bangla Joint Command was formed on November 21, 1971.",
+              "emoji": "🛡️"
             },
             {
               "id": "l3-evt-4",
@@ -131,7 +144,8 @@
               "date": "Dec 14, 1971",
               "desc": "Collaborators select and execute hundreds of Bengali scholars and professionals to cripple the future nation's intelligence.",
               "order": 3,
-              "sourcePassage": "In a final act of desperation, local collaborators executed systematic intellectual massacres on December 14."
+              "sourcePassage": "In a final act of desperation, local collaborators executed systematic intellectual massacres on December 14.",
+              "emoji": "🕯️"
             },
             {
               "id": "l3-evt-5",
@@ -139,14 +153,15 @@
               "date": "Dec 16, 1971",
               "desc": "Pakistani General Niazi signs the Instrument of Surrender in Dhaka, marking the sovereign birth of Bangladesh.",
               "order": 4,
-              "sourcePassage": "Finally, on December 16, 1971, the Pakistani command signed the unconditional instrument of surrender, establishing a free Bangladesh."
+              "sourcePassage": "Finally, on December 16, 1971, the Pakistani command signed the unconditional instrument of surrender, establishing a free Bangladesh.",
+              "emoji": "🇧🇩"
             }
           ]
         }
       ]
     },
     "metadata": {
-      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "model": "Prebuilt Curriculum Game Engine",
       "tokens": 2840,
       "compTime": 4.8,
       "rationale": "Text details a large chronology of historical milestones from 1952 to December 1971. Compiled into a 3-Era (3 Level) Timeline Builder game representing the seeds of conflict, military crackdown, and final guerrilla campaign.",
@@ -155,7 +170,18 @@
         "cyc": 1,
         "cau": 15,
         "comp": 5
-      }
+      },
+      "theme": {
+        "primary": "#ff5252",
+        "secondary": "#ffab40",
+        "accent": "#ff8a80",
+        "narrative_title": "Map the Path to Independence",
+        "narrative_intro": "Walk the milestones that forged Bangladesh. Chronological mastery unlocks every challenge phase.",
+        "visualScene": "war",
+        "icon": "clock-rotate-left",
+        "demo_emoji": "🏛️"
+      },
+      "mechanic": "Timeline Builder"
     }
   },
   {
@@ -183,7 +209,13 @@
               ],
               "correctIndex": 1,
               "rationale": "Solar radiation is the primary thermal driver of global water movement.",
-              "sourcePassage": "The movement of water begins with solar heating..."
+              "sourcePassage": "The movement of water begins with solar heating...",
+              "emoji": "☀️",
+              "simParams": {
+                "label": "Solar Heat Intensity",
+                "targetMin": 55,
+                "targetMax": 75
+              }
             },
             {
               "id": "p-stg-2",
@@ -198,7 +230,13 @@
               ],
               "correctIndex": 2,
               "rationale": "Evaporation changes liquid surface water to gas.",
-              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas."
+              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas.",
+              "emoji": "🌫️",
+              "simParams": {
+                "label": "Evaporation Rate",
+                "targetMin": 45,
+                "targetMax": 65
+              }
             },
             {
               "id": "p-stg-3",
@@ -213,7 +251,13 @@
               ],
               "correctIndex": 0,
               "rationale": "Transpiration is the release of plant water into the atmosphere.",
-              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas."
+              "sourcePassage": "...causing Evaporation from surface reservoirs and Transpiration from plant stomata, changing liquid water to gas.",
+              "emoji": "🌿",
+              "simParams": {
+                "label": "Stomatal Opening",
+                "targetMin": 40,
+                "targetMax": 60
+              }
             },
             {
               "id": "p-stg-4",
@@ -228,7 +272,13 @@
               ],
               "correctIndex": 1,
               "rationale": "Sublimation is the direct solid-to-gas transition.",
-              "sourcePassage": "Additionally, Sublimation occurs on cold peaks where ice transforms directly into vapor."
+              "sourcePassage": "Additionally, Sublimation occurs on cold peaks where ice transforms directly into vapor.",
+              "emoji": "❄️",
+              "simParams": {
+                "label": "Glacier Sublimation",
+                "targetMin": 30,
+                "targetMax": 50
+              }
             }
           ]
         },
@@ -248,7 +298,13 @@
               ],
               "correctIndex": 2,
               "rationale": "Advection is the horizontal transport of atmospheric properties (like moisture) by wind.",
-              "sourcePassage": "Next, in the atmospheric condensation phase, winds distribute this gas via Advection."
+              "sourcePassage": "Next, in the atmospheric condensation phase, winds distribute this gas via Advection.",
+              "emoji": "💨",
+              "simParams": {
+                "label": "Wind Advection Speed",
+                "targetMin": 35,
+                "targetMax": 55
+              }
             },
             {
               "id": "p-stg-6",
@@ -263,7 +319,13 @@
               ],
               "correctIndex": 0,
               "rationale": "Nucleation provides the seeds for vapor to condense into droplets.",
-              "sourcePassage": "When cooling occurs, the vapor undergoes Condensation, attaching to tiny particles via Cloud Nucleation to build dense clouds."
+              "sourcePassage": "When cooling occurs, the vapor undergoes Condensation, attaching to tiny particles via Cloud Nucleation to build dense clouds.",
+              "emoji": "☁️",
+              "simParams": {
+                "label": "Condensation Cooling",
+                "targetMin": 40,
+                "targetMax": 60
+              }
             },
             {
               "id": "p-stg-7",
@@ -278,7 +340,13 @@
               ],
               "correctIndex": 3,
               "rationale": "Coalescence is the physical merging of cloud droplets.",
-              "sourcePassage": "As cloud density builds, the droplets combine through Coalescence, becoming heavy enough to fall."
+              "sourcePassage": "As cloud density builds, the droplets combine through Coalescence, becoming heavy enough to fall.",
+              "emoji": "💧",
+              "simParams": {
+                "label": "Droplet Coalescence",
+                "targetMin": 50,
+                "targetMax": 70
+              }
             }
           ]
         },
@@ -298,7 +366,13 @@
               ],
               "correctIndex": 1,
               "rationale": "Precipitation delivers water from clouds back to earth.",
-              "sourcePassage": "In the deposition phase, gravity delivers this moisture via Precipitation."
+              "sourcePassage": "In the deposition phase, gravity delivers this moisture via Precipitation.",
+              "emoji": "🌧️",
+              "simParams": {
+                "label": "Precipitation Volume",
+                "targetMin": 45,
+                "targetMax": 65
+              }
             },
             {
               "id": "p-stg-9",
@@ -313,7 +387,13 @@
               ],
               "correctIndex": 1,
               "rationale": "Runoff flows over land; interception is caught by plants.",
-              "sourcePassage": "Upon reaching land, water is caught via Canopy Interception or flows via Surface Runoff."
+              "sourcePassage": "Upon reaching land, water is caught via Canopy Interception or flows via Surface Runoff.",
+              "emoji": "🏞️",
+              "simParams": {
+                "label": "Surface Runoff Flow",
+                "targetMin": 35,
+                "targetMax": 55
+              }
             },
             {
               "id": "p-stg-10",
@@ -328,14 +408,20 @@
               ],
               "correctIndex": 2,
               "rationale": "Infiltration is soaking into topsoil; percolation is the deep downward trickle through rock.",
-              "sourcePassage": "Eventually, the water filters down through Infiltration and Percolation, recharging deep underground aquifers before resuming the cycle."
+              "sourcePassage": "Eventually, the water filters down through Infiltration and Percolation, recharging deep underground aquifers before resuming the cycle.",
+              "emoji": "⬇️",
+              "simParams": {
+                "label": "Aquifer Recharge",
+                "targetMin": 40,
+                "targetMax": 60
+              }
             }
           ]
         }
       ]
     },
     "metadata": {
-      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "model": "Prebuilt Curriculum Game Engine",
       "tokens": 2420,
       "compTime": 4.1,
       "rationale": "Text depicts a highly detailed 10-stage physical process divided into 3 environmental phases (Atmospheric Ingestion, Condensation/Transport, Deposition/Subterranean Storage). Built as a 10-node Process Loop game.",
@@ -344,7 +430,18 @@
         "cyc": 98,
         "cau": 20,
         "comp": 5
-      }
+      },
+      "theme": {
+        "primary": "#26c6da",
+        "secondary": "#4fc3f7",
+        "accent": "#80deea",
+        "narrative_title": "Trace the Water Cycle Loop",
+        "narrative_intro": "Master atmospheric intake, condensation, and groundwater return, then prove each stage under pressure.",
+        "visualScene": "nature",
+        "icon": "rotate",
+        "demo_emoji": "💧"
+      },
+      "mechanic": "Process Loop"
     }
   },
   {
@@ -444,7 +541,7 @@
       ]
     },
     "metadata": {
-      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "model": "Prebuilt Curriculum Game Engine",
       "tokens": 2150,
       "compTime": 3.8,
       "rationale": "Text links modern farming adjustments to environmental breakdowns. Compiled into a 3-level Cause-Effect Chain game mapping chemical runoffs, hydrology shifts, and mechanical soil failures.",
@@ -453,7 +550,18 @@
         "cyc": 8,
         "cau": 98,
         "comp": 10
-      }
+      },
+      "theme": {
+        "primary": "#8bc34a",
+        "secondary": "#cddc39",
+        "accent": "#aed581",
+        "narrative_title": "Follow the Ecological Cascade",
+        "narrative_intro": "Link HYV farming choices to eutrophication, aquifer stress, and soil collapse, cause by cause.",
+        "visualScene": "nature",
+        "icon": "diagram-next",
+        "demo_emoji": "🌱"
+      },
+      "mechanic": "Cause-Effect Chain"
     }
   },
   {
@@ -474,145 +582,165 @@
           "text": "Occurs inside chloroplasts in plant cells",
           "category": "Photosynthesis",
           "rationale": "Chloroplasts contain chlorophyll, which absorbs light energy to synthesize glucose.",
-          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts...",
+          "emoji": "🌿"
         },
         {
           "id": "c-2",
           "text": "Occurs in the mitochondria of plants and animals",
           "category": "Cellular Respiration",
           "rationale": "Mitochondria act as the powerhouse to generate ATP from food.",
-          "sourcePassage": "In contrast, cellular respiration occurs primarily in the mitochondria of both plants and animals."
+          "sourcePassage": "In contrast, cellular respiration occurs primarily in the mitochondria of both plants and animals.",
+          "emoji": "⚡"
         },
         {
           "id": "c-3",
           "text": "Synthesizes glucose and releases oxygen as a byproduct",
           "category": "Photosynthesis",
           "rationale": "It builds sugar using carbon dioxide and water, releasing oxygen.",
-          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct.",
+          "emoji": "🌿"
         },
         {
           "id": "c-4",
           "text": "Breaks down glucose to release carbon dioxide and water",
           "category": "Cellular Respiration",
           "rationale": "It catabolizes sugar to release chemical energy, returning CO2 and water to nature.",
-          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP), producing carbon dioxide and water as waste products."
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP), producing carbon dioxide and water as waste products.",
+          "emoji": "⚡"
         },
         {
           "id": "c-5",
           "text": "An anabolic metabolic reaction that stores energy in bonds",
           "category": "Photosynthesis",
           "rationale": "Anabolism is synthesis; storing energy in glucose chemical bonds.",
-          "sourcePassage": "While photosynthesis is an anabolic reaction that stores energy in chemical bonds..."
+          "sourcePassage": "While photosynthesis is an anabolic reaction that stores energy in chemical bonds...",
+          "emoji": "🌿"
         },
         {
           "id": "c-6",
           "text": "A catabolic reaction that harvests chemical energy (ATP)",
           "category": "Cellular Respiration",
           "rationale": "Catabolism is breakdown; extracting ATP from glucose bonds.",
-          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy."
+          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy.",
+          "emoji": "⚡"
         },
         {
           "id": "c-7",
           "text": "Uses solar radiation to excite chlorophyll molecules",
           "category": "Photosynthesis",
           "rationale": "Light energy triggers chlorophyll to launch electron transport.",
-          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts, utilizing sunlight..."
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts, utilizing sunlight...",
+          "emoji": "🌿"
         },
         {
           "id": "c-8",
           "text": "Involves the Glycolysis pathway in the cytoplasm",
           "category": "Cellular Respiration",
           "rationale": "Glycolysis splits glucose into pyruvate in the cytoplasm prior to mitochondrial steps.",
-          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen...",
+          "emoji": "⚡"
         },
         {
           "id": "c-9",
           "text": "Employs the Calvin Cycle (Light-independent reactions)",
           "category": "Photosynthesis",
           "rationale": "The Calvin cycle fixes carbon dioxide into glucose in the stroma.",
-          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose..."
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose...",
+          "emoji": "🌿"
         },
         {
           "id": "c-10",
           "text": "Employs the Krebs (Citric Acid) Cycle in the matrix",
           "category": "Cellular Respiration",
           "rationale": "The Krebs cycle oxidizes acetyl-CoA, producing carbon dioxide, NADH, and FADH2.",
-          "sourcePassage": "This process breaks down glucose... to release usable chemical energy (ATP)..."
+          "sourcePassage": "This process breaks down glucose... to release usable chemical energy (ATP)...",
+          "emoji": "⚡"
         },
         {
           "id": "c-11",
           "text": "Oxygen is the final electron acceptor in the transport chain",
           "category": "Cellular Respiration",
           "rationale": "Oxygen binds protons to form water at the end of oxidative phosphorylation.",
-          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen...",
+          "emoji": "⚡"
         },
         {
           "id": "c-12",
           "text": "Water is split during photolysis to release protons and oxygen",
           "category": "Photosynthesis",
           "rationale": "Photolysis splits water to replenish electrons lost by photosystem II.",
-          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct.",
+          "emoji": "🌿"
         },
         {
           "id": "c-13",
           "text": "Stomatal intake of carbon dioxide is a primary substrate",
           "category": "Photosynthesis",
           "rationale": "CO2 enters leaves via stomata to act as the carbon source for glucose.",
-          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose..."
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose...",
+          "emoji": "🌿"
         },
         {
           "id": "c-14",
           "text": "Carbon dioxide is a gaseous metabolic byproduct",
           "category": "Cellular Respiration",
           "rationale": "Decarboxylation reactions in cellular respiration release CO2 as waste.",
-          "sourcePassage": "...producing carbon dioxide and water as waste products."
+          "sourcePassage": "...producing carbon dioxide and water as waste products.",
+          "emoji": "⚡"
         },
         {
           "id": "c-15",
           "text": "Produces a net yield of up to 36-38 ATP per glucose",
           "category": "Cellular Respiration",
           "rationale": "Mitochondrial electron transport produces substantial ATP from coenzymes.",
-          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP)..."
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen to release usable chemical energy (ATP)...",
+          "emoji": "⚡"
         },
         {
           "id": "c-16",
           "text": "Requires NADP+ as an electron carrier to form NADPH",
           "category": "Photosynthesis",
           "rationale": "NADP+ is reduced in light reactions for use in the Calvin cycle.",
-          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts...",
+          "emoji": "🌿"
         },
         {
           "id": "c-17",
           "text": "Uses NAD+ and FAD as coenzymes for electron transport",
           "category": "Cellular Respiration",
           "rationale": "NAD+ and FAD capture high-energy electrons during glucose oxidation.",
-          "sourcePassage": "This process breaks down glucose in the presence of oxygen..."
+          "sourcePassage": "This process breaks down glucose in the presence of oxygen...",
+          "emoji": "⚡"
         },
         {
           "id": "c-18",
           "text": "Occurs only in green tissue containing pigment molecules",
           "category": "Photosynthesis",
           "rationale": "Chlorophyll pigments are required to capture the light energy.",
-          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts..."
+          "sourcePassage": "Photosynthesis takes place inside plant chloroplasts...",
+          "emoji": "🌿"
         },
         {
           "id": "c-19",
           "text": "Operates continuously day and night in all living cells",
           "category": "Cellular Respiration",
           "rationale": "All living cells require continuous ATP generation to maintain cellular processes.",
-          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy."
+          "sourcePassage": "...cellular respiration is a catabolic reaction that releases chemical energy.",
+          "emoji": "⚡"
         },
         {
           "id": "c-20",
           "text": "General equation: 6CO2 + 6H2O + Light -> C6H12O6 + 6O2",
           "category": "Photosynthesis",
           "rationale": "The chemical summary of storing light energy as glucose bonds.",
-          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct."
+          "sourcePassage": "...utilizing sunlight, carbon dioxide, and water to synthesize energy-rich glucose while releasing oxygen as a byproduct.",
+          "emoji": "🌿"
         }
       ]
     },
     "metadata": {
-      "model": "Llama 3.1 70B (via Groq Cloud)",
+      "model": "Prebuilt Curriculum Game Engine",
       "tokens": 2650,
       "compTime": 4.3,
       "rationale": "Text compares anabolic photosynthesis with catabolic respiration. Compiled into an intensive 20-card Comparison Sorter deck reviewing organelles, pathways, coenzymes, equations, and outputs.",
@@ -621,7 +749,18 @@
         "cyc": 8,
         "cau": 15,
         "comp": 99
-      }
+      },
+      "theme": {
+        "primary": "#69f0ae",
+        "secondary": "#00e676",
+        "accent": "#b9f6ca",
+        "narrative_title": "Sort Life's Twin Metabolisms",
+        "narrative_intro": "Separate photosynthesis from cellular respiration across organelles, equations, and energy logic.",
+        "visualScene": "body",
+        "icon": "arrow-right-arrow-left",
+        "demo_emoji": "🧪"
+      },
+      "mechanic": "Comparison Sorter"
     }
   }
 ]

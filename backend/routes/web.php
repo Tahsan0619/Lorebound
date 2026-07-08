@@ -46,6 +46,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('samples', SampleChapterAdminController::class)->except(['show']);
         Route::get('compilations', [CompilationAdminController::class, 'index'])->name('compilations.index');
         Route::get('compilations/{compilation}', [CompilationAdminController::class, 'show'])->name('compilations.show');
+        Route::delete('compilations/{compilation}', [CompilationAdminController::class, 'destroy'])->name('compilations.destroy');
+        Route::post('compilations/purge-sample-logs', [CompilationAdminController::class, 'purgeSampleLogs'])->name('compilations.purge-sample-logs');
         Route::get('sessions', [GameSessionAdminController::class, 'index'])->name('sessions.index');
     });
 });

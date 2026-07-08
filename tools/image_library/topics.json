@@ -1,0 +1,91 @@
+{
+  "global_styles": [
+    "conceptual illustration",
+    "symbolic",
+    "educational background",
+    "minimal",
+    "no text"
+  ],
+  "topics": [
+    {
+      "slug": "war",
+      "label": "War and Conflict (Generic)",
+      "target_count": 70,
+      "queries": ["military strategy map", "soldier silhouette", "battlefield smoke", "peace and conflict symbol"],
+      "wikimedia_categories": ["Category:War", "Category:Military"],
+      "keywords": ["war", "military", "soldier", "battle", "conflict", "army", "weapon", "tank", "trench"]
+    },
+    {
+      "slug": "history",
+      "label": "History and Civilization",
+      "target_count": 70,
+      "queries": ["ancient architecture", "historical parchment texture", "civilization ruins", "timeline concept"],
+      "wikimedia_categories": ["Category:History", "Category:Archaeology", "Category:Cultural heritage monuments"],
+      "keywords": ["history", "ancient", "ruins", "civilization", "heritage", "archaeology", "museum", "monument"]
+    },
+    {
+      "slug": "civics",
+      "label": "Civics and Society",
+      "target_count": 60,
+      "queries": ["democracy concept", "government building abstract", "community collaboration", "justice scales symbol"],
+      "wikimedia_categories": ["Category:Politics", "Category:Government", "Category:Society"],
+      "keywords": ["government", "politics", "democracy", "society", "community", "justice", "parliament", "civic"]
+    },
+    {
+      "slug": "body",
+      "label": "Biology and Human Body",
+      "target_count": 70,
+      "queries": ["human anatomy concept", "blood circulation abstract", "microscope science", "cell structure art"],
+      "wikimedia_categories": ["Category:Human anatomy", "Category:Biology", "Category:Medical illustrations"],
+      "keywords": ["anatomy", "biology", "blood", "heart", "cell", "organ", "body", "medical", "microscope"]
+    },
+    {
+      "slug": "ocean",
+      "label": "Ocean and Environment",
+      "target_count": 70,
+      "queries": ["ocean wave texture", "marine ecosystem", "plastic pollution concept", "water cycle background"],
+      "wikimedia_categories": ["Category:Oceans", "Category:Marine biology", "Category:Water"],
+      "keywords": ["ocean", "marine", "water", "wave", "sea", "plastic", "pollution", "fish", "coral"]
+    },
+    {
+      "slug": "energy",
+      "label": "Energy and Climate",
+      "target_count": 70,
+      "queries": ["renewable energy concept", "solar wind power", "electric grid abstract", "climate transition"],
+      "wikimedia_categories": ["Category:Energy", "Category:Renewable energy", "Category:Electric power"],
+      "keywords": ["energy", "solar", "wind", "power", "electric", "renewable", "climate", "turbine", "battery"]
+    },
+    {
+      "slug": "tech",
+      "label": "Technology and Computing",
+      "target_count": 80,
+      "queries": ["digital network abstract", "computer motherboard closeup", "cyber security concept", "data flow lines"],
+      "wikimedia_categories": ["Category:Technology", "Category:Computers", "Category:Internet"],
+      "keywords": ["technology", "computer", "network", "digital", "internet", "chip", "software", "circuit", "data"]
+    },
+    {
+      "slug": "nature",
+      "label": "Nature and Process Systems",
+      "target_count": 70,
+      "queries": ["forest ecosystem", "plant growth cycle", "natural process diagram style", "earth landscape texture"],
+      "wikimedia_categories": ["Category:Nature", "Category:Forests", "Category:Ecology"],
+      "keywords": ["nature", "forest", "plant", "ecology", "landscape", "tree", "growth", "earth", "environment"]
+    },
+    {
+      "slug": "math",
+      "label": "Math and Logic",
+      "target_count": 50,
+      "queries": ["geometry abstract", "mathematical pattern", "graph and chart concept", "logic puzzle concept"],
+      "wikimedia_categories": ["Category:Mathematics", "Category:Geometry", "Category:Diagrams"],
+      "keywords": ["math", "geometry", "diagram", "graph", "pattern", "logic", "formula", "equation", "chart"]
+    },
+    {
+      "slug": "industry",
+      "label": "Industry and Economics",
+      "target_count": 50,
+      "queries": ["factory abstract", "supply chain concept", "trade and economy", "agriculture technology"],
+      "wikimedia_categories": ["Category:Industry", "Category:Economics", "Category:Manufacturing"],
+      "keywords": ["industry", "factory", "economy", "trade", "manufacturing", "agriculture", "supply", "production"]
+    }
+  ]
+}

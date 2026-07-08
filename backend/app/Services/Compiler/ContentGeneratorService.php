@@ -4,7 +4,7 @@ namespace App\Services\Compiler;
 
 class ContentGeneratorService
 {
-    public function generate(string $text, string $category): array
+    public function generate(string $text, string $category, string $title = 'Topic'): array
     {
         $sentences = preg_split('/(?<=[.!?])\s+/', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: [$text];
 
@@ -12,7 +12,7 @@ class ContentGeneratorService
             'Timeline' => $this->timelinePayload($sentences),
             'Process' => $this->processPayload($sentences),
             'CauseEffect' => $this->causeEffectPayload($sentences),
-            default => $this->comparisonPayload($sentences),
+            default => $this->comparisonPayload($sentences, $title),
         };
     }
 
@@ -159,9 +159,9 @@ class ContentGeneratorService
         ];
     }
 
-    private function comparisonPayload(array $sentences): array
+    private function comparisonPayload(array $sentences, string $title = 'Topic'): array
     {
-        $categories = ['Concept Alpha', 'Concept Beta'];
+        $categories = $this->inferComparisonCategories($title, $sentences);
         $cards = [];
 
         foreach (array_slice($sentences, 0, 20) as $idx => $sentence) {
@@ -187,5 +187,33 @@ class ContentGeneratorService
         }
 
         return ['categories' => $categories, 'cards' => $cards];
+    }
+
+    /** @param  array<int, string>  $sentences */
+    private function inferComparisonCategories(string $title, array $sentences): array
+    {
+        $words = array_values(array_filter(
+            preg_split('/\s+/', preg_replace('/[^\w\s]/', ' ', $title) ?? '') ?: [],
+            static fn ($w) => mb_strlen($w) > 3
+        ));
+
+        if (count($words) >= 2) {
+            return [
+                ucfirst($words[0]).' traits',
+                ucfirst($words[1]).' traits',
+            ];
+        }
+
+        foreach ($sentences as $sentence) {
+            $parts = preg_split('/\bvs\.?\b|\bversus\b/i', $sentence) ?: [];
+            if (count($parts) >= 2) {
+                return [
+                    mb_substr(trim($parts[0]), 0, 36) ?: 'Group A',
+                    mb_substr(trim($parts[1]), 0, 36) ?: 'Group B',
+                ];
+            }
+        }
+
+        return ['Core concepts', 'Related concepts'];
     }
 }

@@ -9,14 +9,14 @@
     --bg-surface: #0e1017;
     --bg-panel: rgba(15, 17, 26, 0.7);
     --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glass-hover: rgba(0, 242, 254, 0.3);
+    --border-glass-hover: rgba(220, 245, 252, 0.35);
     
     /* Branding Colors */
-    --color-cyan: #00f2fe;
-    --color-cyan-glow: rgba(0, 242, 254, 0.4);
-    --color-purple: #9b51e0;
-    --color-purple-glow: rgba(155, 81, 224, 0.4);
-    --color-magenta: #ff007f;
+    --color-cyan: #dcf5fc;
+    --color-cyan-glow: rgba(220, 245, 252, 0.45);
+    --color-purple: #dcfcf6;
+    --color-purple-glow: rgba(220, 252, 246, 0.35);
+    --color-magenta: #dcfcf9;
     
     /* Functional Colors */
     --color-success: #00e676;
@@ -24,9 +24,9 @@
     --color-danger: #ff1744;
     
     /* Text Hierarchy */
-    --text-primary: #f5f6fa;
-    --text-secondary: #a0aec0;
-    --text-muted: #718096;
+    --text-primary: #dcfcf9;
+    --text-secondary: rgba(220, 252, 246, 0.85);
+    --text-muted: rgba(220, 245, 252, 0.65);
     
     /* Fonts */
     --font-heading: 'Outfit', sans-serif;
@@ -35,12 +35,16 @@
     
     /* Core Shadows */
     --shadow-soft: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --shadow-cyan: 0 0 15px rgba(0, 242, 254, 0.25);
-    --shadow-purple: 0 0 15px rgba(155, 81, 224, 0.25);
+    --shadow-cyan: 0 0 15px rgba(220, 245, 252, 0.25);
+    --shadow-purple: 0 0 15px rgba(220, 252, 246, 0.25);
     
     /* Transitions */
     --transition-fast: 0.2s ease;
     --transition-medium: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Default game accent (overridden by theme classes) */
+    --game-accent: var(--color-cyan);
+    --game-accent-secondary: var(--color-purple);
 }
 
 /* 2. Global Resets & Scrollbars */
@@ -57,6 +61,10 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
+}
+
+.hidden {
+    display: none !important;
 }
 
 /* Scrollbar Customization */
@@ -101,6 +109,7 @@ body {
     width: 50vw;
     height: 50vw;
     background: radial-gradient(circle, var(--color-cyan) 0%, transparent 70%);
+    animation: brandDriftCyan 20s ease-in-out infinite;
 }
 
 .glow-circle.purple {
@@ -109,6 +118,7 @@ body {
     width: 50vw;
     height: 50vw;
     background: radial-gradient(circle, var(--color-purple) 0%, transparent 70%);
+    animation: brandDriftPurple 24s ease-in-out infinite;
 }
 
 /* 3. Base UI Layout Components */
@@ -138,13 +148,23 @@ body {
     position: relative;
     width: 42px;
     height: 42px;
-    background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-purple) 100%);
+    background: transparent;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--bg-dark);
-    font-size: 1.25rem;
+    color: transparent;
+    font-size: 0;
+    overflow: hidden; /* ensure the logo-mark stays inside the rounded square */
+}
+
+.logo-mark {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 12px;
+    transform: none;
+    filter: none;
 }
 
 .logo-glow {
@@ -153,10 +173,11 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: inherit;
+    background: radial-gradient(circle at 30% 30%, var(--color-cyan-glow) 0%, transparent 70%);
     border-radius: inherit;
     filter: blur(8px);
     opacity: 0.6;
+    animation: brandGlowPulse 6s ease-in-out infinite;
     z-index: -1;
 }
 
@@ -196,7 +217,7 @@ body {
 
 .badge.track-badge {
     color: var(--color-purple);
-    border-color: rgba(155, 81, 224, 0.2);
+    border-color: rgba(220, 252, 246, 0.2);
 }
 
 .badge.compiler-status {
@@ -205,7 +226,7 @@ body {
 
 .badge.compiler-status.active {
     color: var(--color-cyan);
-    border-color: rgba(0, 242, 254, 0.3);
+    border-color: rgba(220, 245, 252, 0.3);
     box-shadow: var(--shadow-cyan);
 }
 
@@ -249,12 +270,14 @@ body {
 .btn-primary {
     background: linear-gradient(135deg, var(--color-cyan) 0%, var(--color-purple) 100%);
     color: var(--bg-dark);
-    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    box-shadow: 0 4px 15px rgba(220, 245, 252, 0.3);
+    background-size: 220% 220%;
 }
 
 .btn-primary:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 242, 254, 0.45);
+    box-shadow: 0 6px 20px rgba(220, 245, 252, 0.45);
+    animation: brandShimmer 1.25s ease infinite;
 }
 
 .btn-primary:active:not(:disabled) {
@@ -424,12 +447,12 @@ body {
 
 .file-dropzone:hover {
     border-color: var(--color-cyan);
-    background: rgba(0, 242, 254, 0.02);
+    background: rgba(220, 245, 252, 0.02);
 }
 
 .file-dropzone.drag-active {
     border-color: var(--color-purple);
-    background: rgba(155, 81, 224, 0.05);
+    background: rgba(220, 252, 246, 0.05);
 }
 
 .cloud-icon {
@@ -472,8 +495,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 242, 254, 0.05);
-    border: 1px solid rgba(0, 242, 254, 0.15);
+    background: rgba(220, 245, 252, 0.05);
+    border: 1px solid rgba(220, 245, 252, 0.15);
     padding: 1rem;
     border-radius: 12px;
     margin-bottom: 1rem;
@@ -530,7 +553,7 @@ body {
 .textarea-wrapper textarea:focus {
     outline: none;
     border-color: var(--color-cyan);
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+    box-shadow: 0 0 10px rgba(220, 245, 252, 0.1);
 }
 
 .textarea-wrapper .word-counter {
@@ -612,6 +635,56 @@ body {
     gap: 0.85rem;
 }
 
+.samples-section-label {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0 0.15rem;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-top: 1px solid var(--border-glass);
+}
+.samples-section-label i { color: var(--color-purple); }
+
+.sample-item-card--compiled {
+    border-color: rgba(124, 77, 255, 0.25);
+    background: rgba(124, 77, 255, 0.04);
+}
+.compiled-tag {
+    color: var(--color-purple);
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.sample-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.sample-delete-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 82, 82, 0.35);
+    background: rgba(255, 82, 82, 0.08);
+    color: #ff8a80;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    padding: 0;
+}
+.sample-delete-btn:hover {
+    background: rgba(255, 82, 82, 0.2);
+    border-color: rgba(255, 82, 82, 0.55);
+    color: #ff5252;
+}
+
 .sample-item-card {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-glass);
@@ -657,13 +730,13 @@ body {
 }
 
 .timeline-badge {
-    background: rgba(0, 242, 254, 0.1);
+    background: rgba(220, 245, 252, 0.1);
     color: var(--color-cyan);
 }
 
 .cycle-badge {
-    background: rgba(155, 81, 224, 0.15);
-    color: #cc80ff;
+    background: rgba(220, 252, 246, 0.15);
+    color: var(--color-purple);
 }
 
 .cause-badge {
@@ -720,7 +793,7 @@ body {
 .spinner {
     width: 100%;
     height: 100%;
-    border: 3px solid rgba(0, 242, 254, 0.1);
+    border: 3px solid rgba(220, 245, 252, 0.1);
     border-top: 3px solid var(--color-cyan);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -915,8 +988,8 @@ body {
 
 /* Insight mini-card on compile */
 .mini-insight-card {
-    background: rgba(155, 81, 224, 0.05);
-    border-color: rgba(155, 81, 224, 0.2);
+    background: rgba(220, 252, 246, 0.05);
+    border-color: rgba(220, 252, 246, 0.2);
     padding: 1.25rem;
     animation: fadeInUp 0.5s ease forwards;
 }
@@ -1008,7 +1081,7 @@ body {
 
 .active-mechanic-tag {
     padding: 0.2rem 0.5rem;
-    background: rgba(0, 242, 254, 0.1);
+    background: rgba(220, 245, 252, 0.1);
     color: var(--color-cyan);
     font-size: 0.7rem;
     font-weight: 700;
@@ -1149,8 +1222,8 @@ body {
 
 .narrative-badge {
     padding: 0.25rem 0.6rem;
-    background: rgba(155, 81, 224, 0.15);
-    color: #bb86fc;
+    background: rgba(220, 252, 246, 0.15);
+    color: var(--color-purple);
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -1268,8 +1341,8 @@ body {
 
 .timeline-slot.drag-hover {
     border-color: var(--color-cyan);
-    background: rgba(0, 242, 254, 0.03);
-    box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+    background: rgba(220, 245, 252, 0.03);
+    box-shadow: 0 0 15px rgba(220, 245, 252, 0.1);
 }
 
 .timeline-slot.filled {
@@ -1328,7 +1401,7 @@ body {
 .event-card:hover {
     border-color: var(--border-glass-hover);
     transform: translateY(-3px);
-    box-shadow: 0 4px 15px rgba(0, 242, 254, 0.1);
+    box-shadow: 0 4px 15px rgba(220, 245, 252, 0.1);
 }
 
 .event-card:active {
@@ -1436,9 +1509,9 @@ body {
 
 .process-node.active {
     border-color: var(--color-purple);
-    background: rgba(155, 81, 224, 0.1);
+    background: rgba(220, 252, 246, 0.1);
     color: var(--color-purple);
-    box-shadow: 0 0 15px rgba(155, 81, 224, 0.4);
+    box-shadow: 0 0 15px rgba(220, 252, 246, 0.4);
     transform: scale(1.15);
 }
 
@@ -1778,8 +1851,8 @@ body {
     text-transform: uppercase;
     padding: 0.3rem 0.65rem;
     border-radius: 6px;
-    background: rgba(0, 242, 254, 0.08);
-    border: 1px solid rgba(0, 242, 254, 0.2);
+    background: rgba(220, 245, 252, 0.08);
+    border: 1px solid rgba(220, 245, 252, 0.2);
     color: var(--color-cyan);
 }
 
@@ -2170,7 +2243,7 @@ body {
 }
 
 .memory-front {
-    background: linear-gradient(135deg, rgba(155, 81, 224, 0.15), rgba(0, 242, 254, 0.1));
+    background: linear-gradient(135deg, rgba(220, 252, 246, 0.15), rgba(220, 245, 252, 0.1));
     font-size: 1.5rem;
     color: var(--color-purple);
 }
@@ -2233,17 +2306,56 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    padding: 1.5rem 2.5rem;
+    padding: 1.35rem 2rem;
     background: rgba(15, 17, 26, 0.95);
-    border: 2px solid var(--color-success);
-    border-radius: 16px;
+    border: 2px solid var(--game-accent, var(--color-cyan));
+    border-radius: 18px;
     font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-success);
-    box-shadow: 0 0 40px rgba(0, 230, 118, 0.3);
+    text-align: center;
+    color: var(--game-accent, var(--color-cyan));
+    box-shadow: 0 0 40px var(--game-accent-glow, var(--color-cyan-glow));
     animation: levelUpPop 1.2s ease forwards;
     pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.levelup-trophy-circle{
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(220, 245, 252, 0.08);
+    border: 1px solid rgba(220, 245, 252, 0.18);
+    box-shadow: 0 0 28px rgba(220, 245, 252, 0.12);
+}
+
+.levelup-trophy-circle i{
+    font-size: 1.75rem;
+    color: var(--game-accent, var(--color-cyan));
+}
+
+.levelup-title{
+    font-size: 1.35rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+}
+
+.levelup-subtitle{
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.levelup-xp{
+    margin-top: 0.1rem;
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: var(--game-accent, var(--color-cyan));
 }
 
 @keyframes levelUpPop {
@@ -2443,7 +2555,7 @@ body {
     text-transform: uppercase;
     color: var(--color-cyan);
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(0, 242, 254, 0.1);
+    border-bottom: 1px solid rgba(220, 245, 252, 0.1);
     padding-bottom: 0.35rem;
 }
 
@@ -2511,7 +2623,7 @@ body {
 }
 
 #conf-bar-seq { background: var(--color-cyan); }
-#conf-bar-cyc { background: #cc80ff; }
+#conf-bar-cyc { background: var(--color-purple); }
 #conf-bar-cau { background: var(--color-warning); }
 #conf-bar-comp { background: var(--color-success); }
 
@@ -2642,7 +2754,7 @@ body {
 }
 
 .document-scroller mark {
-    background: rgba(0, 242, 254, 0.25);
+    background: rgba(220, 245, 252, 0.25);
     color: #fff;
     border-bottom: 2px solid var(--color-cyan);
     padding: 0.1rem 0;
@@ -2703,6 +2815,26 @@ body {
 @keyframes bounce {
     0% { transform: translateY(0); }
     100% { transform: translateY(-8px); }
+}
+
+@keyframes brandGlowPulse {
+    0%, 100% { opacity: 0.45; filter: blur(8px); }
+    50% { opacity: 0.75; filter: blur(10px); }
+}
+
+@keyframes brandDriftCyan {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(40px, -25px); }
+}
+
+@keyframes brandDriftPurple {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-35px, 20px); }
+}
+
+@keyframes brandShimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
 }
 
 /* 13. Responsive Viewports Styling */

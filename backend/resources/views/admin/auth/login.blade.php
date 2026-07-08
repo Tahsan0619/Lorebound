@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login — Lorebound</title>
+    <title>Admin Login - Lorebound</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@700&display=swap" rel="stylesheet">
     <style>
         body { min-height:100vh; display:flex; align-items:center; justify-content:center; background:#07080e; color:#f5f6fa; font-family:Inter,sans-serif; }
@@ -26,9 +26,9 @@
     <form method="POST" action="{{ route('admin.login.submit') }}">
         @csrf
         <label>Email</label>
-        <input type="email" name="email" value="{{ old('email', 'admin@lorebound.test') }}" required>
+        <input type="email" name="email" value="{{ old('email', 'admin@gmail.com') }}" required>
         <label>Password</label>
-        <input type="password" name="password" value="password" required>
+        <input type="password" name="password" value="admin000" required>
         <button type="submit">Sign In</button>
     </form>
 </div>

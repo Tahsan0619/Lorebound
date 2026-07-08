@@ -1,10 +1,10 @@
 /* ==========================================================================
-   LOREBOUND GAME MECHANIC RENDERERS (games.js) — DEEP ENGAGEMENT EDITION
-   Multi-phase interactive templates (~30+ min sessions):
-   1. TimelineBuilder  — Build → Detective → Sequence Mastery → Era Finale
-   2. ProcessLoop      — Navigate → Reorder → Parameter Sim → Chain Lock
-   3. CauseEffectChain — Link → Ripple → Order Chain → Inference Boss
-   4. ComparisonSorter — Sort → Trap Hunt → Memory Match → Policy Debate
+   LOREBOUND GAME MECHANIC RENDERERS (games.js) | ULTRA ENGAGEMENT EDITION
+   Multi-phase interactive templates with 5 phases per mechanic:
+   1. TimelineBuilder  | Build > Detective > Sequence > Finale > Lightning Blitz
+   2. ProcessLoop      | Navigate > Reorder > Simulate > Chain > Rapid Fire
+   3. CauseEffectChain | Link > Ripple > Order > Inference > Domino Predict
+   4. ComparisonSorter | Sort > Trap > Memory > Debate > Category Blitz
    ========================================================================== */
 
 function shuffleArray(array) {
@@ -21,18 +21,88 @@ function pickDistractors(pool, correct, count = 3) {
     return shuffleArray(filtered).slice(0, count);
 }
 
+function gameCorrect(el, streak = 0, colors) {
+    window.LoreboundFX?.celebrateCorrect(el, streak, colors);
+}
+
+function gameWrong(el) {
+    window.LoreboundFX?.celebrateWrong(el);
+}
+
+function getGameVisualContext() {
+    const state = window.AppState || {};
+    return {
+        pdfImages: state.pageImages || [],
+        sceneType: window.LoreboundScenes?.detectType(
+            state.compiledText || state.uploadedText || '',
+            state.activeCategory || '',
+            state.activeMetadata || {}
+        ) || 'history',
+    };
+}
+
+function pdfThumbForIndex(index) {
+    const imgs = window.AppState?.pageImages;
+    if (!imgs?.length || !window.LoreboundPdfMedia) return '';
+    const url = LoreboundPdfMedia.imageForIndex(imgs, index);
+    return url ? `<img class="card-pdf-visual" src="${url}" alt="">` : '';
+}
+
+function mountGameShell(container, className, body, variant, options = {}) {
+    const ctx = { ...getGameVisualContext(), ...options };
+    container.innerHTML = `
+      <div class="${className} game-shell">
+        <div class="game-scene-host" id="game-scene-host"></div>
+        <div class="game-shell-body">${body}</div>
+      </div>`;
+    const shell = container.querySelector('.game-shell');
+    window.LoreboundFX?.mountAmbient(shell, variant);
+    const host = shell.querySelector('#game-scene-host');
+    if (host && window.LoreboundScenes) {
+        shell._sceneInstance = LoreboundScenes.mount(host, ctx.sceneType, { pdfImages: ctx.pdfImages });
+    }
+    shell._pdfImages = ctx.pdfImages;
+    return shell;
+}
+
+function advancePhaseAnimated(game, onEnter) {
+    if (window.LoreboundFX?.phaseTransition) {
+        LoreboundFX.phaseTransition(() => {
+            game.phaseIndex++;
+            if (game.phaseIndex >= game.phases.length) game.onGameComplete(true);
+            else if (onEnter) onEnter();
+            else game.render();
+        });
+    } else {
+        game.phaseIndex++;
+        if (game.phaseIndex >= game.phases.length) game.onGameComplete(true);
+        else if (onEnter) onEnter();
+        else game.render();
+    }
+}
+
+const PHASE_ICONS = {
+    build: 'fa-hammer', detective: 'fa-magnifying-glass', sequence: 'fa-list-ol',
+    finale: 'fa-crown', lightning: 'fa-bolt', navigate: 'fa-compass', reorder: 'fa-arrows-up-down',
+    simulate: 'fa-sliders', chain: 'fa-link', rapidfire: 'fa-fire', link: 'fa-diagram-project',
+    ripple: 'fa-water', order: 'fa-layer-group', inference: 'fa-brain', domino: 'fa-cubes',
+    sort: 'fa-arrow-right-arrow-left', trap: 'fa-spider', memory: 'fa-clone', debate: 'fa-gavel', blitz: 'fa-stopwatch',
+};
+
 /** Shared HUD strip rendered at top of every game phase */
 function renderPhaseHUD(game) {
-  const pct = Math.round((game.phaseIndex / game.phases.length) * 100);
-  return `
+    const phase = game.phases[game.phaseIndex];
+    const pct = Math.round(((game.phaseIndex + 1) / game.phases.length) * 100);
+    const icon = PHASE_ICONS[phase.id] || 'fa-gamepad';
+    return `
     <div class="game-phase-hud glass-panel">
       <div class="phase-hud-row">
-        <span class="phase-badge"><i class="fa-solid fa-layer-group"></i> Phase ${game.phaseIndex + 1}/${game.phases.length}</span>
-        <span class="phase-name">${game.phases[game.phaseIndex].label}</span>
+        <span class="phase-badge"><i class="fa-solid ${icon}"></i> Phase ${game.phaseIndex + 1}/${game.phases.length}</span>
+        <span class="phase-name">${phase.label}</span>
         <span class="streak-badge ${game.streak >= 3 ? 'hot' : ''}"><i class="fa-solid fa-fire"></i> Streak: ${game.streak}</span>
       </div>
       <div class="phase-progress-track"><div class="phase-progress-fill" style="width:${pct}%"></div></div>
-      <p class="phase-instruction">${game.phases[game.phaseIndex].instruction}</p>
+      <p class="phase-instruction">${phase.instruction}</p>
     </div>`;
 }
 
@@ -57,14 +127,14 @@ function bindMCQChoices(container, handler) {
     });
 }
 
-function celebrateAt(el, colors) {
-    if (!window.LoreboundFX) return;
-    const r = el?.getBoundingClientRect();
-    LoreboundFX.confetti(r ? r.left + r.width / 2 : innerWidth / 2, r ? r.top : innerHeight / 3, colors);
+function renderBlitzDots(total, current) {
+    return `<div class="blitz-progress-dots">${Array.from({ length: total }, (_, i) =>
+        `<span class="blitz-dot ${i < current ? 'done' : i === current ? 'active' : ''}"></span>`
+    ).join('')}</div>`;
 }
 
 // --------------------------------------------------------------------------
-// 1. TIMELINE BUILDER — 4 phases per level
+// 1. TIMELINE BUILDER | 5 phases per level
 // --------------------------------------------------------------------------
 class TimelineGame {
     constructor(container, payload, onStepFeedback, onGameComplete) {
@@ -75,10 +145,11 @@ class TimelineGame {
         this.onGameComplete = onGameComplete;
 
         this.phases = [
-            { id: 'build', label: 'Chronology Build', instruction: 'Drag each event into the correct timeline slot. Click a card then a slot on mobile.' },
+            { id: 'build', label: 'Mission Chronology', instruction: 'Deploy each event onto the timeline. Select a card, then tap a glowing slot (or drag on desktop).' },
             { id: 'detective', label: 'Date Detective', instruction: 'Answer chronology questions to prove you understand the sequence.' },
-            { id: 'sequence', label: 'Sequence Mastery', instruction: 'Tap events in chronological order — build the timeline from memory.' },
+            { id: 'sequence', label: 'Sequence Mastery', instruction: 'Tap events in chronological order. Build the timeline from memory.' },
             { id: 'finale', label: 'Era Finale', instruction: 'Place the missing keystone event that bridges two known milestones.' },
+            { id: 'lightning', label: 'Lightning Blitz', instruction: 'Rapid-fire! Match each event to its correct date before time runs out.' },
         ];
         this.phaseIndex = 0;
         this.streak = 0;
@@ -95,6 +166,12 @@ class TimelineGame {
         this.sequencePool = shuffleArray(this.events);
         this.finaleIndex = 0;
         this.finales = this._buildFinales();
+        this.lightningIndex = 0;
+        this.lightningDrills = shuffleArray(this.events.map(evt => {
+            const wrong = pickDistractors(this.events.map(e => e.date), evt.date, 3);
+            const opts = shuffleArray([evt.date, ...wrong]);
+            return { evt, options: opts, correctIndex: opts.indexOf(evt.date) };
+        })).slice(0, Math.min(6, this.events.length));
 
         this.init();
     }
@@ -110,7 +187,7 @@ class TimelineGame {
                 question: `Which event happened immediately BEFORE "${current.title}"?`,
                 options: opts,
                 correctIndex: opts.indexOf(prev.title),
-                explanation: `Correct — "${prev.title}" (${prev.date}) precedes "${current.title}" (${current.date}). ${current.desc}`,
+                explanation: `Correct - "${prev.title}" (${prev.date}) precedes "${current.title}" (${current.date}). ${current.desc}`,
                 sourcePassage: current.sourcePassage,
             });
         }
@@ -182,38 +259,45 @@ class TimelineGame {
         if (phase === 'build') body += this._renderBuild();
         else if (phase === 'detective') body += this._renderDetective();
         else if (phase === 'sequence') body += this._renderSequence();
-        else body += this._renderFinale();
+        else if (phase === 'finale') body += this._renderFinale();
+        else body += this._renderLightning();
 
-        this.container.innerHTML = `<div class="timeline-game-container">${body}</div>`;
+        mountGameShell(this.container, 'timeline-game-container', body, 'timeline');
         this._bindPhaseEvents();
     }
 
     _renderBuild() {
         return `
+          <div class="timeline-mission-board">
           <div class="timeline-track">
             ${this.slots.map(slot => {
                 const placed = this.placedEvents[slot.index];
                 return `
-                  <div class="timeline-slot ${placed ? 'filled' : ''}" data-slot-index="${slot.index}">
+                  <div class="timeline-slot ${placed ? 'filled' : 'deploy-target'}" data-slot-index="${slot.index}">
                     <span class="slot-marker">${slot.label}</span>
                     ${placed ? `
                       <div class="placed-card">
+                        ${pdfThumbForIndex(slot.index)}
                         <span class="event-date-hint">${placed.date}</span>
                         <div class="event-title">${placed.title}</div>
                         <button class="btn-remove-placed" data-remove-slot="${slot.index}"><i class="fa-solid fa-trash-can"></i></button>
-                      </div>` : `<div class="slot-placeholder"><i class="fa-solid fa-arrow-down-to-bracket"></i> Drop Here</div>`}
+                      </div>` : `<div class="slot-placeholder"><i class="fa-solid fa-crosshairs"></i> Deploy Here</div>`}
                   </div>`;
             }).join('')}
           </div>
           <div class="timeline-deck" id="timeline-event-deck">
-            ${this.deck.map(evt => {
+            ${this.deck.map((evt, i) => {
                 if (Object.values(this.placedEvents).some(pe => pe.id === evt.id)) return '';
+                const emoji = evt.emoji || '📅';
                 return `
-                  <div class="event-card ${this.selectedCardId === evt.id ? 'active-drag' : ''}" draggable="true" data-event-id="${evt.id}">
+                  <div class="event-card mission-card ${this.selectedCardId === evt.id ? 'active-drag' : ''}" draggable="true" data-event-id="${evt.id}">
+                    ${pdfThumbForIndex(i)}
+                    <span class="event-emoji">${emoji}</span>
                     <span class="event-date-hint"><i class="fa-solid fa-calendar-days"></i> ${evt.date}</span>
                     <div class="event-title">${evt.title}</div>
                   </div>`;
             }).join('')}
+          </div>
           </div>
           ${this.hintsLeft > 0 ? `<button class="btn-hint glass-panel" id="btn-timeline-hint"><i class="fa-solid fa-lightbulb"></i> Reveal Next Slot (${this.hintsLeft} left)</button>` : ''}`;
     }
@@ -258,12 +342,30 @@ class TimelineGame {
           </div>`;
     }
 
+    _renderLightning() {
+        if (this.lightningIndex >= this.lightningDrills.length) return '<p class="phase-complete-msg"><i class="fa-solid fa-bolt"></i> Lightning Blitz complete!</p>';
+        const d = this.lightningDrills[this.lightningIndex];
+        const remaining = this.lightningDrills.length - this.lightningIndex;
+        return `
+          <div class="lightning-panel glass-panel">
+            ${renderBlitzDots(this.lightningDrills.length, this.lightningIndex)}
+            <div class="blitz-timer ${remaining <= 2 ? 'urgent' : ''}"><i class="fa-solid fa-bolt"></i> ${remaining} left</div>
+            <div class="lightning-card">
+              <span class="event-emoji">${d.evt.emoji || '⚡'}</span>
+              <h3>${d.evt.title}</h3>
+              <p class="sim-desc">${d.evt.desc}</p>
+            </div>
+            ${renderMCQPanel('What is the correct date?', d.options, 'lightning-mcq')}
+          </div>`;
+    }
+
     _bindPhaseEvents() {
         const phase = this.phases[this.phaseIndex].id;
         if (phase === 'build') this._bindBuild();
         else if (phase === 'detective') this._bindDetective();
         else if (phase === 'sequence') this._bindSequence();
-        else this._bindFinale();
+        else if (phase === 'finale') this._bindFinale();
+        else this._bindLightning();
     }
 
     _bindBuild() {
@@ -308,14 +410,14 @@ class TimelineGame {
             if (idx === d.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, d.explanation, d.sourcePassage);
                 this.drillIndex++;
                 if (this.drillIndex >= this.drills.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, `Not quite. Re-read the timeline logic. ${d.explanation}`, d.sourcePassage);
             }
         });
@@ -330,8 +432,8 @@ class TimelineGame {
                     evt._picked = true;
                     this.streak++;
                     btn.classList.add('correct-pick');
-                    celebrateAt(btn, ['#00f2fe', '#9b51e0']);
-                    this.onStepFeedback(true, `Correct order! ${evt.title} (${evt.date}) — ${evt.desc}`, evt.sourcePassage);
+                    gameCorrect(btn, this.streak, ['#00f2fe', '#9b51e0']);
+                    this.onStepFeedback(true, `Correct order! ${evt.title} (${evt.date}) - ${evt.desc}`, evt.sourcePassage);
                     this.sequenceStep++;
                     if (this.sequenceStep >= this.events.length) {
                         this.events.forEach(e => delete e._picked);
@@ -339,7 +441,7 @@ class TimelineGame {
                     } else setTimeout(() => this.render(), 350);
                 } else {
                     this.streak = 0;
-                    LoreboundFX?.shake(btn);
+                    gameWrong(btn);
                     this.onStepFeedback(false, `Wrong sequence. After "${this.sequenceStep ? this.events[this.sequenceStep - 1].title : 'the start'}", the next event is "${expected.title}".`, expected.sourcePassage);
                 }
             });
@@ -352,15 +454,34 @@ class TimelineGame {
             if (idx === f.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, f.explanation, f.sourcePassage);
                 this.finaleIndex++;
                 if (this.finaleIndex >= this.finales.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, `That bridge event doesn't fit. ${f.explanation}`, f.sourcePassage);
+            }
+        });
+    }
+
+    _bindLightning() {
+        bindMCQChoices(this.container, (idx, card) => {
+            const d = this.lightningDrills[this.lightningIndex];
+            if (idx === d.correctIndex) {
+                this.streak++;
+                card.classList.add('correct-pick');
+                gameCorrect(card, this.streak, ['#ffeb3b', '#00f2fe', '#9b51e0']);
+                this.onStepFeedback(true, `⚡ ${d.evt.title} - ${d.evt.date}. ${d.evt.desc}`, d.evt.sourcePassage);
+                this.lightningIndex++;
+                if (this.lightningIndex >= this.lightningDrills.length) setTimeout(() => this._advancePhase(), 700);
+                else setTimeout(() => this.render(), 300);
+            } else {
+                this.streak = 0;
+                gameWrong(card);
+                this.onStepFeedback(false, `Too slow! ${d.evt.title} occurred on ${d.evt.date}.`, d.evt.sourcePassage);
             }
         });
     }
@@ -369,32 +490,38 @@ class TimelineGame {
         const eventObj = this.events.find(e => e.id === eventId);
         if (!eventObj) return;
         const slotIdxInt = parseInt(slotIndex, 10);
+        const cardEl = this.container.querySelector(`[data-event-id="${eventId}"]`);
+        const slotEl = this.container.querySelector(`[data-slot-index="${slotIndex}"]`);
+        const shell = this.container.querySelector('.game-shell');
         if (eventObj.order === slotIdxInt) {
+            if (cardEl && slotEl && window.LoreboundScenes) {
+                LoreboundScenes.playDeploy(cardEl, slotEl, shell || this.container);
+            }
             this.placedEvents[slotIndex] = eventObj;
             this.streak++;
-            const slot = this.container.querySelector(`[data-slot-index="${slotIndex}"]`);
-            slot?.classList.add('correct-flash');
-            celebrateAt(slot);
-            this.onStepFeedback(true, `Correct! ${eventObj.title} occurred in ${eventObj.date}. ${eventObj.desc}`, eventObj.sourcePassage);
-            if (Object.keys(this.placedEvents).length === this.events.length) setTimeout(() => this._advancePhase(), 800);
-            else this.render();
+            slotEl?.classList.add('correct-flash');
+            gameCorrect(slotEl, this.streak);
+            LoreboundScenes?.pulse(shell || this.container);
+            this.onStepFeedback(true, `Deployed! ${eventObj.title} occurred in ${eventObj.date}. ${eventObj.desc}`, eventObj.sourcePassage);
+            if (Object.keys(this.placedEvents).length === this.events.length) setTimeout(() => this._advancePhase(), 900);
+            else setTimeout(() => this.render(), 450);
         } else {
             this.streak = 0;
-            const card = this.container.querySelector(`[data-event-id="${eventId}"]`);
-            LoreboundFX?.shake(card);
-            this.onStepFeedback(false, `Incorrect. ${eventObj.title} (${eventObj.date}) does not belong in Era ${slotIdxInt + 1}.`, eventObj.sourcePassage);
+            gameWrong(cardEl);
+            this.onStepFeedback(false, `Wrong position. ${eventObj.title} (${eventObj.date}) does not belong in Era ${slotIdxInt + 1}.`, eventObj.sourcePassage);
         }
     }
 
     _advancePhase() {
-        this.phaseIndex++;
-        if (this.phaseIndex >= this.phases.length) this.onGameComplete(true);
-        else this._enterPhase();
+        advancePhaseAnimated(this, () => {
+            if (this.phases[this.phaseIndex].id === 'lightning') this.lightningIndex = 0;
+            this._enterPhase();
+        });
     }
 }
 
 // --------------------------------------------------------------------------
-// 2. PROCESS LOOP — 4 phases per level
+// 2. PROCESS LOOP - 4 phases per level
 // --------------------------------------------------------------------------
 class ProcessGame {
     constructor(container, payload, onStepFeedback, onGameComplete) {
@@ -408,6 +535,7 @@ class ProcessGame {
             { id: 'reorder', label: 'Sequence Reorder', instruction: 'Drag stages into the correct cyclic order (top = start).' },
             { id: 'simulate', label: 'Parameter Simulation', instruction: 'Tune the system dial to the correct operating condition for each stage.' },
             { id: 'chain', label: 'Chain Lock', instruction: 'Connect each stage output to the correct next-stage input.' },
+            { id: 'rapidfire', label: 'Rapid Fire', instruction: 'True or False - how fast can you validate each stage claim?' },
         ];
         this.phaseIndex = 0;
         this.streak = 0;
@@ -416,6 +544,15 @@ class ProcessGame {
         this.simIndex = 0;
         this.chainIndex = 0;
         this.chainLinks = this._buildChainLinks();
+        this.rapidIndex = 0;
+        this.rapidDrills = shuffleArray(this.stages.map(s => ({
+            stage: s,
+            statement: `${s.title}: ${s.desc}`,
+            isTrue: true,
+        }))).concat(shuffleArray(this.stages.map(s => {
+            const other = pickDistractors(this.stages, s, 1)[0];
+            return other ? { stage: s, statement: `${other.title} happens before ${s.title} in this cycle.`, isTrue: false } : null;
+        }).filter(Boolean))).slice(0, Math.min(8, this.stages.length * 2));
 
         this.init();
     }
@@ -431,7 +568,7 @@ class ProcessGame {
                 question: `After "${stage.title}", which stage receives the flow next?`,
                 options,
                 correctIndex: options.indexOf(next.title),
-                explanation: `Correct — ${stage.title} leads into ${next.title}. ${next.desc}`,
+                explanation: `Correct - ${stage.title} leads into ${next.title}. ${next.desc}`,
                 sourcePassage: next.sourcePassage,
             };
         });
@@ -445,9 +582,10 @@ class ProcessGame {
         if (phase === 'navigate') body += this._renderNavigate();
         else if (phase === 'reorder') body += this._renderReorder();
         else if (phase === 'simulate') body += this._renderSimulate();
-        else body += this._renderChain();
+        else if (phase === 'chain') body += this._renderChain();
+        else body += this._renderRapidfire();
 
-        this.container.innerHTML = `<div class="process-game-container">${body}</div>`;
+        mountGameShell(this.container, 'process-game-container', body, 'process');
         this._bindPhaseEvents();
     }
 
@@ -464,6 +602,7 @@ class ProcessGame {
                 return `<div class="process-node ${cls}" style="left:${x}px;top:${y}px" title="${stage.title}">${idx < this.currentActiveStage ? '<i class="fa-solid fa-check"></i>' : idx + 1}</div>`;
             }).join('')}
             <div class="process-center-card">
+              ${pdfThumbForIndex(this.currentActiveStage)}
               <span class="title">Active Stage</span>
               <span class="body">${current.title}</span>
             </div>
@@ -474,7 +613,7 @@ class ProcessGame {
     _renderReorder() {
         return `
           <div class="reorder-board glass-panel">
-            <p class="reorder-hint"><i class="fa-solid fa-arrows-up-down"></i> Drag to reorder — position 1 is the cycle entry point.</p>
+            <p class="reorder-hint"><i class="fa-solid fa-arrows-up-down"></i> Drag to reorder - position 1 is the cycle entry point.</p>
             <div class="reorder-list" id="process-reorder-list">
               ${this.reorderList.map((s, i) => `
                 <div class="reorder-item" draggable="true" data-stage-id="${s.id}" data-current-idx="${i}">
@@ -521,12 +660,28 @@ class ProcessGame {
           </div>`;
     }
 
+    _renderRapidfire() {
+        if (this.rapidIndex >= this.rapidDrills.length) return '<p class="phase-complete-msg"><i class="fa-solid fa-fire"></i> Rapid Fire complete!</p>';
+        const d = this.rapidDrills[this.rapidIndex];
+        return `
+          <div class="rapidfire-panel glass-panel">
+            ${renderBlitzDots(this.rapidDrills.length, this.rapidIndex)}
+            <div class="blitz-timer"><i class="fa-solid fa-fire"></i> Claim ${this.rapidIndex + 1}/${this.rapidDrills.length}</div>
+            <p class="mcq-question" style="text-align:center;font-size:1.05rem;">"${d.statement}"</p>
+            <div class="rapidfire-grid">
+              <button class="rapidfire-btn" data-answer="true"><i class="fa-solid fa-check"></i> TRUE</button>
+              <button class="rapidfire-btn" data-answer="false"><i class="fa-solid fa-xmark"></i> FALSE</button>
+            </div>
+          </div>`;
+    }
+
     _bindPhaseEvents() {
         const phase = this.phases[this.phaseIndex].id;
         if (phase === 'navigate') this._bindNavigate();
         else if (phase === 'reorder') this._bindReorder();
         else if (phase === 'simulate') this._bindSimulate();
-        else this._bindChain();
+        else if (phase === 'chain') this._bindChain();
+        else this._bindRapidfire();
     }
 
     _bindNavigate() {
@@ -535,14 +690,14 @@ class ProcessGame {
             if (idx === stage.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card, ['#ff4081', '#f50057']);
-                this.onStepFeedback(true, `Correct! ${stage.title} — ${stage.desc}`, stage.sourcePassage);
+                gameCorrect(card, this.streak, ['#ff4081', '#f50057']);
+                this.onStepFeedback(true, `Correct! ${stage.title} - ${stage.desc}`, stage.sourcePassage);
                 this.currentActiveStage++;
                 if (this.currentActiveStage >= this.stages.length) setTimeout(() => { this.currentActiveStage = 0; this._advancePhase(); }, 800);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, `Incorrect. ${stage.rationale}`, stage.sourcePassage);
             }
         });
@@ -569,12 +724,12 @@ class ProcessGame {
             const correct = this.stages.every((s, i) => ids[i] === s.id);
             if (correct) {
                 this.streak++;
-                celebrateAt(list);
+                gameCorrect(list, this.streak);
                 this.onStepFeedback(true, 'Perfect cycle order! You mapped the full process sequence.', this.stages[0].sourcePassage);
                 setTimeout(() => this._advancePhase(), 700);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(list);
+                gameWrong(list);
                 this.onStepFeedback(false, 'Sequence incorrect. Trace the process from its natural entry point through each transition.', this.stages[0].sourcePassage);
             }
         });
@@ -590,14 +745,14 @@ class ProcessGame {
             const val = parseInt(dial.value, 10);
             if (val >= params.targetMin && val <= params.targetMax) {
                 this.streak++;
-                celebrateAt(dial);
+                gameCorrect(dial, this.streak);
                 this.onStepFeedback(true, `Parameters stable for ${stage.title}! ${stage.desc}`, stage.sourcePassage);
                 this.simIndex++;
                 if (this.simIndex >= this.stages.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(dial);
+                gameWrong(dial);
                 this.onStepFeedback(false, `Out of optimal range. Adjust ${params.label} to ${params.targetMin}–${params.targetMax}% for ${stage.title}.`, stage.sourcePassage);
             }
         });
@@ -609,33 +764,56 @@ class ProcessGame {
             if (idx === link.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, link.explanation, link.sourcePassage);
                 this.chainIndex++;
                 if (this.chainIndex >= this.chainLinks.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, `Wrong connection. ${link.explanation}`, link.sourcePassage);
             }
         });
     }
 
+    _bindRapidfire() {
+        this.container.querySelectorAll('.rapidfire-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const d = this.rapidDrills[this.rapidIndex];
+                const answer = btn.dataset.answer === 'true';
+                if (answer === d.isTrue) {
+                    this.streak++;
+                    btn.classList.add('correct');
+                    gameCorrect(btn, this.streak, ['#ff4081', '#f50057']);
+                    this.onStepFeedback(true, `Correct! ${d.stage.title} - ${d.stage.rationale}`, d.stage.sourcePassage);
+                    this.rapidIndex++;
+                    if (this.rapidIndex >= this.rapidDrills.length) setTimeout(() => this._advancePhase(), 600);
+                    else setTimeout(() => this.render(), 350);
+                } else {
+                    this.streak = 0;
+                    btn.classList.add('wrong');
+                    gameWrong(btn);
+                    this.onStepFeedback(false, `Wrong! ${d.stage.rationale}`, d.stage.sourcePassage);
+                }
+            });
+        });
+    }
+
     _advancePhase() {
-        this.phaseIndex++;
-        if (this.phaseIndex >= this.phases.length) this.onGameComplete(true);
-        else {
-            if (this.phases[this.phaseIndex].id === 'reorder') this.reorderList = shuffleArray(this.stages.map(s => ({ ...s })));
-            if (this.phases[this.phaseIndex].id === 'simulate') this.simIndex = 0;
-            if (this.phases[this.phaseIndex].id === 'chain') this.chainIndex = 0;
+        advancePhaseAnimated(this, () => {
+            const id = this.phases[this.phaseIndex].id;
+            if (id === 'reorder') this.reorderList = shuffleArray(this.stages.map(s => ({ ...s })));
+            if (id === 'simulate') this.simIndex = 0;
+            if (id === 'chain') this.chainIndex = 0;
+            if (id === 'rapidfire') this.rapidIndex = 0;
             this.render();
-        }
+        });
     }
 }
 
 // --------------------------------------------------------------------------
-// 3. CAUSE-EFFECT CHAIN — 4 phases per level
+// 3. CAUSE-EFFECT CHAIN - 4 phases per level
 // --------------------------------------------------------------------------
 class CauseEffectGame {
     constructor(container, payload, onStepFeedback, onGameComplete) {
@@ -649,6 +827,7 @@ class CauseEffectGame {
             { id: 'ripple', label: 'Ripple Predictor', instruction: 'Given a trigger, predict the direct ecological effect.' },
             { id: 'order', label: 'Chain Assembly', instruction: 'Arrange cause-effect pairs in the order they unfold in the system.' },
             { id: 'inference', label: 'Inference Boss', instruction: 'What happens if an intermediate link in the chain is removed?' },
+            { id: 'domino', label: 'Domino Predict', instruction: 'Watch the causal chain fall - predict the next downstream effect!' },
         ];
         this.phaseIndex = 0;
         this.streak = 0;
@@ -667,6 +846,13 @@ class CauseEffectGame {
         this.orderList = shuffleArray(this.chains.map(c => ({ ...c })));
         this.inferenceIndex = 0;
         this.inferences = this._buildInferences();
+        this.dominoIndex = 0;
+        this.dominoDrills = this.chains.slice(0, -1).map((c, i) => {
+            const next = this.chains[i + 1];
+            const wrong = pickDistractors(this.chains.map(x => x.effect), next.effect, 3);
+            const opts = shuffleArray([next.effect, ...wrong]);
+            return { chain: c, next, options: opts, correctIndex: opts.indexOf(next.effect) };
+        });
 
         this.init();
     }
@@ -700,9 +886,10 @@ class CauseEffectGame {
         if (phase === 'link') body += this._renderLink();
         else if (phase === 'ripple') body += this._renderRipple();
         else if (phase === 'order') body += this._renderOrder();
-        else body += this._renderInference();
+        else if (phase === 'inference') body += this._renderInference();
+        else body += this._renderDomino();
 
-        this.container.innerHTML = `<div class="timeline-game-container">${body}</div>`;
+        mountGameShell(this.container, 'timeline-game-container', body, 'cause');
         this._bindPhaseEvents();
     }
 
@@ -713,7 +900,7 @@ class CauseEffectGame {
               <div class="column-header"><i class="fa-solid fa-bolt"></i> Source Cause</div>
               ${this.shuffledCauses.map(c => {
                 if (Object.values(this.matchedEffects).some(m => m.id === c.id)) return `<div class="cause-card matched-ghost">${c.cause}</div>`;
-                return `<div class="cause-card ${this.selectedCauseId === c.id ? 'active-drag' : ''}" draggable="true" data-cause-id="${c.id}">${c.cause}</div>`;
+                return `<div class="cause-card ${this.selectedCauseId === c.id ? 'active-drag' : ''}" draggable="true" data-cause-id="${c.id}">${pdfThumbForIndex(this.chains.indexOf(c))}<span>${c.cause}</span></div>`;
               }).join('')}
             </div>
             <div class="cause-effect-column">
@@ -768,12 +955,30 @@ class CauseEffectGame {
         return `<div class="inference-panel glass-panel">${renderMCQPanel(inf.question, inf.options, 'inference-mcq')}</div>`;
     }
 
+    _renderDomino() {
+        if (!this.dominoDrills.length || this.dominoIndex >= this.dominoDrills.length) return '<p class="phase-complete-msg"><i class="fa-solid fa-cubes"></i> Domino chain mastered!</p>';
+        const d = this.dominoDrills[this.dominoIndex];
+        return `
+          <div class="domino-panel glass-panel">
+            ${renderBlitzDots(this.dominoDrills.length, this.dominoIndex)}
+            <div class="domino-chain">
+              ${this.chains.slice(0, this.dominoIndex + 1).map((c, i) => `
+                <div class="domino-piece fallen" style="animation-delay:${i * 0.1}s"><strong>${c.cause}</strong> → ${c.effect}</div>
+                ${i < this.dominoIndex ? '<i class="fa-solid fa-chevron-right" style="opacity:0.4"></i>' : ''}
+              `).join('')}
+              <div class="domino-piece mystery"><i class="fa-solid fa-question"></i> ???</div>
+            </div>
+            ${renderMCQPanel(`After "${d.chain.effect}", what happens next?`, d.options, 'domino-mcq')}
+          </div>`;
+    }
+
     _bindPhaseEvents() {
         const phase = this.phases[this.phaseIndex].id;
         if (phase === 'link') this._bindLink();
         else if (phase === 'ripple') this._bindRipple();
         else if (phase === 'order') this._bindOrder();
-        else this._bindInference();
+        else if (phase === 'inference') this._bindInference();
+        else this._bindDomino();
     }
 
     _bindLink() {
@@ -799,7 +1004,7 @@ class CauseEffectGame {
         if (causeObj.id === effectId) {
             this.matchedEffects[effectId] = causeObj;
             this.streak++;
-            celebrateAt(this.container, ['#26c6da', '#ff9100']);
+            gameCorrect(this.container, this.streak, ['#26c6da', '#ff9100']);
             this.onStepFeedback(true, `Correct! ${causeObj.cause} leads to: ${causeObj.effect}. ${causeObj.rationale}`, causeObj.sourcePassage);
             if (Object.keys(this.matchedEffects).length === this.chains.length) setTimeout(() => this._advancePhase(), 800);
             else this.render();
@@ -816,14 +1021,14 @@ class CauseEffectGame {
             if (idx === r.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, `Correct ripple! ${r.rationale}`, r.sourcePassage);
                 this.rippleIndex++;
                 if (this.rippleIndex >= this.ripples.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, `Wrong effect. ${r.rationale}`, r.sourcePassage);
             }
         });
@@ -850,12 +1055,12 @@ class CauseEffectGame {
             const correct = this.chains.every((c, i) => ids[i] === c.id);
             if (correct) {
                 this.streak++;
-                celebrateAt(list);
+                gameCorrect(list, this.streak);
                 this.onStepFeedback(true, 'Chain order locked! You traced the full causal cascade.', this.chains[0].sourcePassage);
                 setTimeout(() => this._advancePhase(), 700);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(list);
+                gameWrong(list);
                 this.onStepFeedback(false, 'Order incorrect. Follow the chain from the initial trigger through each downstream effect.', this.chains[0].sourcePassage);
             }
         });
@@ -867,35 +1072,54 @@ class CauseEffectGame {
             if (idx === inf.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, inf.explanation, inf.sourcePassage);
                 this.inferenceIndex++;
                 if (this.inferenceIndex >= this.inferences.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, inf.explanation, inf.sourcePassage);
             }
         });
     }
 
+    _bindDomino() {
+        bindMCQChoices(this.container, (idx, card) => {
+            const d = this.dominoDrills[this.dominoIndex];
+            if (idx === d.correctIndex) {
+                this.streak++;
+                card.classList.add('correct-pick');
+                gameCorrect(card, this.streak, ['#ff9100', '#26c6da']);
+                this.onStepFeedback(true, `Domino falls! ${d.next.cause} → ${d.next.effect}. ${d.next.rationale}`, d.next.sourcePassage);
+                this.dominoIndex++;
+                if (this.dominoIndex >= this.dominoDrills.length) setTimeout(() => this._advancePhase(), 700);
+                else setTimeout(() => this.render(), 450);
+            } else {
+                this.streak = 0;
+                gameWrong(card);
+                this.onStepFeedback(false, `Chain broken. The next effect is: ${d.next.effect}`, d.next.sourcePassage);
+            }
+        });
+    }
+
     _advancePhase() {
-        this.phaseIndex++;
-        if (this.phaseIndex >= this.phases.length) this.onGameComplete(true);
-        else {
-            if (this.phases[this.phaseIndex].id === 'link') {
+        advancePhaseAnimated(this, () => {
+            const id = this.phases[this.phaseIndex].id;
+            if (id === 'link') {
                 this.shuffledCauses = shuffleArray(this.chains);
                 this.matchedEffects = {};
             }
-            if (this.phases[this.phaseIndex].id === 'order') this.orderList = shuffleArray(this.chains.map(c => ({ ...c })));
+            if (id === 'order') this.orderList = shuffleArray(this.chains.map(c => ({ ...c })));
+            if (id === 'domino') this.dominoIndex = 0;
             this.render();
-        }
+        });
     }
 }
 
 // --------------------------------------------------------------------------
-// 4. COMPARISON SORTER — 4 phases (full deck)
+// 4. COMPARISON SORTER - 4 phases (full deck)
 // --------------------------------------------------------------------------
 class ComparisonGame {
     constructor(container, payload, onStepFeedback, onGameComplete) {
@@ -907,9 +1131,10 @@ class ComparisonGame {
 
         this.phases = [
             { id: 'sort', label: 'Attribute Sort', instruction: 'Swipe or click to sort each attribute into the correct category.' },
-            { id: 'trap', label: 'Trap Hunter', instruction: 'Three statements appear — identify the one that does NOT belong.' },
+            { id: 'trap', label: 'Trap Hunter', instruction: 'Three statements appear - identify the one that does NOT belong.' },
             { id: 'memory', label: 'Memory Match', instruction: 'Flip cards and match each attribute to its category.' },
             { id: 'debate', label: 'Policy Debate', instruction: 'Given a scenario, choose which category\'s framework applies.' },
+            { id: 'blitz', label: 'Category Blitz', instruction: 'Lightning round! Rapidly classify each attribute to the correct camp.' },
         ];
         this.phaseIndex = 0;
         this.streak = 0;
@@ -928,6 +1153,8 @@ class ComparisonGame {
         this.memoryLock = false;
         this.debateIndex = 0;
         this.debates = this._buildDebates();
+        this.blitzDeck = shuffleArray(this.allCards).slice(0, Math.min(8, this.allCards.length));
+        this.blitzIndex = 0;
 
         this.init();
     }
@@ -971,9 +1198,9 @@ class ComparisonGame {
         return this.allCards.slice(0, Math.min(6, this.allCards.length)).map(card => {
             const wrong = this.categories.find(c => c !== card.category);
             const scenarios = [
-                `A policymaker cites: "${card.text}" — which energy framework does this support?`,
-                `In a classroom debate, a student claims: "${card.text}" — which camp is correct?`,
-                `Your briefing note includes: "${card.text}" — classify this claim.`,
+                `A policymaker cites: "${card.text}" - which energy framework does this support?`,
+                `In a classroom debate, a student claims: "${card.text}" - which camp is correct?`,
+                `Your briefing note includes: "${card.text}" - classify this claim.`,
             ];
             return {
                 question: scenarios[Math.floor(Math.random() * scenarios.length)],
@@ -1004,9 +1231,10 @@ class ComparisonGame {
         if (phase === 'sort') body += this._renderSort();
         else if (phase === 'trap') body += this._renderTrap();
         else if (phase === 'memory') body += this._renderMemory();
-        else body += this._renderDebate();
+        else if (phase === 'debate') body += this._renderDebate();
+        else body += this._renderBlitz();
 
-        this.container.innerHTML = `<div class="comparison-container">${body}</div>`;
+        mountGameShell(this.container, 'comparison-container', body, 'comparison');
         this._bindPhaseEvents();
     }
 
@@ -1025,6 +1253,7 @@ class ComparisonGame {
           <div class="sort-round-badge">Round ${this.sortRound + 1}/${this.maxSortRounds} • Card ${localIdx + 1}/${roundDeck.length}</div>
           <div class="sorter-deck-area">
             <div class="sorter-card active" id="active-sorter-card">
+              ${pdfThumbForIndex(this.currentCardIndex)}
               <div class="sorter-card-content"><h4>Attribute</h4><p>${current.text}</p></div>
             </div>
             ${next ? `<div class="sorter-card back"><div class="sorter-card-content"><h4>Attribute</h4><p>${next.text}</p></div></div>` : ''}
@@ -1078,12 +1307,36 @@ class ComparisonGame {
         return `<div class="debate-panel glass-panel">${renderMCQPanel(d.question, d.options, 'debate-mcq')}</div>`;
     }
 
+    _renderBlitz() {
+        if (this.blitzIndex >= this.blitzDeck.length) return '<p class="phase-complete-msg"><i class="fa-solid fa-stopwatch"></i> Category Blitz complete!</p>';
+        const card = this.blitzDeck[this.blitzIndex];
+        return `
+          <div class="blitz-panel glass-panel">
+            ${renderBlitzDots(this.blitzDeck.length, this.blitzIndex)}
+            <div class="blitz-timer"><i class="fa-solid fa-stopwatch"></i> Blitz ${this.blitzIndex + 1}/${this.blitzDeck.length}</div>
+            <div class="lightning-card">
+              <span class="event-emoji">${card.emoji || '⚡'}</span>
+              <p style="font-size:1.05rem;">${card.text}</p>
+            </div>
+            <div class="spectrum-bar"><div class="spectrum-marker" style="left:50%"></div></div>
+            <div class="sorter-buckets-row">
+              <button class="sorter-bucket-btn blitz-bucket" data-category="${this.categories[0]}">
+                <i class="fa-solid fa-bolt bucket-icon"></i><span class="bucket-name">${this.categories[0]}</span>
+              </button>
+              <button class="sorter-bucket-btn blitz-bucket" data-category="${this.categories[1]}">
+                <i class="fa-solid fa-bolt bucket-icon"></i><span class="bucket-name">${this.categories[1]}</span>
+              </button>
+            </div>
+          </div>`;
+    }
+
     _bindPhaseEvents() {
         const phase = this.phases[this.phaseIndex].id;
         if (phase === 'sort') this._bindSort();
         else if (phase === 'trap') this._bindTrap();
         else if (phase === 'memory') this._bindMemory();
-        else this._bindDebate();
+        else if (phase === 'debate') this._bindDebate();
+        else this._bindBlitz();
     }
 
     _bindSort() {
@@ -1120,10 +1373,11 @@ class ComparisonGame {
             const correct = selectedCategory === currentCard.category;
             if (correct) {
                 this.streak++;
-                celebrateAt(cardEl, ['#69f0ae', '#00e676']);
+                gameCorrect(cardEl, this.streak, ['#69f0ae', '#00e676']);
                 this.onStepFeedback(true, `Correct! ${currentCard.text} → ${currentCard.category}. ${currentCard.rationale}`, currentCard.sourcePassage);
             } else {
                 this.streak = 0;
+                gameWrong(cardEl);
                 this.onStepFeedback(false, `Incorrect. "${currentCard.text}" belongs to ${currentCard.category}. ${currentCard.rationale}`, currentCard.sourcePassage);
             }
             this.currentCardIndex++;
@@ -1143,14 +1397,14 @@ class ComparisonGame {
                 if (chosen === t.trapText) {
                     this.streak++;
                     btn.classList.add('correct-pick');
-                    celebrateAt(btn);
+                    gameCorrect(btn, this.streak);
                     this.onStepFeedback(true, `Trap spotted! ${t.explanation}`, t.sourcePassage);
                     this.trapIndex++;
                     if (this.trapIndex >= this.traps.length) setTimeout(() => this._advancePhase(), 700);
                     else setTimeout(() => this.render(), 400);
                 } else {
                     this.streak = 0;
-                    LoreboundFX?.shake(btn);
+                    gameWrong(btn);
                     this.onStepFeedback(false, `That's a valid ${t.correctCategory} claim. Find the imposter. ${t.explanation}`, t.sourcePassage);
                 }
             });
@@ -1173,12 +1427,12 @@ class ComparisonGame {
                             this.memoryMatched.add(a.id);
                             this.memoryMatched.add(b.id);
                             this.streak++;
-                            celebrateAt(btn);
+                            gameCorrect(btn, this.streak);
                             this.onStepFeedback(true, `Match found! ${a.rationale}`, a.sourcePassage);
                             if (this.memoryMatched.size >= this.memoryPairs.length) setTimeout(() => this._advancePhase(), 700);
                         } else if (a.id !== b.id) {
                             this.streak = 0;
-                            this.onStepFeedback(false, `No match — try again. ${a.rationale}`, a.sourcePassage);
+                            this.onStepFeedback(false, `No match - try again. ${a.rationale}`, a.sourcePassage);
                         }
                         this.memoryFlipped = [];
                         this.memoryLock = false;
@@ -1195,29 +1449,53 @@ class ComparisonGame {
             if (idx === d.correctIndex) {
                 this.streak++;
                 card.classList.add('correct-pick');
-                celebrateAt(card);
+                gameCorrect(card, this.streak);
                 this.onStepFeedback(true, d.explanation, d.sourcePassage);
                 this.debateIndex++;
                 if (this.debateIndex >= this.debates.length) setTimeout(() => this._advancePhase(), 700);
                 else setTimeout(() => this.render(), 400);
             } else {
                 this.streak = 0;
-                LoreboundFX?.shake(card);
+                gameWrong(card);
                 this.onStepFeedback(false, d.explanation, d.sourcePassage);
             }
         });
     }
 
+    _bindBlitz() {
+        this.container.querySelectorAll('.blitz-bucket').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const card = this.blitzDeck[this.blitzIndex];
+                const selected = btn.dataset.category;
+                if (selected === card.category) {
+                    this.streak++;
+                    gameCorrect(btn, this.streak, ['#69f0ae', '#ffeb3b']);
+                    this.onStepFeedback(true, `Blitz hit! ${card.text} → ${card.category}`, card.sourcePassage);
+                    this.blitzIndex++;
+                    if (this.blitzIndex >= this.blitzDeck.length) setTimeout(() => this._advancePhase(), 600);
+                    else setTimeout(() => this.render(), 280);
+                } else {
+                    this.streak = 0;
+                    gameWrong(btn);
+                    this.onStepFeedback(false, `"${card.text}" belongs to ${card.category}. ${card.rationale}`, card.sourcePassage);
+                }
+            });
+        });
+    }
+
     _advancePhase() {
-        this.phaseIndex++;
-        if (this.phaseIndex >= this.phases.length) this.onGameComplete(true);
-        else {
-            if (this.phases[this.phaseIndex].id === 'sort') {
+        advancePhaseAnimated(this, () => {
+            const id = this.phases[this.phaseIndex].id;
+            if (id === 'sort') {
                 this.currentCardIndex = 0;
                 this.sortRound = 0;
             }
+            if (id === 'blitz') {
+                this.blitzIndex = 0;
+                this.blitzDeck = shuffleArray(this.allCards).slice(0, Math.min(8, this.allCards.length));
+            }
             this.render();
-        }
+        });
     }
 
     addEventListeners() { this._bindPhaseEvents(); }

@@ -16,6 +16,7 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="animations.css">
+    <link rel="stylesheet" href="game-enhance.css">
 </head>
 <body>
     <div class="glow-bg-elements">
@@ -29,7 +30,7 @@
         <header class="app-header">
             <div class="brand">
                 <div class="logo-icon">
-                    <i class="fa-solid fa-compass-drafting"></i>
+                    <img class="logo-mark" src="Logo-Lorebound.png" alt="Lorebound logo">
                     <div class="logo-glow"></div>
                 </div>
                 <div class="brand-text">
@@ -74,7 +75,7 @@
                                 <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
                                 <p class="primary-text">Drag & drop your textbook chapter PDF</p>
                                 <p class="secondary-text">or <span class="browse-link">browse files</span></p>
-                                <p class="file-limit">Standard PDF texts up to 10MB</p>
+                                <p class="file-limit" id="source-limits-label">Max 10 PDF pages · 2,000 words · 12,000 characters</p>
                             </div>
                             <div class="file-selected-status hidden" id="file-info-container">
                                 <div class="file-details">
@@ -100,12 +101,26 @@
                         <div class="compiler-settings-panel">
                             <h4><i class="fa-solid fa-sliders"></i> Compiler Directives</h4>
                             <div class="settings-grid">
+                                <div class="setting-item setting-item-full">
+                                    <label for="topic-name-input">Topic Name</label>
+                                    <input type="text" id="topic-name-input" maxlength="120" placeholder="Auto-detected from your content if left blank (e.g. The Water Cycle)" />
+                                </div>
                                 <div class="setting-item">
                                     <label for="setting-model">Foundation Model</label>
                                     <select id="setting-model">
-                                        <option value="llama3-70b" selected>Llama 3.1 70B (Groq Cloud)</option>
-                                        <option value="llama3-8b">Llama 3.1 8B (Low Latency)</option>
-                                        <option value="gemma2-9b">Gemma 2 9B (Google Open Weights)</option>
+                                        <option value="auto" selected>Auto (All Available Text Models)</option>
+                                        <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile</option>
+                                        <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant</option>
+                                        <option value="openai/gpt-oss-120b">GPT-OSS 120B</option>
+                                        <option value="openai/gpt-oss-20b">GPT-OSS 20B</option>
+                                        <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B</option>
+                                    </select>
+                                </div>
+                                <div class="setting-item">
+                                    <label for="setting-study-depth">Study Depth</label>
+                                    <select id="setting-study-depth">
+                                        <option value="deep" selected>More explanation, fewer subtopics (4–8)</option>
+                                        <option value="broad">More subtopics, shorter notes (8–15)</option>
                                     </select>
                                 </div>
                                 <div class="setting-item">
@@ -129,11 +144,11 @@
                     <div class="glass-panel samples-card">
                         <div class="card-header">
                             <span class="panel-icon"><i class="fa-solid fa-cube"></i></span>
-                            <h3>Pre-loaded Curricular Demos</h3>
+                            <h3>Playable Curriculum Games</h3>
                         </div>
-                        <p class="samples-desc">Select a vetted sample containing diverse structural patterns to see the compiler select and generate the correct game mechanics instantly.</p>
+                        <p class="samples-desc">Four built-in curriculum games plus any topics you compile. All appear below and stay playable.</p>
                         
-                        <div class="samples-list">
+                        <div class="samples-list" id="samples-list">
                             <!-- Sample 1: Sequential -->
                             <div class="sample-item-card" data-sample="1">
                                 <div class="sample-info">
@@ -312,12 +327,12 @@
                         <div class="narrative-overlay" id="narrative-intro-overlay">
                             <div class="glass-panel narrative-content">
                                 <div class="narrative-glow"></div>
-                                <span class="narrative-badge"><i class="fa-solid fa-book-open"></i> Historical Context</span>
+                                <span class="narrative-badge" id="narrative-badge"><i class="fa-solid fa-graduation-cap"></i> Learning First</span>
                                 <h2 id="narrative-title">The Path to Freedom</h2>
-                                <p id="narrative-text">In 1971, East Pakistan embarked on a heroic journey to establish the independent nation of Bangladesh. Put the critical milestones in order to map out the events that led to independence.</p>
+                                <p id="narrative-text">Before the challenge begins, you'll explore every concept interactively: flashcards, comprehension checks, and connection puzzles. Master the material, then unlock the full game arena.</p>
                                 <button class="btn btn-primary" id="btn-start-gameplay">
-                                    <span>Begin Interactive Mission</span>
-                                    <i class="fa-solid fa-gamepad"></i>
+                                    <span id="btn-start-label">Begin Learning Journey</span>
+                                    <i class="fa-solid fa-book-open" id="btn-start-icon"></i>
                                 </button>
                             </div>
                         </div>
@@ -520,7 +535,14 @@
     </script>
     
     <!-- JavaScript Application Modules -->
+    <script src="limits.js"></script>
+    <script src="pdf-media.js"></script>
+    <script src="scenes.js"></script>
     <script src="games.js"></script>
+    <script src="representations.js"></script>
+    <script src="book-reader.js"></script>
+    <script src="assessments.js"></script>
+    <script src="understand.js"></script>
     <script src="api.js"></script>
     <script src="fx.js"></script>
     <script src="app.js"></script>

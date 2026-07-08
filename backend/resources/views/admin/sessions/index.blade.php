@@ -8,12 +8,12 @@
         <tbody>
         @foreach($sessions as $s)
             <tr>
-                <td>{{ $s->compilation?->source_title ?? '—' }}</td>
+                <td>{{ $s->compilation?->source_title ?? '-' }}</td>
                 <td>{{ number_format($s->score) }}</td>
                 <td>{{ $s->accuracy }}%</td>
-                <td>{{ $s->grade ?? '—' }}</td>
+                <td>{{ $s->grade ?? '-' }}</td>
                 <td>{{ gmdate('i:s', $s->time_elapsed) }}</td>
-                <td>{{ $s->completed_at?->diffForHumans() ?? '—' }}</td>
+                <td>{{ $s->completed_at?->diffForHumans() ?? '-' }}</td>
             </tr>
         @endforeach
         </tbody>
