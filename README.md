@@ -112,9 +112,8 @@ php artisan serve
 
 | URL | Description |
 |-----|-------------|
-| http://127.0.0.1:8000/app/ | Main frontend (compiler + games) |
-| http://127.0.0.1:8000/admin | Admin panel (dashboard, samples, compilations, sessions) |
-| http://127.0.0.1:8000/api/v1/health | API health check |
+| http://lorebound.babuntooacademy.com/app/ | Main frontend (compiler + games) |
+| http://lorebound.babuntooacademy.com/admin | Admin panel (dashboard, samples, compilations, sessions) |
 
 **Admin login:** `admin@lorebound.test` / `password`
 
